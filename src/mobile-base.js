@@ -1,4 +1,5 @@
-var init = function() {
+
+var initMap = function() {
 
     // API key for http://openlayers.org. Please get your own at http://bingmapsportal.com/ and use that instead.
     var apiKey = "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf";
