@@ -1,34 +1,27 @@
-
-define(["openlayers", "PoziMap"], function(OpenLayers, PoziMap) {
+define([
+    "openlayers",
+    "PoziMap",
+    "proj",
+    "dataLayer",
+    "bingLayers"
+], function(
+    OpenLayers,
+    PoziMap,
+    proj,
+    dataLayer,
+    bingLayers
+) {
 
     return function() {
-        // API key for http://openlayers.org. Please get your own at http://bingmapsportal.com/ and use that instead.
-        var apiKey = "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf";
 
         // initialize map when page ready
         var map,
-            fhLayer,
             getFeatures,
             selectControl;
 
-        var webMercator = new OpenLayers.Projection("EPSG:4326");
-        var sphericalMercator = new OpenLayers.Projection("EPSG:900913");
         var limit_feature = 20;
 
         var currentPositionLayer = new OpenLayers.Layer.Vector("GPS position", {});
-
-        // The style hardcodes the correspondance between a status code and the external graphic name
-        // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
-        var fhLayer = new OpenLayers.Layer.Vector("Fire Hazards", {
-            styleMap: new OpenLayers.StyleMap({
-                externalGraphic: "img/mobile-loc-${haz_status}.png",
-                graphicOpacity: 1.0,
-                graphicWith: 16,
-                graphicHeight: 26,
-                graphicYOffset: -26
-            })
-        });
-
 
         var onSelectFeatureFunction = function(feature) {
             var clickedFeature = feature;
@@ -44,7 +37,7 @@ define(["openlayers", "PoziMap"], function(OpenLayers, PoziMap) {
         };
 
 
-        selectControl = new OpenLayers.Control.SelectFeature(fhLayer, {
+        selectControl = new OpenLayers.Control.SelectFeature(dataLayer, {
             autoActivate: true,
             onSelect: onSelectFeatureFunction
         });
@@ -100,29 +93,14 @@ define(["openlayers", "PoziMap"], function(OpenLayers, PoziMap) {
                     format: 'image/png8'
                 },
                 { transitionEffect: 'resize' }
-            ),
+            )
+        ].concat(
+            bingLayers
+        ).concat([
             new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
-            new OpenLayers.Layer.Bing({
-                key: apiKey,
-                type: "Road",
-                name: "Bing Road",
-                transitionEffect: 'resize'
-            }),
-            new OpenLayers.Layer.Bing({
-                key: apiKey,
-                type: "Aerial",
-                name: "Bing Aerial",
-                transitionEffect: 'resize'
-            }),
-            new OpenLayers.Layer.Bing({
-                key: apiKey,
-                type: "AerialWithLabels",
-                name: "Bing Aerial + Labels",
-                transitionEffect: 'resize'
-            }),
             currentPositionLayer,
-            fhLayer
-        ]);
+            dataLayer
+        ]));
 
         map.addControls([
             geolocate,
@@ -141,7 +119,7 @@ define(["openlayers", "PoziMap"], function(OpenLayers, PoziMap) {
         geolocate.events.register("locationupdated", this, function(e) {
                 // Logging the event values
                 var pt = new OpenLayers.LonLat(e.point.x, e.point.y);
-                var pt_google = pt.transform(webMercator, sphericalMercator);
+                var pt_google = pt.transform(proj.webMercator, proj.sphericalMercator);
 
                 currentPositionLayer.removeAllFeatures();
                 currentPositionLayer.addFeatures([
@@ -185,7 +163,7 @@ define(["openlayers", "PoziMap"], function(OpenLayers, PoziMap) {
 
         getFeatures = function() {
             var ll = map.getCenter();
-            var ll_wgs84 = ll.transform(sphericalMercator, webMercator);
+            var ll_wgs84 = ll.transform(proj.sphericalMercator, proj.webMercator);
 
             var reader = new OpenLayers.Format.GeoJSON();
 
@@ -204,8 +182,8 @@ define(["openlayers", "PoziMap"], function(OpenLayers, PoziMap) {
             //         var fh_from_geojson = reader.read(resp);
             //         // Before blindly adding, we should compare to the features already in there and decide to not include duplicates - duplicates can be found using the id of the features
             //         // Or more simply, we could just remove all the features form the layer
-            //         fhLayer.removeAllFeatures();
-            //         fhLayer.addFeatures(fh_from_geojson);
+            //         dataLayer.removeAllFeatures();
+            //         dataLayer.addFeatures(fh_from_geojson);
             //     }
             // });
         };

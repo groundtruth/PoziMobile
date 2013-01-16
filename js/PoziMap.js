@@ -1,12 +1,10 @@
-define(["openlayers"], function(OpenLayers) {
-
-    var sphericalMercator = new OpenLayers.Projection("EPSG:900913");
+define(["openlayers", "proj"], function(OpenLayers, proj) {
 
     return function() {
         return new OpenLayers.Map({
             div: "map",
             theme: null,
-            projection: sphericalMercator,
+            projection: proj.sphericalMercator,
             units: "m",
             numZoomLevels: 20,
             maxResolution: 156543.0339,
