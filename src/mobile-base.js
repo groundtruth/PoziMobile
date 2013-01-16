@@ -10,7 +10,7 @@ var initMap = function() {
         getFeatures,
         selectControl;
 
-    var gg = new OpenLayers.Projection("EPSG:4326");
+    var webMercator = new OpenLayers.Projection("EPSG:4326");
     var sphericalMercator = new OpenLayers.Projection("EPSG:900913");
     var limit_feature = 20;
 
@@ -140,7 +140,7 @@ var initMap = function() {
     geolocate.events.register("locationupdated", this, function(e) {
             // Logging the event values
             var pt = new OpenLayers.LonLat(e.point.x, e.point.y);
-            var pt_google = pt.transform(gg, sphericalMercator);
+            var pt_google = pt.transform(webMercator, sphericalMercator);
 
             currentPositionLayer.removeAllFeatures();
             currentPositionLayer.addFeatures([
@@ -184,7 +184,7 @@ var initMap = function() {
 
     getFeatures = function() {
         var ll = map.getCenter();
-        var ll_wgs84 = ll.transform(sphericalMercator, gg);
+        var ll_wgs84 = ll.transform(sphericalMercator, webMercator);
 
         var reader = new OpenLayers.Format.GeoJSON();
 
