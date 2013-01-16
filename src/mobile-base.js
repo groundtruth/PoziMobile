@@ -8,14 +8,13 @@ var initMap = function() {
     var map,
         fhLayer,
         getFeatures,
-        clickedFeature,
         selectControl;
 
     var gg = new OpenLayers.Projection("EPSG:4326");
-    var sm = new OpenLayers.Projection("EPSG:900913");
+    var sphericalMercator = new OpenLayers.Projection("EPSG:900913");
     var limit_feature = 20;
 
-    var vector = new OpenLayers.Layer.Vector("GPS position", {});
+    var currentPositionLayer = new OpenLayers.Layer.Vector("GPS position", {});
 
     // The style hardcodes the correspondance between a status code and the external graphic name
     // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
@@ -31,14 +30,12 @@ var initMap = function() {
 
 
     var onSelectFeatureFunction = function(feature) {
-        clickedFeature = feature;
+        var clickedFeature = feature;
         if (!app.captureUpdateFormPopupPanel) {
 
             app.captureUpdateFormPopupPanel = new App.CaptureUpdateFormPopupPanel();
 
-        }
-        else
-        {
+        } else {
             // Updating the lat / lon values in the existing form
             app.captureUpdateFormPopupPanel.setFeature(clickedFeature);
         }
@@ -60,44 +57,19 @@ var initMap = function() {
         },
         failure: function(e) {
             switch (e.error.code) {
-            case 0:
-                alert(OpenLayers.i18n("There was an error while retrieving your location: ") + e.error.message);
-                break;
-            case 1:
-                alert(OpenLayers.i18n("The user didn't accept to provide the location: "));
-                break;
-            case 2:
-                alert(OpenLayers.i18n("The browser was unable to determine your location: ") + e.error.message);
-                break;
-            case 3:
-                alert(OpenLayers.i18n("The browser timed out before retrieving the location."));
-                break;
+                case 0: alert(OpenLayers.i18n("There was an error while retrieving your location: ") + e.error.message); break;
+                case 1: alert(OpenLayers.i18n("The user didn't accept to provide the location: ")); break;
+                case 2: alert(OpenLayers.i18n("The browser was unable to determine your location: ") + e.error.message); break;
+                case 3: alert(OpenLayers.i18n("The browser timed out before retrieving the location.")); break;
             }
         }
     });
 
+
     // create map
-    map = new OpenLayers.Map({
-        div: "map",
-        theme: null,
-        projection: sm,
-        units: "m",
-        numZoomLevels: 20,
-        maxResolution: 156543.0339,
-        maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-        controls: [
-            new OpenLayers.Control.Attribution(),
-            new OpenLayers.Control.TouchNavigation({
-                dragPanOptions: {
-                    interval: 100,
-                    enableKinetic: true
-                }
-            }),
-            geolocate,
-            selectControl
-        ],
-        layers: [
-            new OpenLayers.Layer.WMS("Labels",
+    map = PoziMap();
+    map.addLayers([
+        new OpenLayers.Layer.WMS("Labels",
             [
                 "http://m1.pozi.com/geoserver/wms",
                 "http://m2.pozi.com/geoserver/wms",
@@ -114,46 +86,47 @@ var initMap = function() {
                 singleTile: true,
                 ratio: 1.5
             }
-            ),
-            new OpenLayers.Layer.WMS("Vicmap Classic",
-                [
-                    "http://m1.pozi.com/geoserver/gwc/service/wms",
-                    "http://m2.pozi.com/geoserver/gwc/service/wms",
-                    "http://m3.pozi.com/geoserver/gwc/service/wms",
-                    "http://m4.pozi.com/geoserver/gwc/service/wms"
-                ],
-                {
-                    layers: 'VicmapClassic',
-                    format: 'image/png8'
-                },
-                { transitionEffect: 'resize' }
-            ),
-            new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
-            new OpenLayers.Layer.Bing({
-                key: apiKey,
-                type: "Road",
-                name: "Bing Road",
-                transitionEffect: 'resize'
-            }),
-            new OpenLayers.Layer.Bing({
-                key: apiKey,
-                type: "Aerial",
-                name: "Bing Aerial",
-                transitionEffect: 'resize'
-            }),
-            new OpenLayers.Layer.Bing({
-                key: apiKey,
-                type: "AerialWithLabels",
-                name: "Bing Aerial + Labels",
-                transitionEffect: 'resize'
-            }),
-            vector,
-            fhLayer
-        ],
+        ),
+        new OpenLayers.Layer.WMS("Vicmap Classic",
+            [
+                "http://m1.pozi.com/geoserver/gwc/service/wms",
+                "http://m2.pozi.com/geoserver/gwc/service/wms",
+                "http://m3.pozi.com/geoserver/gwc/service/wms",
+                "http://m4.pozi.com/geoserver/gwc/service/wms"
+            ],
+            {
+                layers: 'VicmapClassic',
+                format: 'image/png8'
+            },
+            { transitionEffect: 'resize' }
+        ),
+        new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
+        new OpenLayers.Layer.Bing({
+            key: apiKey,
+            type: "Road",
+            name: "Bing Road",
+            transitionEffect: 'resize'
+        }),
+        new OpenLayers.Layer.Bing({
+            key: apiKey,
+            type: "Aerial",
+            name: "Bing Aerial",
+            transitionEffect: 'resize'
+        }),
+        new OpenLayers.Layer.Bing({
+            key: apiKey,
+            type: "AerialWithLabels",
+            name: "Bing Aerial + Labels",
+            transitionEffect: 'resize'
+        }),
+        currentPositionLayer,
+        fhLayer
+    ]);
 
-        center: new OpenLayers.LonLat(16061635, -4405394),
-        zoom: 17
-    });
+    map.addControls([
+        geolocate,
+        selectControl
+    ]);
 
     map.events.register('moveend', this, function() { getFeatures(); });
 
@@ -167,10 +140,10 @@ var initMap = function() {
     geolocate.events.register("locationupdated", this, function(e) {
             // Logging the event values
             var pt = new OpenLayers.LonLat(e.point.x, e.point.y);
-            var pt_google = pt.transform(gg, sm);
+            var pt_google = pt.transform(gg, sphericalMercator);
 
-            vector.removeAllFeatures();
-            vector.addFeatures([
+            currentPositionLayer.removeAllFeatures();
+            currentPositionLayer.addFeatures([
                 new OpenLayers.Feature.Vector(
                     e.point,
                     {},
@@ -194,7 +167,7 @@ var initMap = function() {
                 )
             ]);
             // Zoom to the disc derived from GPS position and accuracy, with a max zoom level of 17
-            var z = map.getZoomForExtent(vector.getDataExtent());
+            var z = map.getZoomForExtent(currentPositionLayer.getDataExtent());
             map.setCenter(pt_google, Math.min(z, 18));
         }
     );
@@ -211,7 +184,7 @@ var initMap = function() {
 
     getFeatures = function() {
         var ll = map.getCenter();
-        var ll_wgs84 = ll.transform(sm, gg);
+        var ll_wgs84 = ll.transform(sphericalMercator, gg);
 
         var reader = new OpenLayers.Format.GeoJSON();
 
