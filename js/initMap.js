@@ -3,13 +3,15 @@ define([
     "PoziMap",
     "proj",
     "dataLayer",
-    "bingLayers"
+    "bingLayers",
+    "vicmapLayers"
 ], function(
     OpenLayers,
     PoziMap,
     proj,
     dataLayer,
-    bingLayers
+    bingLayers,
+    vicmapLayers
 ) {
 
     return function() {
@@ -63,44 +65,15 @@ define([
         // create map
         map = PoziMap();
         map.addLayers([
-            new OpenLayers.Layer.WMS("Labels",
-                [
-                    "http://m1.pozi.com/geoserver/wms",
-                    "http://m2.pozi.com/geoserver/wms",
-                    "http://m3.pozi.com/geoserver/wms",
-                    "http://m4.pozi.com/geoserver/wms"
-                ],
-                {
-                    layers: 'LabelClassic',
-                    format: 'image/png8',
-                    transparent: 'true'
-                },
-                {
-                    isBaseLayer: false,
-                    singleTile: true,
-                    ratio: 1.5
-                }
-            ),
-            new OpenLayers.Layer.WMS("Vicmap Classic",
-                [
-                    "http://m1.pozi.com/geoserver/gwc/service/wms",
-                    "http://m2.pozi.com/geoserver/gwc/service/wms",
-                    "http://m3.pozi.com/geoserver/gwc/service/wms",
-                    "http://m4.pozi.com/geoserver/gwc/service/wms"
-                ],
-                {
-                    layers: 'VicmapClassic',
-                    format: 'image/png8'
-                },
-                { transitionEffect: 'resize' }
-            )
-        ].concat(
-            bingLayers
-        ).concat([
+            vicmapLayers.labelClassic,
+            vicmapLayers.classic,
+            bingLayers.road,
+            bingLayers.aerial,
+            bingLayers.aerialWithLabels,
             new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
             currentPositionLayer,
             dataLayer
-        ]));
+        ]);
 
         map.addControls([
             geolocate,
