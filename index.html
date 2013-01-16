@@ -7,6 +7,7 @@
 
         <title>Pozi Mobile</title>
 
+        <link rel="stylesheet" href="js/lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css"></link>
         <link rel="stylesheet" href="js/lib/openlayers-2.12/theme/default/style.mobile.css"></link>
         <link rel="stylesheet" href="css/reset.css"></link>
         <link rel="stylesheet" href="css/main.css"></link>
@@ -15,7 +16,15 @@
     </head>
 
     <body>
-        <div id="map"></div>
+        <div data-role="header">
+            <h1>Pozi Mobile</h1>
+        </div>
+
+        <div id="map" data-role="content"></div>
+
+        <div data-role="footer">
+            <h4>Footer content</h4>
+        </div>
     </body>
 
 </html>

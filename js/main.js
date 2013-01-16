@@ -4,6 +4,7 @@ requirejs.config({
     paths: {
         "underscore": "lib/underscore-1.4.3/underscore",
         "jquery": "lib/jquery-1.8.3/jquery-1.8.3.min",
+        "jquery.mobile": "lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min",
         "openlayers": "lib/openlayers-2.12/OpenLayers.mobile",
     },
     shim: {
@@ -12,10 +13,10 @@ requirejs.config({
     }
 });
 
-require(["jquery", "initMap"], function($, initMap) {
+require(["jquery", "jquery.mobile", "initMap"], function($, jm, initMap) {
 
     $(document).ready(function(){
-        $("#map").height($("body").height());
+        $("#map").height($("body").height()-2*40);
         $("#map").width($("body").width());
         initMap();
     });

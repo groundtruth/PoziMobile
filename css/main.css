@@ -1,8 +1,11 @@
 
 html { height: 100%; }
-body { min-height: 100%; }
+body { 
+    min-height: 100%;
+}
 
 #map {
-
+    margin: 0;
+    padding: 0;
 }
 
