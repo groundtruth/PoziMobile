@@ -65,42 +65,9 @@ define([
         map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenterInWebMercator()); });
 
         geolocate.events.register("locationupdated", this, function(e) {
-                // Logging the event values
-                var pt = new OpenLayers.LonLat(e.point.x, e.point.y);
-                var pt_google = pt.transform(proj.webMercator, proj.sphericalMercator);
-
-                currentPositionLayer.removeAllFeatures();
-                currentPositionLayer.addFeatures([
-                    new OpenLayers.Feature.Vector(
-                        e.point,
-                        {},
-                        {
-                            graphicName: 'cross',
-                            strokeColor: '#f00',
-                            strokeWidth: 2,
-                            fillOpacity: 0,
-                            pointRadius: 10
-                        }
-                    ),
-                    new OpenLayers.Feature.Vector(
-                        OpenLayers.Geometry.Polygon.createRegularPolygon(
-                            new OpenLayers.Geometry.Point(e.point.x, e.point.y),
-                            e.position.coords.accuracy / 2,
-                            50,
-                            0
-                        ),
-                        {},
-                        {
-                            fillOpacity: 0.1,
-                            fillColor: '#000',
-                            strokeColor: '#f00',
-                            strokeOpacity: 0.6
-                        }
-                    )
-                ]);
-                // Zoom to the disc derived from GPS position and accuracy, with a max zoom level of 17
-                var z = map.getZoomForExtent(currentPositionLayer.getDataExtent());
-                map.setCenter(pt_google, Math.min(z, 18));
+                var locationInSperhical = OpenLayers.LonLat(e.point.x, e.point.y).transform(proj.webMercator, proj.sphericalMercator);
+                currentPositionLayer.setPositionFeatures(e.point, e.position.coords.accuracy);
+                map.setCenterAndZoomToExtent(locationInSpherical, currentPositionLayer.getDataExtent())
             }
         );
 

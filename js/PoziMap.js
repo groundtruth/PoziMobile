@@ -22,9 +22,16 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             center: new OpenLayers.LonLat(16061608, -4405233),
             zoom: 15
         });
+
         map.getCenterInWebMercator = function() {
             return this.getCenter().transform(proj.sphericalMercator, proj.webMarcator);
         };
+
+        map.setCenterAndZoomToExtent = function(locationInSpherical, extent) {
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
+            this.setCenter(locationInSperhical, zoomWithinLimit);
+        };
+
         return map;
     };
 
