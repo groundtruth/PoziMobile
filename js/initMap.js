@@ -18,31 +18,8 @@ define([
 
     return function() {
 
-        var map,
-            selectControl;
+        var map = new PoziMap();
 
-        var onSelectFeatureFunction = function(feature) {
-            var clickedFeature = feature;
-            if (!app.captureUpdateFormPopupPanel) {
-
-                app.captureUpdateFormPopupPanel = new App.CaptureUpdateFormPopupPanel();
-
-            } else {
-                // Updating the lat / lon values in the existing form
-                app.captureUpdateFormPopupPanel.setFeature(clickedFeature);
-            }
-            app.captureUpdateFormPopupPanel.show('pop');
-        };
-
-
-        selectControl = new OpenLayers.Control.SelectFeature(dataLayer, {
-            autoActivate: true,
-            onSelect: onSelectFeatureFunction
-        });
-
-
-        // create map
-        map = PoziMap();
         map.addLayers([
             vicmapLayers.labelClassic,
             vicmapLayers.classic,
@@ -56,7 +33,20 @@ define([
 
         map.addControls([
             new PoziGeolocate(map, currentPositionLayer),
-            selectControl
+            new OpenLayers.Control.SelectFeature(dataLayer, {
+                autoActivate: true,
+                onSelect: function(feature) {
+                    alert("onSelectFeatureFunction is not implemented!");
+                    // var clickedFeature = feature;
+                    // if (!app.captureUpdateFormPopupPanel) {
+                    //     app.captureUpdateFormPopupPanel = new App.CaptureUpdateFormPopupPanel();
+                    // } else {
+                    //     // Updating the lat / lon values in the existing form
+                    //     app.captureUpdateFormPopupPanel.setFeature(clickedFeature);
+                    // }
+                    // app.captureUpdateFormPopupPanel.show('pop');
+                }
+            })
         ]);
 
         map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenterInWebMercator()); });

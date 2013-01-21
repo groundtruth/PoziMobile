@@ -1,7 +1,8 @@
 define(["openlayers", "proj"], function(OpenLayers, proj) {
 
-    return function() {
-        var map = new OpenLayers.Map({
+    var PoziMap = function() {
+
+        OpenLayers.Map.call(this, {
             div: "map",
             theme: null,
             projection: proj.sphericalMercator,
@@ -23,17 +24,20 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             zoom: 15
         });
 
-        map.getCenterInWebMercator = function() {
+        this.getCenterInWebMercator = function() {
             return this.getCenter().transform(proj.sphericalMercator, proj.webMarcator);
         };
 
-        map.setCenterAndZoomToExtent = function(locationInSpherical, extent) {
+        this.setCenterAndZoomToExtent = function(locationInSpherical, extent) {
             var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
             this.setCenter(locationInSperhical, zoomWithinLimit);
         };
-
-        return map;
+        
     };
+
+    PoziMap.prototype = new OpenLayers.Map();
+
+    return PoziMap;
 
 });
   
