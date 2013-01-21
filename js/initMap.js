@@ -20,10 +20,7 @@ define([
 
         // initialize map when page ready
         var map,
-            getFeatures,
             selectControl;
-
-        var limit_feature = 20;
 
         var currentPositionLayer = new OpenLayers.Layer.Vector("GPS position", {});
 
@@ -65,7 +62,7 @@ define([
             selectControl
         ]);
 
-        map.events.register('moveend', this, function() { getFeatures(); });
+        map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenter()); });
 
         var style = {
             fillOpacity: 0.1,
@@ -119,35 +116,8 @@ define([
         });
 
 
-        getFeatures = function() {
-            var ll = map.getCenter();
-            var ll_wgs84 = ll.transform(proj.sphericalMercator, proj.webMercator);
-
-            var reader = new OpenLayers.Format.GeoJSON();
-
-            // Ext.util.JSONP.request({
-            //     url: '/ws/rest/v3/ws_fire_hazard_geojson.php',
-            //     params: {
-            //         lat: ll_wgs84.lat,
-            //         lon: ll_wgs84.lon,
-            //         limit: limit_feature,
-            //         config: 'bendigogis',
-            //         lga: '325'
-            //     },
-            //     callbackKey: 'callback',
-            //     callback: function(resp) {
-            //         // resp is the XmlHttpRequest object
-            //         var fh_from_geojson = reader.read(resp);
-            //         // Before blindly adding, we should compare to the features already in there and decide to not include duplicates - duplicates can be found using the id of the features
-            //         // Or more simply, we could just remove all the features form the layer
-            //         dataLayer.removeAllFeatures();
-            //         dataLayer.addFeatures(fh_from_geojson);
-            //     }
-            // });
-        };
-
         // Loading features in the fire hazard layer - AJAX GeoJSON
-        getFeatures();
+        dataLayer.getFeaturesAround(map.getCenter());
     };
 
 });

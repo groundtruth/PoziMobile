@@ -18,8 +18,9 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
                     }
                 })
             ],
-            center: new OpenLayers.LonLat(16061635, -4405394),
-            zoom: 17
+            // center: new OpenLayers.LonLat(16061635, -4405394),
+            center: new OpenLayers.LonLat(16061608, -4405233),
+            zoom: 15
         });
     };
 
