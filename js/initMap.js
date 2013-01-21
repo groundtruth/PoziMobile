@@ -1,39 +1,24 @@
 define([
     "openlayers",
     "PoziMap",
-    "dataLayer",
-    "bingLayers",
-    "vicmapLayers",
-    "currentPositionLayer",
-    "PoziGeolocate"
+    "PoziGeolocate",
+    "layers"
 ], function(
     OpenLayers,
     PoziMap,
-    dataLayer,
-    bingLayers,
-    vicmapLayers,
-    currentPositionLayer,
-    PoziGeolocate
+    PoziGeolocate,
+    layers
 ) {
 
     return function() {
 
         var map = new PoziMap();
 
-        map.addLayers([
-            vicmapLayers.labelClassic,
-            vicmapLayers.classic,
-            bingLayers.road,
-            bingLayers.aerial,
-            bingLayers.aerialWithLabels,
-            new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
-            currentPositionLayer,
-            dataLayer
-        ]);
+        map.addLayers(layers);
 
         map.addControls([
-            new PoziGeolocate(map, currentPositionLayer),
-            new OpenLayers.Control.SelectFeature(dataLayer, {
+            new PoziGeolocate(map, layers.currentPosition),
+            new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
                     alert("onSelectFeatureFunction is not implemented!");
@@ -49,9 +34,9 @@ define([
             })
         ]);
 
-        map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenterInWebMercator()); });
+        map.events.register('moveend', this, function() { layers.data.getFeaturesAround(map.getCenterInWebMercator()); });
 
-        dataLayer.getFeaturesAround(map.getCenterInWebMercator());
+        layers.data.getFeaturesAround(map.getCenterInWebMercator());
     };
 
 });
