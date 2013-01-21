@@ -16,8 +16,8 @@ requirejs.config({
 require(["jquery", "jquery.mobile", "initMap"], function($, jm, initMap) {
 
     $(document).ready(function(){
-        $("#map").height($("body").height()-2*40);
-        $("#map").width($("body").width());
+        $("#map").height($(window).height()-2*40);
+        $("#map").width($(window).width());
         initMap();
     });
 
