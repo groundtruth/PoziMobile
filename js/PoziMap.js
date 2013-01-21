@@ -1,6 +1,7 @@
 define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, proj, PoziGeolocate, layers) {
 
     var PoziMap = function() {
+        var defaultZoomLevel = 15;
 
         OpenLayers.Map.call(this, {
             div: "map",
@@ -20,8 +21,7 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
                 })
             ],
             // center: new OpenLayers.LonLat(16061635, -4405394),
-            center: new OpenLayers.LonLat(16061608, -4405233),
-            zoom: 15
+            center: new OpenLayers.LonLat(16061608, -4405233)
         });
 
         this.getCenterInWebMercator = function() {
@@ -54,8 +54,11 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
         ]);
 
         this.events.register('moveend', this, function() { layers.data.getFeaturesAround(this.getCenterInWebMercator()); });
+
+        this.zoomTo(defaultZoomLevel);
         
         layers.data.getFeaturesAround(this.getCenterInWebMercator());
+        
     };
 
     PoziMap.prototype = new OpenLayers.Map();

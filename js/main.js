@@ -18,7 +18,8 @@ require(["jquery", "jquery.mobile", "PoziMap"], function($, jm, PoziMap) {
     $(document).ready(function(){
         $("#map").height($(window).height()-2*40);
         $("#map").width($(window).width());
-        new PoziMap();
+        var map = new PoziMap();
+        window.map = map;
     });
 
 });
