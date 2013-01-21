@@ -20,7 +20,6 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
                     }
                 })
             ],
-            // center: new OpenLayers.LonLat(16061635, -4405394),
             center: new OpenLayers.LonLat(16061608, -4405233)
         });
 
