@@ -1,7 +1,7 @@
 define(["openlayers", "proj"], function(OpenLayers, proj) {
 
     return function() {
-        return new OpenLayers.Map({
+        var map = new OpenLayers.Map({
             div: "map",
             theme: null,
             projection: proj.sphericalMercator,
@@ -22,6 +22,10 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             center: new OpenLayers.LonLat(16061608, -4405233),
             zoom: 15
         });
+        map.getCenterInWebMercator = function() {
+            return this.getCenter().transform(proj.sphericalMercator, proj.webMarcator);
+        };
+        return map;
     };
 
 });

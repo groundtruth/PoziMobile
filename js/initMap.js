@@ -62,7 +62,7 @@ define([
             selectControl
         ]);
 
-        map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenter()); });
+        map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenterInWebMercator()); });
 
         var style = {
             fillOpacity: 0.1,
@@ -117,7 +117,7 @@ define([
 
 
         // Loading features in the fire hazard layer - AJAX GeoJSON
-        dataLayer.getFeaturesAround(map.getCenter());
+        dataLayer.getFeaturesAround(map.getCenterInWebMercator());
     };
 
 });
