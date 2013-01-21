@@ -5,6 +5,7 @@ define([
     "dataLayer",
     "bingLayers",
     "vicmapLayers",
+    "currentPositionLayer",
     "geolocate"
 ], function(
     OpenLayers,
@@ -13,6 +14,7 @@ define([
     dataLayer,
     bingLayers,
     vicmapLayers,
+    currentPositionLayer,
     geolocate
 ) {
 
@@ -21,8 +23,6 @@ define([
         // initialize map when page ready
         var map,
             selectControl;
-
-        var currentPositionLayer = new OpenLayers.Layer.Vector("GPS position", {});
 
         var onSelectFeatureFunction = function(feature) {
             var clickedFeature = feature;
@@ -64,13 +64,6 @@ define([
 
         map.events.register('moveend', this, function() { dataLayer.getFeaturesAround(map.getCenterInWebMercator()); });
 
-        var style = {
-            fillOpacity: 0.1,
-            fillColor: '#000',
-            strokeColor: '#f00',
-            strokeOpacity: 0.6
-        };
-
         geolocate.events.register("locationupdated", this, function(e) {
                 // Logging the event values
                 var pt = new OpenLayers.LonLat(e.point.x, e.point.y);
@@ -97,7 +90,12 @@ define([
                             0
                         ),
                         {},
-                        style
+                        {
+                            fillOpacity: 0.1,
+                            fillColor: '#000',
+                            strokeColor: '#f00',
+                            strokeOpacity: 0.6
+                        }
                     )
                 ]);
                 // Zoom to the disc derived from GPS position and accuracy, with a max zoom level of 17

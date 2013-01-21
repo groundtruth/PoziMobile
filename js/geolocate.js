@@ -1,6 +1,6 @@
 define(["openlayers"], function(OpenLayers) {
 
-    return new OpenLayers.Control.Geolocate({
+    var geolocate = new OpenLayers.Control.Geolocate({
         id: 'locate-control',
         geolocationOptions: {
             enableHighAccuracy: true,
@@ -16,6 +16,8 @@ define(["openlayers"], function(OpenLayers) {
             }
         }
     });
+
+    return geolocate;
 
 });
 
