@@ -13,12 +13,12 @@ requirejs.config({
     }
 });
 
-require(["jquery", "jquery.mobile", "initMap"], function($, jm, initMap) {
+require(["jquery", "jquery.mobile", "PoziMap"], function($, jm, PoziMap) {
 
     $(document).ready(function(){
         $("#map").height($(window).height()-2*40);
         $("#map").width($(window).width());
-        initMap();
+        new PoziMap();
     });
 
 });

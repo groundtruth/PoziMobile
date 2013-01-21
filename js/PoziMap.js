@@ -1,4 +1,4 @@
-define(["openlayers", "proj"], function(OpenLayers, proj) {
+define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, proj, PoziGeolocate, layers) {
 
     var PoziMap = function() {
 
@@ -32,7 +32,30 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
             this.setCenter(locationInSperhical, zoomWithinLimit);
         };
+
+        this.addLayers(layers);
+
+        this.addControls([
+            new PoziGeolocate(this, layers.currentPosition),
+            new OpenLayers.Control.SelectFeature(layers.data, {
+                autoActivate: true,
+                onSelect: function(feature) {
+                    alert("onSelectFeatureFunction is not implemented!");
+                    // var clickedFeature = feature;
+                    // if (!app.captureUpdateFormPopupPanel) {
+                    //     app.captureUpdateFormPopupPanel = new App.CaptureUpdateFormPopupPanel();
+                    // } else {
+                    //     // Updating the lat / lon values in the existing form
+                    //     app.captureUpdateFormPopupPanel.setFeature(clickedFeature);
+                    // }
+                    // app.captureUpdateFormPopupPanel.show('pop');
+                }
+            })
+        ]);
+
+        this.events.register('moveend', this, function() { layers.data.getFeaturesAround(this.getCenterInWebMercator()); });
         
+        layers.data.getFeaturesAround(this.getCenterInWebMercator());
     };
 
     PoziMap.prototype = new OpenLayers.Map();
