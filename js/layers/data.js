@@ -12,7 +12,7 @@ define(["jquery", "openlayers"], function($, OpenLayers) {
         })
     });
 
-    layer.getFeaturesAround = function(pointInWebMercator) {
+    layer.getFeaturesAround = function(pointInWGS84) {
 
         var reader = new OpenLayers.Format.GeoJSON();
         var limit_feature = 20;
@@ -20,8 +20,8 @@ define(["jquery", "openlayers"], function($, OpenLayers) {
         $.getJSON(
             'http://v3.pozi.com/ws/rest/v3/ws_fire_hazard_geojson.php?callback=?',
             {
-                lat: pointInWebMercator.lat,
-                lon: pointInWebMercator.lon,
+                lat: pointInWGS84.lat,
+                lon: pointInWGS84.lon,
                 limit: limit_feature,
                 config: 'bendigogis',
                 lga: '325'

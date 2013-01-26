@@ -6,7 +6,7 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
         OpenLayers.Map.call(this, {
             div: "map",
             theme: null,
-            projection: proj.sphericalMercator,
+            projection: proj.webMercator,
             units: "m",
             numZoomLevels: 20,
             maxResolution: 156543.0339,
@@ -23,8 +23,8 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
             center: new OpenLayers.LonLat(16061608, -4405233)
         });
 
-        this.getCenterInWebMercator = function() {
-            return this.getCenter().transform(proj.sphericalMercator, proj.webMarcator);
+        this.getCenterInWGS84 = function() {
+            return this.getCenter().transform(proj.webMercator, proj.WGS84);
         };
 
         this.setCenterAndZoomToExtent = function(locationInSpherical, extent) {
@@ -52,11 +52,11 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
             })
         ]);
 
-        this.events.register('moveend', this, function() { layers.data.getFeaturesAround(this.getCenterInWebMercator()); });
+        this.events.register('moveend', this, function() { layers.data.getFeaturesAround(this.getCenterInWGS84()); });
 
         this.zoomTo(defaultZoomLevel);
         
-        layers.data.getFeaturesAround(this.getCenterInWebMercator());
+        layers.data.getFeaturesAround(this.getCenterInWGS84());
         
     };
 
