@@ -1,15 +1,14 @@
 
 html { height: 100%; }
-body { 
-    min-height: 100%;
-}
+body { min-height: 100%; }
 
 #map {
     margin: 0;
     padding: 0;
     position: absolute;
 }
-.ui-footer {
+.ui-header, .ui-footer {
     text-align: center;
+    height: 48px;
 }
 
