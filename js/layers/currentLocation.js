@@ -1,6 +1,6 @@
 define(["openlayers"], function(OpenLayers) {
 
-    var currentLocationLayer = new OpenLayers.Layer.Vector("GPS position", {});
+    var currentLocationLayer = new OpenLayers.Layer.Vector("Current location", {});
 
     currentLocationLayer.setLocationFeatures = function(point, accuracy) {
 
