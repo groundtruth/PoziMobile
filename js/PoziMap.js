@@ -32,6 +32,15 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
             this.setCenter(locationInSperhical, zoomWithinLimit);
         };
 
+        this.seekToCurrentLocation = function() {
+            var geolocate = this.getControlsBy("id", "locate-control")[0];
+            if (geolocate.active) {
+              geolocate.getCurrentLocation();
+            } else {
+              geolocate.activate();
+            }
+        };
+
         this.addLayers(layers);
 
         this.addControls([

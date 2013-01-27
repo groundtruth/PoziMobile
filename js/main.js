@@ -22,6 +22,7 @@ require(["jquery", "jquery.mobile", "PoziMap"], function($, jm, PoziMap) {
         window.map = new PoziMap();
  
         $("#zoomOut").click(function() { map.zoomOut(); });
+        $("#seekToCurrentLocation").click(function() { map.seekToCurrentLocation(); });
     });
 
 });
