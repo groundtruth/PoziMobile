@@ -44,7 +44,7 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
         this.addLayers(layers);
 
         this.addControls([
-            new PoziGeolocate(this, layers.currentPosition),
+            new PoziGeolocate(this, layers.currentLocation),
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {

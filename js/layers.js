@@ -2,12 +2,12 @@ define([
     "layers/data",
     "layers/bings",
     "layers/vicmaps",
-    "layers/currentPosition"
+    "layers/currentLocation"
 ], function(
     data,
     bings,
     vicmaps,
-    currentPosition
+    currentLocation
 ) {
 
     var layers = [
@@ -17,11 +17,11 @@ define([
         bings.aerial,
         bings.aerialWithLabels,
         new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
-        currentPosition,
+        currentLocation,
         data
     ];
 
-    layers.currentPosition = currentPosition;
+    layers.currentLocation = currentLocation;
     layers.data = data;
 
     return layers;
