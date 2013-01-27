@@ -21,11 +21,10 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         });
 
         this.events.register("locationupdated", this, function(e) {
-                var locationInWebMercator = OpenLayers.LonLat(e.point.x, e.point.y).transform(proj.WGS84, proj.webMercator);
-                currentLocationLayer.setLocationFeatures(e.point, e.position.coords.accuracy);
-                map.setCenterAndZoomToExtent(locationInWebMercator, currentLocationLayer.getDataExtent())
-            }
-        );
+            var locationInWebMercator = new OpenLayers.LonLat(e.point.x, e.point.y).transform(proj.WGS84, proj.webMercator);
+            currentLocationLayer.setLocationFeatures(e.point, e.position.coords.accuracy);
+            map.setCenterAndZoomToExtent(locationInWebMercator, currentLocationLayer.getDataExtent())
+        });
 
     };
 
