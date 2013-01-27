@@ -27,9 +27,9 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
             return this.getCenter().transform(proj.webMercator, proj.WGS84);
         };
 
-        this.setCenterAndZoomToExtent = function(locationInSpherical, extent) {
+        this.setCenterAndZoomToExtent = function(locationInWebMercator, extent) {
             var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
-            this.setCenter(locationInSperhical, zoomWithinLimit);
+            this.setCenter(locationInWebMercator, zoomWithinLimit);
         };
 
         this.seekToCurrentLocation = function() {
