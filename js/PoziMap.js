@@ -64,7 +64,7 @@ define([
                     }
                 })
             ],
-            center: new OpenLayers.LonLat(16061608, -4405233)
+            center: new OpenLayers.LonLat(15986928, -4358362)
         });
 
         this.addLayers(layers);
