@@ -21,6 +21,9 @@ define(["jquery"], function($) {
                         $el.val(val);
                 }
             });
+            // $page.find('[name="lat"]').first().val() // not needed for update
+            // $page.find('[name="lon"]').first().val() // not needed for update
+            $page.find('[name="config"]').first().val("loddongis")
             return this;
         },
         changeTo: function() {
