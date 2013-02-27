@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
-
     <head>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, p initial-scale=1">
 
         <title>Pozi Mobile</title>
 
@@ -15,35 +12,32 @@
 
         <script type="text/javascript" src="lib/requirejs-2.1.2/require.js" data-main="js/main"></script>
     </head>
-
     <body>
-        <div data-role="header" data-position="fixed">
-            <!-- <a data-role="button" data-theme="a" data-mini="false" class="ui-btn-left ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-a">Button</a> -->
-            <a data-role="button" data-theme="a" data-mini="false" class="ui-btn-right ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-a">Button</a>
-        </div>
 
-        <div id="map" data-role="content"></div>
-
-        <div data-role="footer" data-position="fixed">
-
-            <a data-role="button" data-theme="a" data-mini="false" class="ui-btn-left ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-a">Button</a>
-
-            <div data-role="controlgroup" data-type="horizontal" class="ui-corner-all ui-controlgroup ui-controlgroup-horizontal" aria-disabled="false" data-disabled="false" data-shadow="false" data-corners="true" data-exclude-invisible="true" data-mini="false">
-                <div class="ui-controlgroup-controls">
-
-                    <a id="zoomOut" data-role="button" data-icon="minus" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="My button" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-notext ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-minus ui-icon-shadow">&nbsp;</span></span></a>
-
-                    <a id="seekToCurrentLocation" data-role="button" data-icon="home" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="My button" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-notext ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
-
-                    <a id="zoomIn" data-role="button" data-icon="plus" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="My button" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-notext ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-plus ui-icon-shadow">&nbsp;</span></span></a>
-
+        <section id="pageMain" data-role="page">
+            <header data-role="header" data-position="fixed"><h1></h1></header>
+            <div id="map" class="content map" data-role="content"></div>
+            <footer data-role="footer" data-position="fixed">
+                <div data-role="controlgroup" data-type="horizontal" class="">
+                    <a id="zoomOut"
+                       data-role="button"
+                       data-icon="minus"
+                       data-iconpos="notext"
+                       class="">Zoom out</a>
+                    <a id="seekToCurrentLocation"
+                       data-role="button"
+                       data-icon="home"
+                       data-iconpos="notext"
+                       class="">Seek to current location</a>
+                    <a id="zoomIn"
+                       data-role="button"
+                       data-icon="plus"
+                       data-iconpos="notext"
+                       class="">Zoom in</a>
                 </div>
-            </div>
+            </footer>
+        </section>
 
-            <a data-role="button" data-theme="a" data-mini="false" class="ui-btn-right ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-a">Button</a>
-
-        </div>
     </body>
-
 </html>
 
