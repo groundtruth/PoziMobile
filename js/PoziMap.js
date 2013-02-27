@@ -23,7 +23,7 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
         };
 
         this.setSize = function() {
-            $("#map").height($(window).height()-$(".ui-header").first().height()-$(".ui-footer").first().height());
+            $("#map").height($(window).innerHeight()-$(".ui-header").first().height()-$(".ui-footer").first().height());
             $("#map").width($(window).width());
         };
 
