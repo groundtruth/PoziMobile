@@ -7,6 +7,7 @@ define(["jquery"], function($) {
             return this;
         },
         dataInit: function(feature) {
+            // http://blog.mrnepal.com/2012/03/21/use-jquery-to-re-populate-form-with-json-data/
             $.each(feature.data, function(name, val){
                 var $el = $page.find('[name="'+name+'"]');
                 switch($el.attr("type")){
