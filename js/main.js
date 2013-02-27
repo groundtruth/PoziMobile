@@ -4,7 +4,7 @@ requirejs.config({
     paths: {
         "underscore": "../lib/underscore-1.4.3/underscore",
         "jquery": "../lib/jquery-1.8.3/jquery-1.8.3.min",
-        "jquery.mobile": "../lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min",
+        "jquery.mobile": "../lib/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
         "openlayers": "../lib/openlayers-2.12/OpenLayers.mobile",
     },
     shim: {
