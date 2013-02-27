@@ -1,5 +1,4 @@
 define([
-    "json",
     "jquery",
     "openlayers",
     "proj",
@@ -7,7 +6,6 @@ define([
     "layers",
     "pages/details"
 ], function(
-    JSON,
     $,
     OpenLayers,
     proj,
@@ -73,11 +71,7 @@ define([
             new PoziGeolocate(this, layers.currentLocation),
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
-                onSelect: function(feature) {
-                    $("#pageDetails").data("feature", feature);
-                    pageDetails.dataInit();
-                    $.mobile.changePage("#pageDetails", { transition: "flip" });
-                }
+                onSelect: function(feature) { pageDetails.dataInit(feature).changeTo(); }
             })
         ]);
 
