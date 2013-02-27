@@ -13,15 +13,7 @@ requirejs.config({
     }
 });
 
-require(["jquery", "jquery.mobile", "PoziMap"], function($, jm, PoziMap) {
-
-    $(document).ready(function(){
-        window.map = new PoziMap();
- 
-        $("#zoomOut").click(function() { map.zoomOut(); });
-        $("#seekToCurrentLocation").click(function() { map.seekToCurrentLocation(); });
-        $("#zoomIn").click(function() { map.zoomIn(); });
-    });
-
+require(["jquery", "pages"], function($, pages) {
+    $(document).ready(function(){ pages.initAll(); });
 });
 
