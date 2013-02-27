@@ -2,6 +2,7 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
 
     var PoziMap = function() {
         var defaultZoomLevel = 15;
+        var that = this;
 
         this.getCenterInWGS84 = function() {
             return this.getCenter().transform(proj.webMercator, proj.WGS84);
@@ -26,7 +27,7 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
             $("#map").width($(window).width());
         };
 
-
+        $(window).resize(function() { that.setSize(); });
         this.setSize();
 
         OpenLayers.Map.call(this, {
