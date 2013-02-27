@@ -1,8 +1,8 @@
-define(["jquery", "openlayers"], function($, OpenLayers) {
+define(["jquery", "openlayers", "config"], function($, OpenLayers, config) {
 
     // The style hardcodes the correspondance between a status code and the external graphic name
     // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
-    var layer = new OpenLayers.Layer.Vector("Minor Culverts", {
+    var layer = new OpenLayers.Layer.Vector(config.dataLayerName, {
         styleMap: new OpenLayers.StyleMap({
             externalGraphic: "img/mobile-loc-1.png",
             graphicOpacity: 1.0,
@@ -15,15 +15,14 @@ define(["jquery", "openlayers"], function($, OpenLayers) {
     layer.getFeaturesAround = function(pointInWGS84) {
 
         var reader = new OpenLayers.Format.GeoJSON();
-        var limit_feature = 20;
 
         $.getJSON(
-            'http://v3.pozi.com/ws/rest/v3/ws_minor_culvert_geojson.php?callback=?',
+            config.readEndpoint,
             {
                 lat: pointInWGS84.lat,
                 lon: pointInWGS84.lon,
-                limit: limit_feature,
-                config: 'loddongis'
+                limit: config.featuresLimit,
+                config: config.databaseName
             },
             function(data, textStatus) {
                 var features = reader.read(data);

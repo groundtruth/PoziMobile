@@ -1,4 +1,4 @@
-define(["jquery"], function($) {
+define(["jquery", "config"], function($, config) {
 
     var $page = $("#pageDetails");
     var result = {
@@ -23,7 +23,7 @@ define(["jquery"], function($) {
             });
             // $page.find('[name="lat"]').first().val() // not needed for update
             // $page.find('[name="lon"]').first().val() // not needed for update
-            $page.find('[name="config"]').first().val("loddongis")
+            $page.find('[name="config"]').first().val(config.databaseName);
             return this;
         },
         changeTo: function() {
@@ -36,5 +36,4 @@ define(["jquery"], function($) {
     return result;
 
 });
-  
 

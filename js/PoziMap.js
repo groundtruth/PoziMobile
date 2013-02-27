@@ -4,18 +4,20 @@ define([
     "proj",
     "PoziGeolocate",
     "layers",
-    "pages/details"
+    "pages/details",
+    "config"
 ], function(
     $,
     OpenLayers,
     proj,
     PoziGeolocate,
     layers,
-    pageDetails
+    pageDetails,
+    config
 ) {
 
     var PoziMap = function() {
-        var defaultZoomLevel = 15;
+        var defaultZoomLevel = config.defaultZoomLevel;
         var that = this;
 
         this.getCenterInWGS84 = function() {
@@ -23,7 +25,7 @@ define([
         };
 
         this.setCenterAndZoomToExtent = function(locationInWebMercator, extent) {
-            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.maxZoom);
             this.setCenter(locationInWebMercator, zoomWithinLimit);
         };
 
@@ -52,7 +54,12 @@ define([
             units: "m",
             numZoomLevels: 20,
             maxResolution: 156543.0339,
-            maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+            maxExtent: new OpenLayers.Bounds(
+                config.maxExtentBounds[0],
+                config.maxExtentBounds[1],
+                config.maxExtentBounds[2],
+                config.maxExtentBounds[3]
+            ),
             controls: [
                 new OpenLayers.Control.Attribution(),
                 new OpenLayers.Control.TouchNavigation({
@@ -62,7 +69,7 @@ define([
                     }
                 })
             ],
-            center: new OpenLayers.LonLat(15986928, -4358362)
+            center: new OpenLayers.LonLat(config.centerLon, config.centerLat)
         });
 
         this.addLayers(layers);
