@@ -1,7 +1,33 @@
-define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, proj, PoziGeolocate, layers) {
+define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, OpenLayers, proj, PoziGeolocate, layers) {
 
     var PoziMap = function() {
         var defaultZoomLevel = 15;
+
+        this.getCenterInWGS84 = function() {
+            return this.getCenter().transform(proj.webMercator, proj.WGS84);
+        };
+
+        this.setCenterAndZoomToExtent = function(locationInWebMercator, extent) {
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
+            this.setCenter(locationInWebMercator, zoomWithinLimit);
+        };
+
+        this.seekToCurrentLocation = function() {
+            var geolocate = this.getControlsBy("id", "locate-control")[0];
+            if (geolocate.active) {
+              geolocate.getCurrentLocation();
+            } else {
+              geolocate.activate();
+            }
+        };
+
+        this.setSize = function() {
+            $("#map").height($(window).height()-$(".ui-header").first().height()-$(".ui-footer").first().height());
+            $("#map").width($(window).width());
+        };
+
+
+        this.setSize();
 
         OpenLayers.Map.call(this, {
             div: "map",
@@ -22,24 +48,6 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
             ],
             center: new OpenLayers.LonLat(16061608, -4405233)
         });
-
-        this.getCenterInWGS84 = function() {
-            return this.getCenter().transform(proj.webMercator, proj.WGS84);
-        };
-
-        this.setCenterAndZoomToExtent = function(locationInWebMercator, extent) {
-            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), 18);
-            this.setCenter(locationInWebMercator, zoomWithinLimit);
-        };
-
-        this.seekToCurrentLocation = function() {
-            var geolocate = this.getControlsBy("id", "locate-control")[0];
-            if (geolocate.active) {
-              geolocate.getCurrentLocation();
-            } else {
-              geolocate.activate();
-            }
-        };
 
         this.addLayers(layers);
 
@@ -64,13 +72,12 @@ define(["openlayers", "proj", "PoziGeolocate", "layers"], function(OpenLayers, p
         this.events.register('moveend', this, function() { layers.data.getFeaturesAround(this.getCenterInWGS84()); });
 
         this.zoomTo(defaultZoomLevel);
-        
+
         layers.data.getFeaturesAround(this.getCenterInWGS84());
         
     };
 
     PoziMap.prototype = new OpenLayers.Map();
-
     return PoziMap;
 
 });

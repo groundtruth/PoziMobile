@@ -16,9 +16,6 @@ requirejs.config({
 require(["jquery", "jquery.mobile", "PoziMap"], function($, jm, PoziMap) {
 
     $(document).ready(function(){
-        $("#map").height($(window).height()-$(".ui-header").first().height()-$(".ui-footer").first().height());
-        $("#map").width($(window).width());
-        
         window.map = new PoziMap();
  
         $("#zoomOut").click(function() { map.zoomOut(); });
