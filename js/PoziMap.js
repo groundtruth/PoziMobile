@@ -4,14 +4,16 @@ define([
     "openlayers",
     "proj",
     "PoziGeolocate",
-    "layers"
+    "layers",
+    "pages/details"
 ], function(
     JSON,
     $,
     OpenLayers,
     proj,
     PoziGeolocate,
-    layers
+    layers,
+    pageDetails
 ) {
 
     var PoziMap = function() {
@@ -72,7 +74,8 @@ define([
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
-                    alert(JSON.stringify(feature.data));
+                    $("#pageDetails").data("feature", feature);
+                    pageDetails.dataInit();
                     $.mobile.changePage("#pageDetails", { transition: "flip" });
                 }
             })

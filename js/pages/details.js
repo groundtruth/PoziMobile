@@ -1,8 +1,12 @@
 define(["jquery"], function($) {
 
+    var $page = $("#pageDetails");
     var result = {
         init: function() {
-            $("#pageDetails").css("visibility", "visible");
+            $page.css("visibility", "visible");
+        },
+        dataInit: function() {
+            alert(JSON.stringify($page.data("feature").data));
         }
     };
 
