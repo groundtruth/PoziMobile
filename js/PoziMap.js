@@ -28,6 +28,7 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
         };
 
         $(window).resize(function() { that.setSize(); });
+        $(window).orientationchange(function() { that.setSize(); });
         this.setSize();
 
         OpenLayers.Map.call(this, {
