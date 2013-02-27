@@ -2,7 +2,7 @@ define(["jquery"], function($) {
 
     var result = {
         init: function() {
-            $("#pageForm").css("visibility", "visible");
+            $("#pageDetails").css("visibility", "visible");
         }
     };
 

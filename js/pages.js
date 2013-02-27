@@ -1,9 +1,9 @@
-define(["jquery.mobile", "pages/main", "pages/form"], function(jq, main, form) {
+define(["jquery.mobile", "pages/main", "pages/details"], function(jq, main, details) {
 
     return {
         initAll: function() {
             main.init();
-            form.init();
+            details.init();
         }
     };
 

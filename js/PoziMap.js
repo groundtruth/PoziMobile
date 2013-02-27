@@ -58,7 +58,7 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
-                    $.mobile.changePage("#pageForm", { transition: "flip"} );
+                    $.mobile.changePage("#pageDetails", { transition: "flip" });
 
                     // alert("onSelectFeatureFunction is not implemented!");
 
