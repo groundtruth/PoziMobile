@@ -1,4 +1,18 @@
-define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, OpenLayers, proj, PoziGeolocate, layers) {
+define([
+    "json",
+    "jquery",
+    "openlayers",
+    "proj",
+    "PoziGeolocate",
+    "layers"
+], function(
+    JSON,
+    $,
+    OpenLayers,
+    proj,
+    PoziGeolocate,
+    layers
+) {
 
     var PoziMap = function() {
         var defaultZoomLevel = 15;
@@ -58,18 +72,8 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
+                    alert(JSON.stringify(feature.data));
                     $.mobile.changePage("#pageDetails", { transition: "flip" });
-
-                    // alert("onSelectFeatureFunction is not implemented!");
-
-                    // var clickedFeature = feature;
-                    // if (!app.captureUpdateFormPopupPanel) {
-                    //     app.captureUpdateFormPopupPanel = new App.CaptureUpdateFormPopupPanel();
-                    // } else {
-                    //     // Updating the lat / lon values in the existing form
-                    //     app.captureUpdateFormPopupPanel.setFeature(clickedFeature);
-                    // }
-                    // app.captureUpdateFormPopupPanel.show('pop');
                 }
             })
         ]);
