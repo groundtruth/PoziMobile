@@ -57,7 +57,10 @@ define(["jquery", "openlayers", "proj", "PoziGeolocate", "layers"], function($, 
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
-                    alert("onSelectFeatureFunction is not implemented!");
+                    $.mobile.changePage("#pageForm", { transition: "flip"} );
+
+                    // alert("onSelectFeatureFunction is not implemented!");
+
                     // var clickedFeature = feature;
                     // if (!app.captureUpdateFormPopupPanel) {
                     //     app.captureUpdateFormPopupPanel = new App.CaptureUpdateFormPopupPanel();
