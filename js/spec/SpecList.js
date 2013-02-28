@@ -1,0 +1,6 @@
+define(
+  [
+    "spec/buildFieldSpec"
+  ],
+  function() {}
+);
