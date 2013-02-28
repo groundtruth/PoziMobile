@@ -2,7 +2,7 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
 
     describe("buildField", function() {
 
-        var noSpaces = function(str) {
+        var noWhitespace = function(str) {
             return str.replace(/\s+/g,'');
         };
 
@@ -12,8 +12,8 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
                 "id": "yes_no_question",
                 "description": "Yes or no?",
                 "options": [
-                    { "1": "No" },
-                    { "2": "Yes" }
+                    { "value": "1", "label": "No" },
+                    { "value": "2", "label": "Yes" }
                 ]
             };
             var expectedHTML = '\
@@ -26,7 +26,7 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
                 </div>\
             ';
             var result = buildField(inputConfig);
-            expect( noSpaces(result) ).toEqual( noSpaces(expectedHTML) );
+            expect( noWhitespace(result) ).toEqual( noWhitespace(expectedHTML) );
         });
 
     });
