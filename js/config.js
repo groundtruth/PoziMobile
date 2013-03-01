@@ -13,7 +13,7 @@ define(["jquery"], function($) {
         "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
         "centerLon": 15986928,
         "centerLat": -4358362,
-        "POIFields": [
+        "DetailsFields": [
             {
                 "type": "select",
                 "id": "culvert_type",

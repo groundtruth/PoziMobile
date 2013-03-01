@@ -1,4 +1,4 @@
-define(["jquery", "config"], function($, config) {
+define(["jquery", "underscore", "config", "buildField"], function($, _, config, buildField) {
 
     var $page = $("#pageDetails");
     var result = {
@@ -7,6 +7,11 @@ define(["jquery", "config"], function($, config) {
             return this;
         },
         dataInit: function(feature) {
+            var formFields = _(config.DetailsFields).map(function(fieldConf) {
+                return buildField(fieldConf);
+            }).join("\n");
+            $page.find(".content").first().html(formFields).trigger("create");
+
             // http://blog.mrnepal.com/2012/03/21/use-jquery-to-re-populate-form-with-json-data/
             $.each(feature.data, function(name, val){
                 var $el = $page.find('[name="'+name+'"]');
