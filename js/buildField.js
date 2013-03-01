@@ -30,7 +30,7 @@ define(["mustache"], function(Mustache) {
                 template = '<input type="hidden" name="{{ id }}" id="{{ id }}" value="{{ value }}" />';
                 break;
 
-            // default: throw new Error("Invalid field type in form config.");
+            default: throw new Error("Invalid field type in form config.");
         }
         return Mustache.render(template, fieldDef);
     };

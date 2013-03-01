@@ -62,7 +62,9 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
             '));
         });
 
-        // xit("should raise an error if the field type is invalid");
+        it("should throw an error if the field type is invalid", function() {
+            expect(function() { buildField({ "type": "notaninputtype" }); }).toThrow();
+        });
 
     });
 
