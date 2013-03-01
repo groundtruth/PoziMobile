@@ -241,6 +241,11 @@ define(["jquery"], function($) {
                 "type": "hidden",
                 "id": "config",
                 "value": "loddongis"
+            },
+            {
+                "type": "hidden",
+                "id": "id",
+                "value": ""
             }
         ]
     });

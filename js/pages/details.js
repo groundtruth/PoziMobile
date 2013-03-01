@@ -42,8 +42,8 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
                 url: config.updateEndpoint,
                 cache: false, // TODO: What's this?
                 data: $page.find("#detailsForm").serialize(),
-                success: function(e) {alert('success '+e)},
-                error: function(e) {alert('error '+e)}
+                success: function(e) { alert('success '+e) },
+                error: function(e) { alert('error '+e) }
             });
         }
 
