@@ -12,5 +12,4 @@ define(["jquery", "PoziMap"], function($, PoziMap) {
     return result;
 
 });
-  
-
+ 
