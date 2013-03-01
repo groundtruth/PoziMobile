@@ -29,11 +29,22 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             // $page.find('[name="lat"]').first().val() // not needed for update
             // $page.find('[name="lon"]').first().val() // not needed for update
             $page.find('[name="config"]').first().val(config.databaseName);
+            $page.find("input.submit").first().click(this.submitForm);
             return this;
         },
         changeTo: function() {
             $.mobile.changePage($page, { transition: "flip" });
             return this;
+        },
+        submitForm: function() {
+            $.ajax({
+                type: "POST",
+                url: config.updateEndpoint,
+                cache: false, // TODO: What's this?
+                data: $page.find("#detailsForm").serialize(),
+                success: function(e) {alert('success '+e)},
+                error: function(e) {alert('error '+e)}
+            });
         }
 
     };
