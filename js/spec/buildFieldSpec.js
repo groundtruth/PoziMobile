@@ -41,8 +41,27 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
             '));
         });
 
-        // xit("should be able to build a hidden input with a value");
-        // xit("should be able to build a hidden input without a value");
+        it("should be able to build a hidden input with a value", function() {
+            var result = buildField({
+                "type": "hidden",
+                "id": "config",
+                "value": "clientgis"
+            });
+            expect(noWhitespace(result)).toEqual(noWhitespace('\
+                <input type="hidden" name="config" id="config" value="clientgis" />\
+            '));
+        });
+
+        it("should be able to build a hidden input without a value", function() {
+            var result = buildField({
+                "type": "hidden",
+                "id": "config"
+            });
+            expect(noWhitespace(result)).toEqual(noWhitespace('\
+                <input type="hidden" name="config" id="config" value="" />\
+            '));
+        });
+
         // xit("should raise an error if the field type is invalid");
 
     });
