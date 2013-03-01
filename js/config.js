@@ -225,7 +225,8 @@ define(["jquery"], function($) {
             },
             {
                 "type": "textarea",
-                "id": "comments"
+                "id": "comments",
+                "description": "Comments"
             },
             {
                 "type": "hidden",

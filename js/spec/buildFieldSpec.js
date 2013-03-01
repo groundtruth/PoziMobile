@@ -7,7 +7,7 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
         };
 
         it("should be able to build a select input", function() {
-            var inputConfig = {
+            var result = buildField({
                 "type": "select",
                 "id": "yes_no_question",
                 "description": "Yes or no?",
@@ -15,8 +15,8 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
                     { "value": "1", "label": "No" },
                     { "value": "2", "label": "Yes" }
                 ]
-            };
-            var expectedHTML = '\
+            });
+            expect(noWhitespace(result)).toEqual(noWhitespace('\
                 <div data-role="fieldcontain">\
                     <label for="yes_no_question" class="select">Yes or no?:</label>\
                     <select name="yes_no_question" id="yes_no_question">\
@@ -24,10 +24,26 @@ define(["spec/SpecHelper", "buildField"], function(SpecHelper, buildField) {
                         <option value="2">Yes</option>\
                     </select>\
                 </div>\
-            ';
-            var result = buildField(inputConfig);
-            expect( noWhitespace(result) ).toEqual( noWhitespace(expectedHTML) );
+            '));
         });
+
+        it("should be able to build a textarea input", function() {
+            var result = buildField({
+                "type": "textarea",
+                "id": "comments",
+                "description": "Comments"
+            });
+            expect(noWhitespace(result)).toEqual(noWhitespace('\
+                <div data-role="fieldcontain">\
+                    <label for="comments">Comments:</label>\
+                    <textarea name="comments" id="comments"></textarea>\
+                </div>\
+            '));
+        });
+
+        // xit("should be able to build a hidden input with a value");
+        // xit("should be able to build a hidden input without a value");
+        // xit("should raise an error if the field type is invalid");
 
     });
 
