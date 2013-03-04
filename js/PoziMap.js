@@ -49,6 +49,10 @@ define([
         $(window).orientationchange(function() { that.setSize(); });
         this.setSize();
 
+        this.updateData = function() {
+            layers.data.getFeaturesAround(this.getCenterInWGS84());
+        };
+
         OpenLayers.Map.call(this, {
             div: "map",
             theme: null,
@@ -84,12 +88,11 @@ define([
             })
         ]);
 
-        this.events.register('moveend', this, function() { layers.data.getFeaturesAround(this.getCenterInWGS84()); });
+        this.events.register('moveend', this, function() { this.updateData(); });
 
         this.zoomTo(defaultZoomLevel);
 
-        layers.data.getFeaturesAround(this.getCenterInWGS84());
-        
+        this.updateData();
     };
 
     PoziMap.prototype = new OpenLayers.Map();
