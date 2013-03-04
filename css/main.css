@@ -33,8 +33,3 @@ body {
     text-align: center;
 }
 
-#pageDetails header div div:last-child { /* selects a div wrapping the button, inserted by jQM during enhancement */
-    position: absolute;
-    right: 0px;
-}
-
