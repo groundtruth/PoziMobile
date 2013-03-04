@@ -33,3 +33,10 @@ body {
     text-align: center;
 }
 
+#pageDetails header div div div:last-child { /* save button container */
+    width: 10em;
+}
+#deleteButton {
+    background-color: red;
+}
+
