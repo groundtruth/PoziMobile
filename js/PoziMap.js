@@ -39,7 +39,9 @@ define([
         };
 
         this.setSize = function() {
-            $("#map").height($(window).innerHeight()); // bigger than usual visible size accounts for scroll off of URL bar
+            // this height is full window, behind header/footer - allows for scroll off of URL bar on mobile
+            // -1 adjustment so rounding errors don't create a scrollable area
+            $("#map").height($(window).innerHeight() - 1);
             $("#map").width($(window).width());
         };
 
