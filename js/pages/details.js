@@ -7,7 +7,6 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
         }).join("\n");
         $page.find(".content").first().html(formFields).trigger("create");
         $page.find('[name="config"]').first().val(config.databaseName);
-        $page.find("input.submit").first().click(submitForm);
     };
 
     var repopulateForm = function(data) {
@@ -27,10 +26,10 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
         });
     };
 
-    var submitForm = function() {
+    var submitForm = function(endpoint) {
         $.ajax({
             type: "POST",
-            url: config.updateEndpoint,
+            url: endpoint,
             cache: false, // TODO: What's this?
             data: $page.find("#detailsForm").serialize(),
             success: function(e) { alert('success '+e) },
@@ -43,15 +42,17 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             $page.css("visibility", "visible");
             return this;
         },
-        new: function(lon, lat) {
+        new: function(position) {
             initForm();
-            $page.find('[name="lon"]').first().val(lon);
-            $page.find('[name="lat"]').first().val(lat);
+            $page.find('[name="lon"]').first().val(position.lon);
+            $page.find('[name="lat"]').first().val(position.lat);
+            $page.find("input.submit").first().click(function() { submitForm(config.createEndpoint); });
             return this;
         },
         update: function(feature) {
             initForm();
             repopulateForm(feature.data);
+            $page.find("input.submit").first().click(function() { submitForm(config.updateEndpoint); });
             return this;
         },
         changeTo: function() {
