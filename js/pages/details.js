@@ -46,13 +46,13 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
-            $page.find("input.submit").first().off("click").click(function() { submitForm(config.createEndpoint); });
+            $page.find("input.submit").first().off("click").click(function() { submitForm(config.createEndpoint); return false; });
             return this;
         },
         update: function(feature) {
             initForm();
             repopulateForm(feature.data);
-            $page.find("input.submit").first().off("click").click(function() { submitForm(config.updateEndpoint); });
+            $page.find("input.submit").first().off("click").click(function() { submitForm(config.updateEndpoint); return false; });
             return this;
         },
         changeTo: function() {
