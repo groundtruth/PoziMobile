@@ -78,7 +78,7 @@ define([
             new PoziGeolocate(this, layers.currentLocation),
             new OpenLayers.Control.SelectFeature(layers.data, {
                 autoActivate: true,
-                onSelect: function(feature) { pageDetails.dataInit(feature).changeTo(); }
+                onSelect: function(feature) { pageDetails.update(feature).changeTo(); }
             })
         ]);
 
