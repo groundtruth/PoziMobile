@@ -1,6 +1,10 @@
 define(["jquery", "underscore", "config", "buildField"], function($, _, config, buildField) {
     var $page = $("#pageDetails");
 
+    var controlGroup = function(inner) { return '<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">'+inner+'</div>'; }
+    var saveButton = '<input type="button" id="saveButton" data-theme="a" class="submit" value="Save" />';
+    var deleteButton = '<button id="deleteButton" data-theme="a" class="">Delete</button>';
+
     var initForm = function() {
         var formFields = _(config.DetailsFields).map(function(fieldConf) {
             return buildField(fieldConf);
@@ -37,6 +41,19 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
         });
     }
 
+    var doDelete = function() {
+        if (confirm("Are you sure you want to delete this record?")) {
+            $.ajax({
+                type: "DELETE",
+                url: config.deleteEndpoint,
+                cache: false, // TODO: What's this?
+                data: $page.find("#detailsForm").serialize(),
+                success: function(e) { history.back(); },
+                error: function(e) { alert("Could not successfully delete the record."); }
+            });
+        }
+    }
+
     var result = {
         init: function() {
             $page.css("visibility", "visible");
@@ -46,13 +63,18 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
+            $page.find('header [data-role="controlgroup"]').remove();
+            $page.find("header").append(controlGroup(saveButton)).trigger("create");
             $page.find("input.submit").first().off("click").click(function() { submitForm(config.createEndpoint); });
             return this;
         },
         update: function(feature) {
             initForm();
             repopulateForm(feature.data);
+            $page.find('header [data-role="controlgroup"]').remove();
+            $page.find("header").append(controlGroup(deleteButton + saveButton)).trigger("create");
             $page.find("input.submit").first().off("click").click(function() { submitForm(config.updateEndpoint); });
+            $page.find("#deleteButton").off("click").click(function() { doDelete(); return false; });
             return this;
         },
         changeTo: function() {
