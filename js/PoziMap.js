@@ -5,7 +5,9 @@ define([
     "PoziGeolocate",
     "layers",
     "pages/details",
-    "config"
+    "config",
+    "OpenLayers.Control.CacheRead",
+    "OpenLayers.Control.CacheWrite"
 ], function(
     $,
     OpenLayers,
@@ -78,7 +80,6 @@ define([
             center: new OpenLayers.LonLat(config.centerLon, config.centerLat)
         });
 
-        this.addLayers(layers);
 
         this.addControls([
             new PoziGeolocate(this, layers.currentLocation),
@@ -88,8 +89,18 @@ define([
                     this.unselect(feature);
                     pageDetails.update(feature).changeTo();
                 }
-            })
+            }),
+            new OpenLayers.Control.CacheWrite({
+                autoActivate: true,
+                // imageFormat: "image/jpeg", // defaults to image/png
+                eventListeners: {
+                    cachefull: function() { alert("localStorage tile cache is full!"); }
+                }
+            }),
+            new OpenLayers.Control.CacheRead()
         ]);
+
+        this.addLayers(layers);
 
         this.events.register('moveend', this, function() { this.updateData(); });
 

@@ -9,14 +9,18 @@ define([], function() {
             "jquery": "../lib/jquery-1.8.3/jquery-1.8.3.min",
             "jquery.mobile": "../lib/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
             "openlayers": "../lib/openlayers-2.12/OpenLayers.mobile",
-            "mustache": "../lib/mustache-0.7.2/mustache",
+            "OpenLayers.Control.CacheRead": "../lib/openlayers-2.12/OpenLayers.Control.CacheRead",
+            "OpenLayers.Control.CacheWrite": "../lib/openlayers-2.12/OpenLayers.Control.CacheWrite",
+            "mustache": "../lib/mustache-0.7.2/mustache"
             // "json": "../lib/JSON-js/json2"
         },
         shim: {
             "jasmine": { exports: "jasmine" },
             "jasmine-html": { deps: ["jasmine"], exports: "jasmine" },
             "underscore": { exports: "_" },
-            "openlayers": { exports: "OpenLayers" }
+            "openlayers": { exports: "OpenLayers" },
+            "OpenLayers.Control.CacheRead": { deps: ["openlayers"], exports: "OpenLayers" },
+            "OpenLayers.Control.CacheWrite": { deps: ["openlayers"], exports: "OpenLayers" }
             // "json": { exports: "JSON" }
         }
     });
