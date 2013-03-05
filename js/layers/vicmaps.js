@@ -1,5 +1,7 @@
 define(["openlayers"], function(OpenLayers) {
 
+    OpenLayers.ProxyHost = "/geoserver/rest/proxy?url=";
+
     return {
 
         labelClassic: new OpenLayers.Layer.WMS("Labels",
@@ -17,8 +19,8 @@ define(["openlayers"], function(OpenLayers) {
             {
                 isBaseLayer: false,
                 singleTile: true,
-                ratio: 1.5,
-                tileOptions: { crossOriginKeyword: 'anonymous' }
+                ratio: 1.5
+                // tileOptions: { crossOriginKeyword: 'anonymous' }
             }
         ),
 
@@ -34,8 +36,8 @@ define(["openlayers"], function(OpenLayers) {
                 format: 'image/png8'
             },
             {
-                transitionEffect: 'resize',
-                tileOptions: { crossOriginKeyword: 'anonymous' }
+                transitionEffect: 'resize'
+                // tileOptions: { crossOriginKeyword: 'anonymous' }
             }
         )
 
