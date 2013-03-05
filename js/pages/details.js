@@ -34,6 +34,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             success: function(e) { history.back(); },
             error: function(e) { alert("Could not successfully save the record."); }
         });
+        return false;
     }
 
     var doDelete = function() {
@@ -73,7 +74,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
-            initButtons({ save: function() { submitForm(config.createEndpoint); }})
+            initButtons({ save: function() { return submitForm(config.createEndpoint); } })
             return this;
         },
         update: function(feature) {
@@ -81,7 +82,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             repopulateForm(feature.data);
             initButtons({
                 delete: doDelete,
-                save: function() { submitForm(config.updateEndpoint); }
+                save: function() { return submitForm(config.updateEndpoint); }
             });
             return this;
         },
