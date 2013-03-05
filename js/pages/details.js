@@ -2,7 +2,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
     var $page = $("#pageDetails");
 
     var initForm = function() {
-        var formFields = _(config.DetailsFields).map(function(fieldConf) {
+        var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
             return buildField(fieldConf);
         }).join("\n");
         $page.find(".content").first().html(formFields).trigger("create");

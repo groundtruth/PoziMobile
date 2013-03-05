@@ -3,7 +3,27 @@ define(["jquery"], function($) {
     var defaults = {
         "defaultZoomLevel": 15,
         "maxZoom": 18,
-        "featuresLimit": 20
+        "featuresLimit": 20,
+        "genericDetailsFields": [
+            {
+                "type": "hidden",
+                "id": "lat"
+            },
+            {
+                "type": "hidden",
+                "id": "lon"
+            },
+            {
+                "type": "hidden",
+                "id": "config",
+                "value": "loddongis"
+            },
+            {
+                "type": "hidden",
+                "id": "id",
+                "value": ""
+            }
+        ]
     };
 
     return $.extend(defaults, {
@@ -16,7 +36,7 @@ define(["jquery"], function($) {
         "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
         "centerLon": 15986928,
         "centerLat": -4358362,
-        "DetailsFields": [
+        "detailsFields": [
             {
                 "type": "select",
                 "id": "culvert_type",
@@ -230,24 +250,6 @@ define(["jquery"], function($) {
                 "type": "textarea",
                 "id": "comments",
                 "description": "Comments"
-            },
-            {
-                "type": "hidden",
-                "id": "lat"
-            },
-            {
-                "type": "hidden",
-                "id": "lon"
-            },
-            {
-                "type": "hidden",
-                "id": "config",
-                "value": "loddongis"
-            },
-            {
-                "type": "hidden",
-                "id": "id",
-                "value": ""
             }
         ]
     });
