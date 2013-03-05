@@ -13,10 +13,10 @@ define([
     var layers = [
         vicmaps.labelClassic,
         vicmaps.classic,
-        bings.road,
-        bings.aerial,
-        bings.aerialWithLabels,
-        new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
+        // bings.road,
+        // bings.aerial,
+        // bings.aerialWithLabels,
+        // new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
         currentLocation,
         data
     ];
