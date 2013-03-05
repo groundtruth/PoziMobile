@@ -17,7 +17,8 @@ define(["openlayers"], function(OpenLayers) {
             {
                 isBaseLayer: false,
                 singleTile: true,
-                ratio: 1.5
+                ratio: 1.5,
+                tileOptions: { crossOriginKeyword: 'anonymous' }
             }
         ),
 
@@ -32,7 +33,10 @@ define(["openlayers"], function(OpenLayers) {
                 layers: 'VicmapClassic',
                 format: 'image/png8'
             },
-            { transitionEffect: 'resize' }
+            {
+                transitionEffect: 'resize',
+                tileOptions: { crossOriginKeyword: 'anonymous' }
+            }
         )
 
     };
