@@ -34,7 +34,6 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
         $.ajax({
             type: "POST",
             url: endpoint,
-            cache: false, // TODO: What's this?
             data: $page.find("#detailsForm").serialize(),
             success: function(e) { history.back(); },
             error: function(e) { alert("Could not successfully save the record."); }
@@ -44,9 +43,8 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
     var doDelete = function() {
         if (confirm("Are you sure you want to delete this record?")) {
             $.ajax({
-                type: "DELETE",
+                type: "POST", // TODO: this should become a DELETE action when the server-side stuff is redone
                 url: config.deleteEndpoint,
-                cache: false, // TODO: What's this?
                 data: $page.find("#detailsForm").serialize(),
                 success: function(e) { history.back(); },
                 error: function(e) { alert("Could not successfully delete the record."); }
