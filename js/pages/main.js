@@ -4,6 +4,7 @@ define(["jquery", "PoziMap", "proj", "pages/details"], function($, PoziMap, proj
     var result = {
         init: function() {
             window.map = new PoziMap();
+            $("#toSyncButton").closest("div").hide();
             $page.on("pagebeforeshow", function() { map.updateData(); });
             $("#zoomOut").click(function() { map.zoomOut(); });
             $("#seekToCurrentLocation").click(function() { map.seekToCurrentLocation(); });
