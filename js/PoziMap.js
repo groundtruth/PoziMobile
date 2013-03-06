@@ -5,9 +5,7 @@ define([
     "PoziGeolocate",
     "layers",
     "pages/details",
-    "config",
-    "OpenLayers.Control.CacheRead",
-    "OpenLayers.Control.CacheWrite"
+    "config"
 ], function(
     $,
     OpenLayers,
