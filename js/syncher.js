@@ -4,7 +4,7 @@ define(["jquery", "config"], function(jquery, config) {
         $.ajax({
             type: "POST",
             url: endpoint,
-            data: formdata.serialize(),
+            data: formdata,
             success: function(e) { history.back(); },
             error: function(e) { alert("Could not successfully save the record."); }
         });
