@@ -1,6 +1,7 @@
 define(
   [
-    "spec/buildFieldSpec"
+    "spec/buildFieldSpec",
+    "spec/syncherSpec"
   ],
   function() {}
 );

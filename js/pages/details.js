@@ -26,30 +26,6 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
         });
     };
 
-    var submitForm = function(endpoint) {
-        $.ajax({
-            type: "POST",
-            url: endpoint,
-            data: $page.find("#detailsForm").serialize(),
-            success: function(e) { history.back(); },
-            error: function(e) { alert("Could not successfully save the record."); }
-        });
-        return false;
-    }
-
-    var doDelete = function() {
-        if (confirm("Are you sure you want to delete this record?")) {
-            $.ajax({
-                type: "POST", // TODO: this should become a DELETE action when the server-side stuff is redone
-                url: config.deleteEndpoint,
-                data: $page.find("#detailsForm").serialize(),
-                success: function(e) { history.back(); },
-                error: function(e) { alert("Could not successfully delete the record."); }
-            });
-        }
-        return false;
-    }
-
     var initButtons = function(buttonsToActions) {
         var buttons = {
             save: '<input type="button" id="saveButton" data-theme="a" class="submit" value="Save" />',
@@ -74,15 +50,19 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
-            initButtons({ save: function() { return submitForm(config.createEndpoint); } })
+            initButtons({ save: function() { return syncer.doCreate($page.find("#detailsForm").serialize()); } })
             return this;
         },
         update: function(feature) {
             initForm();
             repopulateForm(feature.data);
             initButtons({
-                delete: doDelete,
-                save: function() { return submitForm(config.updateEndpoint); }
+                delete: function() {
+                    if (confirm("Are you sure you want to delete this record?")) {
+                        syncer.doDelete($page.find("#detailsForm").serialize());
+                    }
+                },
+                save: function() { return syncer.doUpdate($page.find("#detailsForm").serialize()); }
             });
             return this;
         },
