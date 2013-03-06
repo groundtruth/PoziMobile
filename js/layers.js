@@ -11,7 +11,7 @@ define([
 ) {
 
     var layers = [
-        vicmaps.labelClassic,
+        // vicmaps.labelClassic,
         vicmaps.classic,
         // bings.road,
         // bings.aerial,
