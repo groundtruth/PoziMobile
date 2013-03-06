@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "config", "buildField"], function($, _, config, buildField) {
+define(["jquery", "underscore", "config", "buildField", "syncher"], function($, _, config, buildField, syncher) {
     var $page = $("#pageDetails");
 
     var initForm = function() {
@@ -50,7 +50,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
-            initButtons({ save: function() { return syncer.doCreate($page.find("#detailsForm").serialize()); } })
+            initButtons({ save: function() { return syncher.doCreate($page.find("#detailsForm").serialize()); } })
             return this;
         },
         update: function(feature) {
@@ -59,10 +59,10 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
             initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
-                        syncer.doDelete($page.find("#detailsForm").serialize());
+                        syncher.doDelete($page.find("#detailsForm").serialize());
                     }
                 },
-                save: function() { return syncer.doUpdate($page.find("#detailsForm").serialize()); }
+                save: function() { return syncher.doUpdate($page.find("#detailsForm").serialize()); }
             });
             return this;
         },
