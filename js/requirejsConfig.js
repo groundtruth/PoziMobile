@@ -8,8 +8,8 @@ define([], function() {
             "underscore": "../lib/underscore-1.4.3/underscore",
             "jquery": "../lib/jquery-1.8.3/jquery-1.8.3.min",
             "jquery.mobile": "../lib/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
-            "openlayers": "../lib/openlayers-2.12/OpenLayers",
-            "mustache": "../lib/mustache-0.7.2/mustache"
+            "openlayers": "../lib/openlayers-2.12/OpenLayers.mobile",
+            "mustache": "../lib/mustache-0.7.2/mustache",
             // "json": "../lib/JSON-js/json2"
         },
         shim: {
