@@ -33,7 +33,8 @@ function init() {
                     format: 'image/png8'
                 },
                 {
-                    transitionEffect: 'resize'
+                    transitionEffect: 'resize',
+                    eventListeners: { tileloaded: updateStatus }
                     // tileOptions: { crossOriginKeyword: 'anonymous' }
                 }
             )
