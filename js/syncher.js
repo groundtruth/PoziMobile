@@ -1,11 +1,11 @@
 define(["jquery", "config"], function(jquery, config) {
 
-    var submitForm = function(formdata, endpoint) {
+    var submitForm = function(data, endpoint) {
         $.ajax({
             type: "POST",
             url: endpoint,
-            data: formdata,
-            success: function(e) { history.back(); },
+            data: data,
+            // success: function(e) { history.back(); },
             error: function(e) { alert("Could not successfully save the record."); }
         });
         return false;
@@ -13,23 +13,25 @@ define(["jquery", "config"], function(jquery, config) {
 
     return {
 
-        doUpdate: function(formdata) {
-            submitForm(formdata, config.updateEndpoint);
+        doUpdate: function(opts) {
+            submitForm(opts.data, config.updateEndpoint);
+            opts.after();
         },
 
-        doCreate: function(formdata) {
-            submitForm(formdata, config.createEndpoint);
+        doCreate: function(opts) {
+            submitForm(opts.data, config.createEndpoint);
+            opts.after();
         },
 
-        doDelete: function(formdata) {
+        doDelete: function(opts) {
             $.ajax({
                 type: "POST", // TODO: this should become a DELETE action when the server-side stuff is redone
                 url: config.deleteEndpoint,
-                data: formdata,
-                success: function(e) { history.back(); },
+                data: opts.data,
+                // success: function(e) { history.back(); },
                 error: function(e) { alert("Could not successfully delete the record."); }
             });
-            return false;
+            opts.after();
         }
 
     };

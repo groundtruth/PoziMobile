@@ -40,6 +40,10 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
         $page.find("#deleteButton").off("click").click(buttonsToActions["delete"]);
     };
 
+    var afterHandler = function() {
+        alert("Your changes will be saved later.");
+        history.back();
+    }
 
     var result = {
         init: function() {
@@ -50,7 +54,12 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
             initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
-            initButtons({ save: function() { return syncher.doCreate($page.find("#detailsForm").serialize()); } })
+            initButtons({
+                save: function() {
+                    syncher.doCreate({ data: $page.find("#detailsForm").serialize(), after: afterHandler });
+                    return false;
+                }
+            });
             return this;
         },
         update: function(feature) {
@@ -59,10 +68,14 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
             initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
-                        syncher.doDelete($page.find("#detailsForm").serialize());
+                        syncher.doDelete({ data: $page.find("#detailsForm").serialize(), after: afterHandler });
                     }
+                    return false;
                 },
-                save: function() { return syncher.doUpdate($page.find("#detailsForm").serialize()); }
+                save: function() {
+                    syncher.doUpdate({ data: $page.find("#detailsForm").serialize(), after: afterHandler });
+                    return false;
+                }
             });
             return this;
         },
