@@ -29,10 +29,13 @@ define(["jquery", "config"], function($, config) {
             if (requestCount > 0) { icon = "pm-spinner"; }
             else if (queue.length === 0) { icon = "check"; }
             else { icon = "refresh"; }
-            mainPage.setSyncButton(icon, queue.length + requestCount);
-            if (requestCount === 0 && queue.length === 0) {
-               mainPage.updateData();
-            }
+
+            var count = queue.length + requestCount;
+            var label = count === 0 ? "&nbsp;" : count;
+
+            mainPage.setSyncButton(icon, label);
+
+            if (requestCount === 0 && queue.length === 0) { mainPage.updateData(); }
         };
 
         this.persist = function(action, data) {

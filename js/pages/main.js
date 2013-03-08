@@ -8,7 +8,7 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
             syncher = opts.syncher;
             window.map = new PoziMap();
             $page.on("pagebeforeshow", function() { map.updateData(); });
-            this.setSyncButton("check", 0);
+            this.setSyncButton("check", "&nbsp;");
             $("#syncButton").live("click", function() { syncher.processQueue(true); });
             $("#zoomOut").click(function() { map.zoomOut(); });
             $("#seekToCurrentLocation").click(function() { map.seekToCurrentLocation(); });
