@@ -1,35 +1,38 @@
 define(["jquery", "config"], function($, config) {
 
-    return function(pageWithButton) {
+    return function(mainPage) {
 
         var queue = [];
         var requestCount = 0;
 
         var doSync = function(item) {
             requestCount++;
-            updateSyncButton();
+            updateInterface();
             $.ajax({
                 type: "POST", // TODO: use different verbs when server side is re-done
                 url: config[item.action+"Endpoint"],
                 data: item.data,
                 success: function(e) {
                     requestCount--;
-                    updateSyncButton();
+                    updateInterface();
                 },
                 error: function(e) {
                     queue.push(item);
                     requestCount--;
-                    updateSyncButton();
+                    updateInterface();
                 }
             });
         };
 
-        var updateSyncButton = function() {
+        var updateInterface = function() {
             var icon;
             if (requestCount > 0) { icon = "pm-spinner"; }
             else if (queue.length === 0) { icon = "check"; }
             else { icon = "refresh"; }
-            pageWithButton.setSyncButton(icon, queue.length);
+            mainPage.setSyncButton(icon, queue.length);
+            if (requestCount === 0 && queue.length === 0) {
+               mainPage.updateData();
+            }
         };
 
         this.persist = function(action, data) {
@@ -41,8 +44,9 @@ define(["jquery", "config"], function($, config) {
             var item;
             if (manual && queue.length === 0) {
                 alert("There are no unsynchronised changes.");
+            } else {
+                while (item = queue.shift()) { doSync(item); }
             }
-            while (item = queue.shift()) { doSync(item); }
         };
 
 

@@ -20,7 +20,10 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
             var newButton = '<button id="syncButton" class="ui-btn-left" data-icon="'+icon+'">'+number+'</button>';
             $("#syncButton").closest("div").remove();
             $page.find("header").prepend(newButton).trigger("create");
-        }
+        },
+
+        updateData: function() { map.updateData(); }
+
     };
 
     return result;
