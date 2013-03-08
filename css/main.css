@@ -40,3 +40,8 @@ body {
     background-color: red;
 }
 
+.ui-icon-pm-spinner {
+    background-image: url(../img/ajax-loader.gif);
+    background-size: 18px 18px;
+}
+
