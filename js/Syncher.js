@@ -1,6 +1,6 @@
 define(["jquery", "config"], function($, config) {
 
-    return function(mainPage) {
+    return function(pages) {
 
         var queue = [];
         var requestCount = 0;
@@ -33,9 +33,9 @@ define(["jquery", "config"], function($, config) {
             var count = queue.length + requestCount;
             var label = count === 0 ? "&nbsp;" : count;
 
-            mainPage.setSyncButton(icon, label);
+            pages.setSyncButton(icon, label);
 
-            if (requestCount === 0 && queue.length === 0) { mainPage.updateData(); }
+            if (requestCount === 0 && queue.length === 0) { pages.updateData(); }
         };
 
         this.persist = function(action, data) {
