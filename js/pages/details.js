@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "config", "buildField", "syncher"], function($, _, config, buildField, syncher) {
+define(["jquery", "underscore", "config", "buildField"], function($, _, config, buildField) {
     var $page = $("#pageDetails");
 
     var initForm = function() {
@@ -40,8 +40,11 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
         $page.find("#deleteButton").off("click").click(buttonsToActions["delete"]);
     };
 
+    var syncher;
+
     var result = {
-        init: function() {
+        init: function(givenSyncher) {
+            syncher = givenSyncher;
             $page.css("visibility", "visible");
             return this;
         },

@@ -1,8 +1,10 @@
-define(["jquery", "PoziMap", "proj", "pages/details"], function($, PoziMap, proj, details) {
+define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
+    var details;
     var $page = $("#pageMain");
 
     var result = {
-        init: function() {
+        init: function(detailsPage) {
+            details = detailsPage;
             window.map = new PoziMap();
             $page.on("pagebeforeshow", function() { map.updateData(); });
             $("#zoomOut").click(function() { map.zoomOut(); });
