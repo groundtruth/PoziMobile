@@ -5,11 +5,6 @@ define(["jquery", "config"], function($, config) {
         var queue = [];
         var requestCount = 0;
 
-        var processQueue = function() {
-            var item;
-            while (item = queue.shift()) { doSync(item); }
-        };
-
         var doSync = function(item) {
             requestCount++;
             updateSyncButton();
@@ -39,8 +34,17 @@ define(["jquery", "config"], function($, config) {
 
         this.persist = function(action, data) {
             queue.push({ action: action, data: data });
-            processQueue();
+            this.processQueue();
         };
+
+        this.processQueue = function(manual) {
+            var item;
+            if (manual && queue.length === 0) {
+                alert("There are no unsynchronised changes.");
+            }
+            while (item = queue.shift()) { doSync(item); }
+        };
+
 
     };
 

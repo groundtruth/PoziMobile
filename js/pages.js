@@ -2,8 +2,8 @@ define(["jquery.mobile", "pages/main", "pages/details", "Syncher"], function(jq,
 
     return {
         initAll: function() {
-            main.init(details);
             var syncher = new Syncher(main);
+            main.init({ details: details, syncher: syncher });
             details.init(syncher);
         }
     };

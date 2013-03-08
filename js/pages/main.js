@@ -1,13 +1,15 @@
 define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
-    var details;
+    var details, syncher;
     var $page = $("#pageMain");
 
     var result = {
-        init: function(detailsPage) {
-            details = detailsPage;
-            this.setSyncButton("check", 0);
+        init: function(opts) {
+            details = opts.details;
+            syncher = opts.syncher;
             window.map = new PoziMap();
             $page.on("pagebeforeshow", function() { map.updateData(); });
+            this.setSyncButton("check", 0);
+            $("#syncButton").live("click", function() { syncher.processQueue(true); });
             $("#zoomOut").click(function() { map.zoomOut(); });
             $("#seekToCurrentLocation").click(function() { map.seekToCurrentLocation(); });
             $("#zoomIn").click(function() { map.zoomIn(); });
