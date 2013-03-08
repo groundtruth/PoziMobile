@@ -5,6 +5,7 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
     var result = {
         init: function(detailsPage) {
             details = detailsPage;
+            this.setSyncButton("check", 0);
             window.map = new PoziMap();
             $page.on("pagebeforeshow", function() { map.updateData(); });
             $("#zoomOut").click(function() { map.zoomOut(); });
