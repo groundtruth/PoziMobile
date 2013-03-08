@@ -29,7 +29,7 @@ define(["jquery", "config"], function($, config) {
             if (requestCount > 0) { icon = "pm-spinner"; }
             else if (queue.length === 0) { icon = "check"; }
             else { icon = "refresh"; }
-            mainPage.setSyncButton(icon, queue.length);
+            mainPage.setSyncButton(icon, queue.length + requestCount);
             if (requestCount === 0 && queue.length === 0) {
                mainPage.updateData();
             }
