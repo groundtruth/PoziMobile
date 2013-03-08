@@ -2,6 +2,7 @@ define(["openlayers"], function(OpenLayers) {
 
     var currentLocationLayer = new OpenLayers.Layer.Vector("Current location", {});
 
+    currentLocationLayer.clearLocationMarker = function() { this.removeAllFeatures(); }
     currentLocationLayer.setLocationFeatures = function(point, accuracy) {
 
         this.removeAllFeatures();

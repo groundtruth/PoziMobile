@@ -31,6 +31,7 @@ define([
 
         this.seekToCurrentLocation = function() {
             var geolocate = this.getControlsBy("id", "locate-control")[0];
+            layers.currentLocation.clearLocationMarker();
             if (geolocate.active) {
               geolocate.getCurrentLocation();
             } else {
