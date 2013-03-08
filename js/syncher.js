@@ -1,37 +1,45 @@
-define(["jquery", "config"], function(jquery, config) {
+define(["jquery", "config", "pages/main"], function($, config, m) {
 
-    var submitForm = function(data, endpoint) {
+    var queue = [];
+    var requestCount = 0;
+
+    var processQueue = function() {
+        var item;
+        while (item = queue.shift()) { doSync(item); }
+    };
+
+    var doSync = function(item) {
+        requestCount++;
+        updateSyncButton();
         $.ajax({
-            type: "POST",
-            url: endpoint,
-            data: data,
-            // success: function(e) { history.back(); },
-            error: function(e) { alert("Could not successfully save the record."); }
+            type: "POST", // TODO: use different verbs when server side is re-done
+            url: config[item.action+"Endpoint"],
+            data: item.data,
+            success: function(e) {
+                requestCount--;
+                updateSyncButton();
+            },
+            error: function(e) {
+                queue.push(item);
+                requestCount--;
+                updateSyncButton();
+            }
         });
-        return false;
+    };
+
+    var updateSyncButton = function() {
+        var icon;
+        if (requestCount > 0) { icon = "pm-spinner"; }
+        else if (queue.length === 0) { icon = "check"; }
+        else { icon = "refresh"; }
+        main.setSyncButton(icon, queue.length);
     };
 
     return {
 
-        doUpdate: function(opts) {
-            submitForm(opts.data, config.updateEndpoint);
-            opts.after();
-        },
-
-        doCreate: function(opts) {
-            submitForm(opts.data, config.createEndpoint);
-            opts.after();
-        },
-
-        doDelete: function(opts) {
-            $.ajax({
-                type: "POST", // TODO: this should become a DELETE action when the server-side stuff is redone
-                url: config.deleteEndpoint,
-                data: opts.data,
-                // success: function(e) { history.back(); },
-                error: function(e) { alert("Could not successfully delete the record."); }
-            });
-            opts.after();
+        persist: function(action, data) {
+            queue.push({ action: action, data: data });
+            processQueue();
         }
 
     };

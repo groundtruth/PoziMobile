@@ -40,11 +40,6 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
         $page.find("#deleteButton").off("click").click(buttonsToActions["delete"]);
     };
 
-    var afterHandler = function() {
-        alert("Your changes will be saved later.");
-        history.back();
-    }
-
     var result = {
         init: function() {
             $page.css("visibility", "visible");
@@ -56,7 +51,8 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
             $page.find('[name="lat"]').first().val(position.lat);
             initButtons({
                 save: function() {
-                    syncher.doCreate({ data: $page.find("#detailsForm").serialize(), after: afterHandler });
+                    history.back();
+                    syncher.persist("create", $page.find("#detailsForm").serialize());
                     return false;
                 }
             });
@@ -68,12 +64,14 @@ define(["jquery", "underscore", "config", "buildField", "syncher"], function($, 
             initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
-                        syncher.doDelete({ data: $page.find("#detailsForm").serialize(), after: afterHandler });
+                        history.back();
+                        syncher.persist("delete", $page.find("#detailsForm").serialize());
                     }
                     return false;
                 },
                 save: function() {
-                    syncher.doUpdate({ data: $page.find("#detailsForm").serialize(), after: afterHandler });
+                    history.back();
+                    syncher.persist("update", $page.find("#detailsForm").serialize());
                     return false;
                 }
             });
