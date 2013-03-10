@@ -4,7 +4,6 @@ define([
     "proj",
     "PoziGeolocate",
     "layers",
-    "pages/Details",
     "config"
 ], function(
     $,
@@ -12,11 +11,10 @@ define([
     proj,
     PoziGeolocate,
     layers,
-    pageDetails,
     config
 ) {
 
-    var PoziMap = function() {
+    var PoziMap = function(detailsPage) {
         var defaultZoomLevel = config.defaultZoomLevel;
         var that = this;
 
@@ -87,7 +85,7 @@ define([
                 autoActivate: true,
                 onSelect: function(feature) {
                     this.unselect(feature);
-                    pageDetails.update(feature).changeTo();
+                    detailsPage.update(feature).changeTo();
                 }
             })
         ]);
