@@ -80,7 +80,7 @@ define([
         this.addLayers(layers);
 
         this.addControls([
-            PoziGeolocate.doNew(this, layers.currentLocation),
+            PoziGeolocate.doNew(layers.currentLocation),
             OpenLayers.Control.SelectFeature.doNew(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
