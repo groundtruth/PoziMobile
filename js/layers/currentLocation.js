@@ -2,11 +2,11 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
 
     var currentLocationLayer = OpenLayers.Layer.Vector.doNew("Current location", {});
 
-    currentLocationLayer.clearLocationMarker = function() { this.removeAllFeatures(); };
+    currentLocationLayer.clearLocationMarker = function() { this.destroyFeatures(); };
     currentLocationLayer.setLocation = function(pointInWGS84, accuracy) {
 
 
-        this.removeAllFeatures();
+        this.destroyFeatures();
         this.addFeatures([
             OpenLayers.Feature.Vector.doNew(
                 pointInWGS84,
@@ -22,7 +22,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             OpenLayers.Feature.Vector.doNew(
                 OpenLayers.Geometry.Polygon.createRegularPolygon(
                     OpenLayers.Geometry.Point.doNew(pointInWGS84.x, pointInWGS84.y),
-                    accuracy / 2,
+                    accuracy,
                     50,
                     0
                 ),
