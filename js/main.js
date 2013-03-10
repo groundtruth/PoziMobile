@@ -1,5 +1,5 @@
 require(["requirejsConfig"], function() {
-    require(["jquery", "Pages"], function($, Pages) {
+    require(["jquery", "jquery.mobile", "Pages"], function($, jqm, Pages) {
         $(document).ready(function(){ new Pages(); });
     });
 });

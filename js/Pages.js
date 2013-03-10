@@ -1,4 +1,4 @@
-define(["jquery.mobile", "pages/Main", "pages/details", "Syncher"], function(jq, Main, Details, Syncher) {
+define(["pages/Main", "pages/Details", "Syncher"], function(Main, Details, Syncher) {
 
     return function() {
 

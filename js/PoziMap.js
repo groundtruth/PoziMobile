@@ -4,7 +4,7 @@ define([
     "proj",
     "PoziGeolocate",
     "layers",
-    "pages/details",
+    "pages/Details",
     "config"
 ], function(
     $,
