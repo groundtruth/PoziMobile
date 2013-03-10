@@ -9,7 +9,8 @@ PoziMobile depends on some small web services to handle server-side persistence.
 ## Deployment
 
 This repository should be served as static files from the same webserver that
-hosts the web services.
+hosts the web services. Running `./deploy.sh` should redeploy the last version
+pushed to GitHub.
 
 ## Run the unit tests
 
