@@ -15,7 +15,7 @@ hosts the web services.
 
 Just open `SpecRunner.html` (via a web server).
 
-# Check code coverage
+## Check code coverage
 
 To check code coverage, install [JSCoverage](http://siliconforks.com/jscoverage/manual.html)
 (e.g. `brew update && brew install jscoverage`) and run `./coverage.sh`.
