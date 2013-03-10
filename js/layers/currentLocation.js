@@ -1,13 +1,13 @@
 define(["openlayers"], function(OpenLayers) {
 
-    var currentLocationLayer = new OpenLayers.Layer.Vector("Current location", {});
+    var currentLocationLayer = OpenLayers.Layer.Vector.doNew("Current location", {});
 
     currentLocationLayer.clearLocationMarker = function() { this.removeAllFeatures(); }
     currentLocationLayer.setLocationFeatures = function(point, accuracy) {
 
         this.removeAllFeatures();
         this.addFeatures([
-            new OpenLayers.Feature.Vector(
+            OpenLayers.Feature.Vector.doNew(
                 point,
                 {},
                 {
@@ -18,9 +18,9 @@ define(["openlayers"], function(OpenLayers) {
                     pointRadius: 10
                 }
             ),
-            new OpenLayers.Feature.Vector(
+            OpenLayers.Feature.Vector.doNew(
                 OpenLayers.Geometry.Polygon.createRegularPolygon(
-                    new OpenLayers.Geometry.Point(point.x, point.y),
+                    OpenLayers.Geometry.Point.doNew(point.x, point.y),
                     accuracy / 2,
                     50,
                     0

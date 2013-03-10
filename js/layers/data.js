@@ -2,8 +2,8 @@ define(["jquery", "openlayers", "config"], function($, OpenLayers, config) {
 
     // The style hardcodes the correspondance between a status code and the external graphic name
     // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
-    var layer = new OpenLayers.Layer.Vector(config.dataLayerName, {
-        styleMap: new OpenLayers.StyleMap({
+    var layer = OpenLayers.Layer.Vector.doNew(config.dataLayerName, {
+        styleMap: OpenLayers.StyleMap.doNew({
             externalGraphic: "img/mobile-loc-1.png",
             graphicOpacity: 1.0,
             graphicWith: 16,
@@ -14,7 +14,7 @@ define(["jquery", "openlayers", "config"], function($, OpenLayers, config) {
 
     layer.getFeaturesAround = function(pointInWGS84) {
 
-        var reader = new OpenLayers.Format.GeoJSON();
+        var reader = OpenLayers.Format.GeoJSON.doNew();
 
         $.getJSON(
             config.readEndpoint,

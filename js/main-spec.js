@@ -4,7 +4,7 @@ require(["requirejsConfig"], function() {
         var jasmineEnv = jasmine.getEnv();
         jasmineEnv.updateInterval = 250;
 
-        var htmlReporter = new jasmine.HtmlReporter();
+        var htmlReporter = jasmine.HtmlReporter.doNew();
 
         jasmineEnv.addReporter(htmlReporter);
 

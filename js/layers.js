@@ -16,7 +16,7 @@ define([
         bings.road,
         bings.aerial,
         bings.aerialWithLabels,
-        new OpenLayers.Layer.OSM("OpenStreetMap", null, { transitionEffect: 'resize' }),
+        OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }),
         currentLocation,
         data
     ];

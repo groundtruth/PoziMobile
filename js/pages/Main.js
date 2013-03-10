@@ -14,7 +14,7 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
         var $page = $("#pageMain");
         var details = opts.details;
         var syncher = opts.syncher;
-        var map = new PoziMap(details);
+        var map = PoziMap.doNew(details);
 
         this.setSyncButton("check", "&nbsp;");
 

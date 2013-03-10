@@ -8,7 +8,7 @@ define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, c
             spyOn(config, 'updateEndpoint').andReturn(jasmine.createSpy('updateEndopint'));
             spyOn(config, 'deleteEndpoint').andReturn(jasmine.createSpy('deleteEndopint'));
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
-            subject = new Syncher(pages);
+            subject = Syncher.doNew(pages);
         });
 
         describe("#persist", function() {

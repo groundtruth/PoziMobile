@@ -59,29 +59,29 @@ define([
             units: "m",
             numZoomLevels: 20,
             maxResolution: 156543.0339,
-            maxExtent: new OpenLayers.Bounds(
+            maxExtent: OpenLayers.Bounds.doNew(
                 config.maxExtentBounds[0],
                 config.maxExtentBounds[1],
                 config.maxExtentBounds[2],
                 config.maxExtentBounds[3]
             ),
             controls: [
-                new OpenLayers.Control.Attribution(),
-                new OpenLayers.Control.TouchNavigation({
+                OpenLayers.Control.Attribution.doNew(),
+                OpenLayers.Control.TouchNavigation.doNew({
                     dragPanOptions: {
                         interval: 100,
                         enableKinetic: true
                     }
                 })
             ],
-            center: new OpenLayers.LonLat(config.centerLon, config.centerLat)
+            center: OpenLayers.LonLat.doNew(config.centerLon, config.centerLat)
         });
 
         this.addLayers(layers);
 
         this.addControls([
-            new PoziGeolocate(this, layers.currentLocation),
-            new OpenLayers.Control.SelectFeature(layers.data, {
+            PoziGeolocate.doNew(this, layers.currentLocation),
+            OpenLayers.Control.SelectFeature.doNew(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
                     this.unselect(feature);
@@ -97,7 +97,7 @@ define([
         this.updateData();
     };
 
-    PoziMap.prototype = new OpenLayers.Map();
+    PoziMap.prototype = OpenLayers.Map.doNew();
     return PoziMap;
 
 });

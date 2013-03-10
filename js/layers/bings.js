@@ -5,21 +5,21 @@ define(["openlayers"], function(OpenLayers) {
 
     return {
 
-        road: new OpenLayers.Layer.Bing({
+        road: OpenLayers.Layer.Bing.doNew({
             key: apiKey,
             type: "Road",
             name: "Bing Road",
             transitionEffect: 'resize'
         }),
 
-        aerial: new OpenLayers.Layer.Bing({
+        aerial: OpenLayers.Layer.Bing.doNew({
             key: apiKey,
             type: "Aerial",
             name: "Bing Aerial",
             transitionEffect: 'resize'
         }),
 
-        aerialWithLabels: new OpenLayers.Layer.Bing({
+        aerialWithLabels: OpenLayers.Layer.Bing.doNew({
             key: apiKey,
             type: "AerialWithLabels",
             name: "Bing Aerial + Labels",

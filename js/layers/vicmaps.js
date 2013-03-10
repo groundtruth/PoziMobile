@@ -2,7 +2,7 @@ define(["openlayers"], function(OpenLayers) {
 
     return {
 
-        labelClassic: new OpenLayers.Layer.WMS("Labels",
+        labelClassic: OpenLayers.Layer.WMS.doNew("Labels",
             [
                 "http://m1.pozi.com/geoserver/wms",
                 "http://m2.pozi.com/geoserver/wms",
@@ -21,7 +21,7 @@ define(["openlayers"], function(OpenLayers) {
             }
         ),
 
-        classic: new OpenLayers.Layer.WMS("Vicmap Classic",
+        classic: OpenLayers.Layer.WMS.doNew("Vicmap Classic",
             [
                 "http://m1.pozi.com/geoserver/gwc/service/wms",
                 "http://m2.pozi.com/geoserver/gwc/service/wms",
