@@ -67,7 +67,7 @@ define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, c
                     expect(pages.setSyncButton.mostRecentCall.args[1]).toEqual(1);
                 });
 
-                it("should show a retry icon when there are pending, non-active changes", function() {
+                it("should show a retry icon when there are waiting (non-active) changes", function() {
                     expect(pages.setSyncButton.mostRecentCall.args[0]).toEqual('refresh');
                 });
 
@@ -90,42 +90,47 @@ define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, c
 
             });
 
+            describe("with an active change", function() {
+
+                xit("should try the new change immediately (not just add and wait for ac)", function() {
+                    spyOn($, 'ajax');
+                    subject.persist("delete", jasmine.createSpy("formData"));
+                    expect($.ajax.callCount).toEqual(1); // first request made but not returned
+                    subject.persist("update", jasmine.createSpy("formData"));
+                    expect($.ajax.callCount).toEqual(2); // second request
+                });
+
+            });
+
         }); // #persist
 
         describe("#processQueue", function() {
 
-            describe("with a pending change", function() {
-                var handler;
+            describe("with one change waiting, one change active", function() {
+                var handlers;
 
                 beforeEach(function() {
+                    handlers = [];
                     spyOn(window, 'alert');
                     spyOn($, 'ajax').andCallFake(function(req) {
-                        handler = { success: req.success, error: req.error };
+                        handlers.push({ success: req.success, error: req.error });
                     });
 
                     subject.persist("delete", jasmine.createSpy("formData"));
-
-                    expect($.ajax.callCount).toEqual(1);
-                });
-
-                it("should do nothing if there is already (still) an active request", function() {
-                    subject.processQueue();
-
-                    expect($.ajax.callCount).toEqual(1);
-                    expect(window.alert).not.toHaveBeenCalled();
-                });
-
-                it("should retry pending changes if none are active", function() {
-                    handler.error(jasmine.createSpy("ajaxEvent"));
-                    subject.processQueue();
+                    subject.persist("update", jasmine.createSpy("formData"));
+                    handlers[0].error(jasmine.createSpy("ajaxEvent"));
 
                     expect($.ajax.callCount).toEqual(2);
                 });
 
+                it("should retry changes that are not already (or still) active", function() {
+                    subject.processQueue();
+                    expect($.ajax.callCount).toEqual(3);
+                });
 
             });
 
-            describe("with no pending changes", function() {
+            describe("with no waiting or active changes", function() {
               
                 it("should do nothing when invoked programatically", function() {
                     spyOn(window, 'alert');
@@ -135,7 +140,7 @@ define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, c
                     expect($.ajax).not.toHaveBeenCalled();
                 });
 
-                it("should explain there's nothing to do when invoked manually", function() {
+                it("should explain there are no unsynchronised changes when invoked manually", function() {
                     spyOn(window, 'alert');
                     subject.processQueue(true);
                     expect(window.alert.mostRecentCall.args[0]).toMatch(/no unsynchronised/);

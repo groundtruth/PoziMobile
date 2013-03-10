@@ -45,10 +45,8 @@ define(["jquery", "config"], function($, config) {
 
         this.processQueue = function(manual) {
             var item;
-            if (manual && queue.length === 0) {
+            if (manual && queue.length === 0 && requestCount === 0) {
                 alert("There are no unsynchronised changes.");
-            } else if (requestCount > 0) {
-                // if (manual) { alert("Already attempting to synchronise."); }
             } else {
                 while (item = queue.shift()) { doSync(item); }
             }
