@@ -26,7 +26,7 @@ define(["jquery", "openlayers", "config"], function($, OpenLayers, config) {
             },
             function(data, textStatus) {
                 var features = reader.read(data);
-                layer.removeAllFeatures(); // could check for duplicates instead of just clearing all
+                layer.destroyFeatures(); // could check for duplicates instead of just clearing all
                 layer.addFeatures(features);
             }
         );
