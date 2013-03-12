@@ -15,17 +15,14 @@ body {
     left: 0;
 }
 #crosshair {
+    pointer-events: none;
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 30px;
-    height: 30px;
-    margin: -15px 0px 0px -15px;
     z-index: 10000;
-    text-align: center;
+    margin: -14px 0px 0px -8px;
     font-family: "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
     font-size: 25px;
-    line-height: 27px;
     opacity: 0.75;
 }
 
