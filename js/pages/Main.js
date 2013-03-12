@@ -8,8 +8,7 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
         this.setSyncButton = function(icon, number) {
             var newButton = '<button id="syncButton" class="ui-btn-left" data-icon="'+icon+'">'+number+'</button>';
             $("#syncButton").closest("div").remove();
-            $page.find("header").prepend(newButton);
-            $("#syncButton").trigger("create");
+            $page.find("header").prepend(newButton).trigger("create");
         };
 
         var $page = $("#pageMain");

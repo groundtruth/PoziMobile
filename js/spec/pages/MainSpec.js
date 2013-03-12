@@ -34,7 +34,7 @@ define(["spec/SpecHelper", "pages/Main", "PoziMap"], function(SpecHelper, Main, 
 
             it("should enhance the new button", function() {
                 var createEventSpy = jasmine.createSpy("createEvent");
-                $(document).on("create", "#syncButton", createEventSpy);
+                $(document).on("create", "header", createEventSpy);
                 subject.setSyncButton("check", 0);
                 expect(createEventSpy).toHaveBeenCalled();
             });
