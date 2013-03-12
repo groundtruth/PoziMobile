@@ -13,6 +13,7 @@ define([], function() {
         paths: {
             "jasmine": "../lib/jasmine-1.3.1/jasmine",
             "jasmine-html": "../lib/jasmine-1.3.1/jasmine-html",
+            "jasmine-jquery": "../lib/jasmine-jquery/jasmine-jquery",
             "underscore": "../lib/underscore-1.4.3/underscore",
             "jquery": "../lib/jquery-1.8.3/jquery-1.8.3.min",
             "jquery.mobile": "../lib/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
@@ -23,6 +24,7 @@ define([], function() {
         shim: {
             "jasmine": { exports: "jasmine" },
             "jasmine-html": { deps: ["jasmine"], exports: "jasmine" },
+            "jasmine-jquery": { deps: ["jasmine", "jquery"], exports: "jasmine" },
             "underscore": { exports: "_" },
             "openlayers": { exports: "OpenLayers" }
             // "json": { exports: "JSON" }

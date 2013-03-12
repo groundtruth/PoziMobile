@@ -1,4 +1,4 @@
-define(["jasmine"], function() {
+define(["jasmine", "jasmine-jquery"], function() {
     var SpecHelper = {};
 
     return SpecHelper;
