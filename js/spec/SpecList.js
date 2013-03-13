@@ -7,7 +7,7 @@ define(
     "spec/pages/MainSpec",
     "spec/PoziMapSpec",
     "spec/PoziGeolocateSpec",
-    "spec/buildFieldSpec",
+    "spec/formBuilderSpec",
     "spec/SyncherSpec"
   ],
   function() {}

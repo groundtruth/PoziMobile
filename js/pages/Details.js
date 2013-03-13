@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "config", "buildField"], function($, _, config, buildField) {
+define(["jquery", "underscore", "config", "formBuilder"], function($, _, config, formBuilder) {
 
     return function(givenSyncher) {
 
@@ -7,7 +7,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
 
         var initForm = function() {
             var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
-                return buildField(fieldConf);
+                return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields).trigger("create");
             $page.find('[name="config"]').first().val(config.databaseName);
@@ -15,6 +15,7 @@ define(["jquery", "underscore", "config", "buildField"], function($, _, config, 
 
         var repopulateForm = function(data) {
             // http://blog.mrnepal.com/2012/03/21/use-jquery-to-re-populate-form-with-json-data/
+            // TODO: move this into formBuilder and write tests that cover all statements
             $.each(data, function(name, val){
                 var $el = $page.find('[name="'+name+'"]');
                 switch($el.attr("type")){

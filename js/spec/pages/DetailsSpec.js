@@ -1,6 +1,102 @@
-define(["spec/SpecHelper", "pages/Details"], function(SpecHelper, Details) {
+define(["spec/SpecHelper", "pages/Details", "config", "formBuilder"], function(SpecHelper, Details, config, formBuilder) {
 
     describe("pages/Details", function() {
+        var syncher, subject, oldConfig;
+
+        beforeEach(function() {
+            setFixtures('<section id="pageDetails" style="visibility: hidden">\
+                             <header></header>\
+                             <div class="content"></div>\
+                         </section>');
+            oldConfig = { "detailsFields": config.detailsFields };
+            config.detailsFields = [{
+                "type": "textarea",
+                "id": "comments",
+                "description": "Comments"
+            }];
+            createEndpoint = spyOn(config, 'createEndpoint');
+            syncher = jasmine.createSpyObj("syncher", ["persist"]);
+            subject = Details.doNew(syncher);
+        });
+        afterEach(function() {
+            config.detailsFields = oldConfig.detailsFields;
+        });
+        
+        it("should set the page to visible", function() {
+            expect($("#pageDetails")).toHaveCss({ visibility: "visible"});
+        });
+
+        describe("#new", function() {
+            var position;
+
+            beforeEach(function() {
+                position = { lon: 22, lat: 99 };
+                subject.new(position);
+            });
+
+            it("should create the form with generic fields", function() {
+                expect($('input[name="id"]')).toExist();
+            });
+
+            it("should fill out location as requested", function() {
+                expect($('input[name="lon"]')).toHaveAttr("value", position.lon.toString());
+                expect($('input[name="lat"]')).toHaveAttr("value", position.lat.toString());
+            });
+
+            it("should create the form with client-specific fields", function() {
+                expect($('textarea[name="comments"]')).toExist();
+            });
+
+            it("should return and persist with correct action on click of save", function() {
+                spyOn(history, "back");
+                $("#saveButton").click();
+                expect(history.back).toHaveBeenCalled();
+                expect(syncher.persist).toHaveBeenCalledWith("create", jasmine.any(String));
+            });
+
+        });
+
+        describe("#update", function() {
+            var feature;
+
+            beforeEach(function() {
+                feature = { data: { id: 66, comments: "hello" } };
+                spyOn(history, "back");
+                subject.update(feature);
+            });
+
+            it("should populate generic fields", function() {
+                expect($('input[name="id"]')).toHaveAttr("value", feature.data.id.toString());
+            });
+
+            it("should populate client-specific fields", function() {
+                expect($('[name="comments"]').val()).toEqual(feature.data.comments);
+            });
+
+            it("should return and persist with correct action on click of save", function() {
+                $("#saveButton").click();
+                expect(history.back).toHaveBeenCalled();
+                expect(syncher.persist).toHaveBeenCalledWith("update", jasmine.any(String));
+            });
+
+            it("should confirm, return and persist with correct action on click of delete", function() {
+                spyOn(window, "confirm").andReturn(true);
+                $("#deleteButton").click();
+                expect(window.confirm).toHaveBeenCalledWith(jasmine.any(String));
+                expect(history.back).toHaveBeenCalled();
+                expect(syncher.persist).toHaveBeenCalledWith("delete", jasmine.any(String));
+            });
+
+        });
+
+        describe("#changeTo", function() {
+            it("should change the page", function() {
+                $.mobile = jasmine.createSpyObj("jquery.mobile", ["changePage"]);
+                subject.changeTo();
+                expect($.mobile.changePage).toHaveBeenCalledWith($("#pageDetails"), jasmine.any(Object));
+            });
+        });
+
     });
 
 });
