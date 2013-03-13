@@ -9,11 +9,7 @@ define(["spec/SpecHelper", "pages/Details", "config", "formBuilder"], function(S
                              <div class="content"></div>\
                          </section>');
             oldConfig = { "detailsFields": config.detailsFields };
-            config.detailsFields = [{
-                "type": "textarea",
-                "id": "comments",
-                "description": "Comments"
-            }];
+            config.detailsFields = [{ "type": "textarea", "id": "comments", "description": "Comments" }];
             createEndpoint = spyOn(config, 'createEndpoint');
             syncher = jasmine.createSpyObj("syncher", ["persist"]);
             subject = Details.doNew(syncher);
