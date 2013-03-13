@@ -44,8 +44,8 @@ define([
             $("#map").width($(window).width());
         };
 
-        $(window).resize(function() { that.setSize(); });
-        $(window).orientationchange(function() { that.setSize(); });
+        $(window).on("resize", function() { that.setSize(); });
+        $(window).on("orientationchange", function() { that.setSize(); });
         this.setSize();
 
         this.updateData = function() {

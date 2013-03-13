@@ -1,13 +1,15 @@
 define(["spec/SpecHelper", "underscore", "proj", "layers/currentLocation"], function(SpecHelper, _, proj, currentLocation) {
 
     describe("layers/currentLocation", function() {
-        var pointInWGS84, accuracy;
+        var pointInWGS84, accuracy, oldMap;
 
         beforeEach(function() {
+            oldMap = currentLocation.map; // TODO: consider making layers classes to avoid this
             currentLocation.map = jasmine.createSpyObj("map", ["setCenterAndZoomToExtent"]);
             pointInWGS84 = OpenLayers.Geometry.Point.doNew(16136538.634305948, -4547536.7868166575);
             accuracy = 8.1;
         });
+        afterEach(function() { currentLocation.map = oldMap; })
 
         describe("#clearLocationMarker", function() {
             it("should clear existing features from the layer", function() {
