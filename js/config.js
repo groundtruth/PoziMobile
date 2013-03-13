@@ -29,6 +29,9 @@ define(["jquery"], function($) {
     return $.extend(defaults, {
         "dataLayerName": "Minor Culverts",
         "databaseName": "loddongis",
+            // API key for http://openlayers.org. Should get our own at http://bingmapsportal.com/.
+            // Put this here so it will move out of main repo with other client-specific config.
+            "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf", 
         "readEndpoint": "http://v3.pozi.com/ws/rest/v3/ws_minor_culvert_geojson.php?callback=?",
         "updateEndpoint": "/ws/rest/v3/ws_update_minor_culvert.php",
         "createEndpoint": "/ws/rest/v3/ws_create_minor_culvert.php",

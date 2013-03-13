@@ -1,26 +1,23 @@
-define(["openlayers"], function(OpenLayers) {
-
-    // API key for http://openlayers.org. Please get your own at http://bingmapsportal.com/ and use that instead.
-    var apiKey = "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf";
+define(["openlayers", "config"], function(OpenLayers, config) {
 
     return {
 
         road: OpenLayers.Layer.Bing.doNew({
-            key: apiKey,
+            key: config.bingApiKey,
             type: "Road",
             name: "Bing Road",
             transitionEffect: 'resize'
         }),
 
         aerial: OpenLayers.Layer.Bing.doNew({
-            key: apiKey,
+            key: config.bingApiKey,
             type: "Aerial",
             name: "Bing Aerial",
             transitionEffect: 'resize'
         }),
 
         aerialWithLabels: OpenLayers.Layer.Bing.doNew({
-            key: apiKey,
+            key: config.bingApiKey,
             type: "AerialWithLabels",
             name: "Bing Aerial + Labels",
             transitionEffect: 'resize'
