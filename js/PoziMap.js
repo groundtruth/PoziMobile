@@ -67,6 +67,7 @@ define([
             ),
             controls: [
                 OpenLayers.Control.Attribution.doNew(),
+                // OpenLayers.Control.Navigation.doNew({ zoomWheelEnabled: true }), // not included in mobile version
                 OpenLayers.Control.TouchNavigation.doNew({
                     dragPanOptions: {
                         interval: 100,
