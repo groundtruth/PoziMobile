@@ -1,4 +1,16 @@
-define(["spec/SpecHelper", "PoziMap", "layers", "openlayers"], function(SpecHelper, PoziMap, layers, OpenLayers) {
+define([
+    "spec/SpecHelper",
+    "PoziMap",
+    "layers",
+    "openlayers",
+    "config"
+], function(
+    SpecHelper,
+    PoziMap,
+    layers,
+    OpenLayers,
+    config
+) {
 
     describe("PoziMap", function() {
         var subject, detailsPage;
@@ -8,7 +20,9 @@ define(["spec/SpecHelper", "PoziMap", "layers", "openlayers"], function(SpecHelp
         beforeEach(function() {
           setFixtures('<div id="map"></div>');
           spyOn(layers.data, "getFeaturesAround");
+          spyOn(OpenLayers.Control.SelectFeature, "doNew").andCallThrough();
           detailsPage = jasmine.createSpyObj("detailsPage", ["update", "changeTo"]);
+          detailsPage.update.andReturn(detailsPage);
           subject = PoziMap.doNew(detailsPage);
         });
 
@@ -52,21 +66,80 @@ define(["spec/SpecHelper", "PoziMap", "layers", "openlayers"], function(SpecHelp
         });
 
         describe("#setSize", function() {
+
             it("should be set on initialization", function() {
+                expect($("#map").attr("style")).toMatch(/height: \d+px/)
             });
+
             it("should be set on resize", function() {
+                spyOn(subject, "setSize");
+                $(window).trigger("resize");
+                expect(subject.setSize).toHaveBeenCalled();
             });
+
             it("should be set on orientationchange", function() {
+                spyOn(subject, "setSize");
+                $(window).trigger("orientationchange");
+                expect(subject.setSize).toHaveBeenCalled();
             });
-            it("should be set on end of pan", function() {
+
+        });
+
+        describe("#setCenterAndZoomToExtent", function() {
+
+            it("should not zoom above configured max zoom", function() {
+                spyOn(subject, "setCenter");
+                var excessiveZoom = config.maxZoom * 2;
+                spyOn(subject, "getZoomForExtent").andReturn(excessiveZoom);
+                subject.setCenterAndZoomToExtent(subject.getCenter(), subject.getExtent());
+                expect(subject.setCenter.mostRecentCall.args[1]).toBeLessThan(excessiveZoom);
             });
+
+            it("should be set on orientationchange", function() {
+                spyOn(subject, "setSize");
+                $(window).trigger("orientationchange");
+                expect(subject.setSize).toHaveBeenCalled();
+            });
+
         });
 
         describe("#updateData",function() {
+
+            it("should delegate to data layer with a (center) point", function() {
+                layers.data.getFeaturesAround.reset();
+                subject.updateData();
+                expect(layers.data.getFeaturesAround).toHaveBeenCalled();
+                expect(layers.data.getFeaturesAround.mostRecentCall.args[0].lon).toEqual(jasmine.any(Number));
+                expect(layers.data.getFeaturesAround.mostRecentCall.args[0].lat).toEqual(jasmine.any(Number));
+            });
+
             it("should be done on initialization", function() {
+                expect(layers.data.getFeaturesAround).toHaveBeenCalled();
             });
-            it("should delegate to data layer with correct center point", function() {
+
+            it("should be done upon finish of pan", function() {
+                spyOn(subject, "updateData");
+                subject.events.triggerEvent("moveend");
+                expect(subject.updateData).toHaveBeenCalled();
             });
+
+        });
+
+        describe("select feature handler", function() {
+            var control, feature;
+
+            beforeEach(function() {
+                var handler = OpenLayers.Control.SelectFeature.doNew.mostRecentCall.args[1].onSelect;
+                var unselect = jasmine.createSpy("unselect")
+                control = { unselect: unselect, handler: handler }
+                feature = jasmine.createSpy("feature");
+            });
+
+            it("should unselect the feature", function() {
+                control.handler(feature);
+                expect(control.unselect).toHaveBeenCalledWith(feature);
+            });
+            
         });
 
     });
