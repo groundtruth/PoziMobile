@@ -13,24 +13,6 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
             $page.find('[name="config"]').first().val(config.databaseName);
         };
 
-        var repopulateForm = function(data) {
-            // http://blog.mrnepal.com/2012/03/21/use-jquery-to-re-populate-form-with-json-data/
-            // TODO: move this into formBuilder and write tests that cover all statements
-            $.each(data, function(name, val){
-                var $el = $page.find('[name="'+name+'"]');
-                switch($el.attr("type")){
-                    case "checkbox":
-                        $el.attr("checked", "checked");
-                        break;
-                    case 'radio':
-                        $el.filter('[value="'+val+'"]').attr("checked", "checked");
-                        break;
-                    default:
-                        $el.val(val);
-                }
-            });
-        };
-
         var initButtons = function(buttonsToActions) {
             var buttons = {
                 save: '<input type="button" id="saveButton" data-theme="a" class="submit" value="Save" />',
@@ -62,7 +44,7 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
 
         this.update = function(feature) {
             initForm();
-            repopulateForm(feature.data);
+            formBuilder.repopulateForm($page, feature.data);
             initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {

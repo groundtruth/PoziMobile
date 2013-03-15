@@ -1,6 +1,23 @@
-define(["mustache"], function(Mustache) {
+define(["jquery", "mustache"], function($, Mustache) {
 
     return {
+
+        repopulateForm: function($scope, data) {
+            // http://blog.mrnepal.com/2012/03/21/use-jquery-to-re-populate-form-with-json-data/
+            $.each(data, function(name, val){
+                var $el = $scope.find('[name="'+name+'"]');
+                switch($el.attr("type")) {
+                    case "checkbox":
+                        $el.attr("checked", "checked");
+                        break;
+                    case 'radio':
+                        $el.filter('[value="'+val+'"]').attr("checked", "checked");
+                        break;
+                    default:
+                        $el.val(val);
+                }
+            });
+        },
 
         buildField: function(fieldDef) {
             var template;

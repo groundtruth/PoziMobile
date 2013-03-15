@@ -1,6 +1,40 @@
 define(["spec/SpecHelper", "formBuilder"], function(SpecHelper, formBuilder) {
 
     describe("formBuilder", function() {
+
+        describe("#repopulateForm", function() {
+            var scope;
+
+            beforeEach(function() {
+                setFixtures('\
+                    <form id="testform">\
+                      <input type="checkbox" name="big" value="big" />big<br />\
+                      <input type="checkbox" name="small" value="small" />small<br />\
+                      <input type="radio" name="sex" value="male" />male<br />\
+                      <input type="radio" name="sex" value="female" />female<br />\
+                      <input type="hidden" name="id" />\
+                    </form>\
+                ');
+                scope = $("#testform");
+            });
+
+            it("should populate checkboxes", function() {
+                formBuilder.repopulateForm(scope, { "big": "big" });
+                expect(scope.find('[name="big"]').attr("checked")).toEqual("checked");
+            });
+
+            it("should populate radio buttons", function() {
+                formBuilder.repopulateForm(scope, { "sex": "male" });
+                expect(scope.find('[value="male"]').attr("checked")).toEqual("checked");
+            });
+
+            it("should populate other inputs", function() {
+                formBuilder.repopulateForm(scope, { "id": "22" });
+                expect(scope.find('[name="id"]').val()).toEqual("22");
+            });
+
+        });
+
         describe("#buildField", function() {
 
             var noWhitespace = function(str) {
@@ -68,6 +102,7 @@ define(["spec/SpecHelper", "formBuilder"], function(SpecHelper, formBuilder) {
             });
 
         });
+
     });
 
 });
