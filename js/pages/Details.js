@@ -5,16 +5,20 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
 
+        var enhanceForm = function() {
+            $page.find(".content").first().trigger("create"); 
+        };
+
         var initForm = function(data) {
             var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields)
+            $page.find('[name="config"]').first().val(config.databaseName);
             if (data) {
               formBuilder.repopulateForm($page, data);
             };
-            $page.find(".content").first().trigger("create");
-            $page.find('[name="config"]').first().val(config.databaseName);
+            enhanceForm(); // important: this must be done after form population
         };
 
         var initButtons = function(buttonsToActions) {
