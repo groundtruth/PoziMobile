@@ -5,12 +5,14 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
 
-        var initForm = function(repopulationCallback) {
+        var initForm = function(data) {
             var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields)
-            if (repopulationCallback) { repopulationCallback(); }
+            if (data) {
+              formBuilder.repopulateForm($page, data);
+            };
             $page.find(".content").first().trigger("create");
             $page.find('[name="config"]').first().val(config.databaseName);
         };
@@ -45,9 +47,7 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
         };
 
         this.update = function(feature) {
-            initForm(function() {
-              formBuilder.repopulateForm($page, feature.data);
-            });
+            initForm(feature.data);
             initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
