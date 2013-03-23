@@ -53,11 +53,12 @@ define(["spec/SpecHelper", "pages/Details", "config", "formBuilder"], function(S
         });
 
         describe("#update", function() {
-            var feature;
+            var feature, commentsPreEnhancement;
 
             beforeEach(function() {
                 feature = { data: { id: 66, comments: "hello" } };
                 spyOn(history, "back");
+                spyOn(subject, "enhanceForm").andCallFake(function() { commentsOnEnhance = $('[name="comments"]').val(); })
                 subject.update(feature);
             });
 
@@ -67,6 +68,10 @@ define(["spec/SpecHelper", "pages/Details", "config", "formBuilder"], function(S
 
             it("should populate client-specific fields", function() {
                 expect($('[name="comments"]').val()).toEqual(feature.data.comments);
+            });
+
+            it("should not do the jQM enhancement until it has populated fields", function() {
+                expect(commentsOnEnhance).toEqual(feature.data.comments);
             });
 
             it("should return and persist with correct action on click of save", function() {

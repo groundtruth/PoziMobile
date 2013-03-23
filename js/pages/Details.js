@@ -4,12 +4,13 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
 
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
+        var that = this;
 
-        var enhanceForm = function() {
+        this.enhanceForm = function() {
             $page.find(".content").first().trigger("create"); 
         };
 
-        var initForm = function(data) {
+        this.initForm = function(data) {
             var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
@@ -18,10 +19,10 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
             if (data) {
               formBuilder.repopulateForm($page, data);
             };
-            enhanceForm(); // important: this must be done after form population
+            that.enhanceForm(); // important: this must be done after form population
         };
 
-        var initButtons = function(buttonsToActions) {
+        this.initButtons = function(buttonsToActions) {
             var buttons = {
                 save: '<input type="button" id="saveButton" data-theme="a" class="submit" value="Save" />',
                 delete: '<button id="deleteButton" data-theme="a" class="">Delete</button>'
@@ -37,10 +38,10 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
 
 
         this.new = function(position) {
-            initForm();
+            that.initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
-            initButtons({
+            that.initButtons({
                 save: function() {
                     history.back();
                     syncher.persist("create", $page.find("#detailsForm").serialize());
@@ -51,8 +52,8 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
         };
 
         this.update = function(feature) {
-            initForm(feature.data);
-            initButtons({
+            that.initForm(feature.data);
+            that.initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
                         history.back();
