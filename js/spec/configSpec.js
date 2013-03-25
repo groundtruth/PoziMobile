@@ -20,6 +20,10 @@ define(["spec/SpecHelper", "underscore", "config"], function(SpecHelper, _, conf
                 expect(config.configURL("http://client-app.pozimobile.dev/")).toEqual("config/client-app.json");
             });
 
+            it("should default to demo config if there is no subdomain or app name", function() {
+                expect(config.configURL("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual("config/demo-mc.json");
+            });
+
         });
 
         describe("#fetchConfig", function() {

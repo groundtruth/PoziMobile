@@ -32,10 +32,14 @@ define(["jquery", "underscore"], function($, _) {
 
         configURL: function(href) {
             var client, appName, matches, fileNameBase;
-            if (matches = href.match(/^http:\/\/([^\.]+)/)) { client = matches[1]; }
+            if (matches = href.match(/^\w+:\/\/([a-z\-]+)/i)) { client = matches[1]; }
             if (matches = href.match(/^\w+:\/\/[^\/]+\/m\/([^\/]+)\//)) { appName = matches[1]; }
             fileNameBase = _([client, appName]).compact().join("-");
-            return "config/" + fileNameBase + ".json";
+            if (fileNameBase.length > 1) {
+                return "config/" + fileNameBase + ".json";
+            } else {
+                return "config/demo-mc.json";
+            }
         },
 
         fetchConfig: function() {
