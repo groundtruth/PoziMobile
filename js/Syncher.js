@@ -10,7 +10,7 @@ define(["jquery", "config"], function($, config) {
             updateInterface();
             $.ajax({
                 type: "POST", // TODO: use different verbs when server side is re-done
-                url: config[item.action+"Endpoint"],
+                url: config.data()[item.action+"Endpoint"],
                 data: item.data,
                 success: function(e) {
                     requestCount--;

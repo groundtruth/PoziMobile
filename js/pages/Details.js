@@ -11,11 +11,11 @@ define(["jquery", "underscore", "config", "formBuilder"], function($, _, config,
         };
 
         this.initForm = function(data) {
-            var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
+            var formFields = _(config.data().detailsFields.concat(config.data().genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields)
-            $page.find('[name="config"]').first().val(config.databaseName);
+            $page.find('[name="config"]').first().val(config.data().databaseName);
             if (data) {
               formBuilder.repopulateForm($page, data);
             };

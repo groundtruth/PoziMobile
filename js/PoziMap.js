@@ -15,7 +15,7 @@ define([
 ) {
 
     var PoziMap = function(detailsPage) {
-        var defaultZoomLevel = config.defaultZoomLevel;
+        var defaultZoomLevel = config.data().defaultZoomLevel;
         var that = this;
 
         this.getCenterInWGS84 = function() {
@@ -23,7 +23,7 @@ define([
         };
 
         this.setCenterAndZoomToExtent = function(locationInWebMercator, extent) {
-            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.maxZoom);
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
             this.setCenter(locationInWebMercator, zoomWithinLimit);
         };
 
@@ -60,10 +60,10 @@ define([
             numZoomLevels: 20,
             maxResolution: 156543.0339,
             maxExtent: OpenLayers.Bounds.doNew(
-                config.maxExtentBounds[0],
-                config.maxExtentBounds[1],
-                config.maxExtentBounds[2],
-                config.maxExtentBounds[3]
+                config.data().maxExtentBounds[0],
+                config.data().maxExtentBounds[1],
+                config.data().maxExtentBounds[2],
+                config.data().maxExtentBounds[3]
             ),
             controls: [
                 OpenLayers.Control.Attribution.doNew(),
@@ -75,7 +75,7 @@ define([
                     }
                 })
             ],
-            center: OpenLayers.LonLat.doNew(config.centerLon, config.centerLat)
+            center: OpenLayers.LonLat.doNew(config.data().centerLon, config.data().centerLat)
         });
 
         this.addLayers(layers);

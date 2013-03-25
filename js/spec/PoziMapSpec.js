@@ -89,7 +89,7 @@ define([
 
             it("should not zoom above configured max zoom", function() {
                 spyOn(subject, "setCenter");
-                var excessiveZoom = config.maxZoom * 2;
+                var excessiveZoom = config.data().maxZoom * 2;
                 spyOn(subject, "getZoomForExtent").andReturn(excessiveZoom);
                 subject.setCenterAndZoomToExtent(subject.getCenter(), subject.getExtent());
                 expect(subject.setCenter.mostRecentCall.args[1]).toBeLessThan(excessiveZoom);

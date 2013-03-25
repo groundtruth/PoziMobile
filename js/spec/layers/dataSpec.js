@@ -3,12 +3,11 @@ define(["spec/SpecHelper", "config", "layers/data"], function(SpecHelper, config
     describe("layers/data", function() {
         describe("#getFeaturesAround", function() {
 
-            var readEndpoint, featuresLimit, databaseName, lon, lat, handler;
+            var configData, lon, lat, handler;
 
             beforeEach(function() {
-                readEndpoint = spyOn(config, "readEndpoint");
-                featuresLimit = spyOn(config, "featuresLimit");
-                databaseName = spyOn(config, "databaseName");
+                configData = jasmine.createSpyObj("configData", ["readEndpoint", "featuresLimit", "databaseName"]);
+                spyOn(config, "data").andReturn(configData);
                 lon = 143.65305771415987;
                 lat = -36.43791886509164;
                 responseData = { 
@@ -23,8 +22,8 @@ define(["spec/SpecHelper", "config", "layers/data"], function(SpecHelper, config
             it("should make the right request to the server", function() {
                 data.getFeaturesAround({ lon: lon, lat: lat });
                 expect($.getJSON).toHaveBeenCalled();
-                expect($.getJSON.mostRecentCall.args[0]).toEqual(readEndpoint);
-                expect($.getJSON.mostRecentCall.args[1]).toEqual({ lat: lat, lon: lon, limit: featuresLimit, config: databaseName });
+                expect($.getJSON.mostRecentCall.args[0]).toEqual(configData.readEndpoint);
+                expect($.getJSON.mostRecentCall.args[1]).toEqual({ lat: lat, lon: lon, limit: configData.featuresLimit, config: configData.databaseName });
                 expect($.getJSON.mostRecentCall.args[2]).toEqual(jasmine.any(Function));
             });
 

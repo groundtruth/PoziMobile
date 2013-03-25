@@ -8,7 +8,8 @@ define(
     "spec/PoziMapSpec",
     "spec/PoziGeolocateSpec",
     "spec/formBuilderSpec",
-    "spec/SyncherSpec"
+    "spec/SyncherSpec",
+    "spec/configSpec"
   ],
   function() {}
 );

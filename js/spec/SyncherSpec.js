@@ -1,12 +1,12 @@
 define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, config) {
 
     describe("Syncher", function() {
-        var pages, subject, formData, createEndpoint, updateEndpoint, deleteEndpoint;
+        var pages, subject, formData, configData;
 
         beforeEach(function() {
-            createEndpoint = spyOn(config, 'createEndpoint');
-            updateEndpoint = spyOn(config, 'updateEndpoint');
-            deleteEndpoint = spyOn(config, 'deleteEndpoint');
+            
+            configData = jasmine.createSpyObj("configData", ["createEndpoint", "updateEndpoint", "deleteEndpoint"]);
+            spyOn(config, "data").andReturn(configData);
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
             formData = jasmine.createSpy("formData");
             subject = Syncher.doNew(pages);
@@ -40,7 +40,7 @@ define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, c
                     expect($.ajax.callCount).toEqual(1);
                     var req = $.ajax.mostRecentCall.args[0];
                     expect(req.type).toEqual("POST");
-                    expect(req.url).toEqual(createEndpoint);
+                    expect(req.url).toEqual(configData.createEndpoint);
                     expect(req.data).toEqual(formData);
                 });
 

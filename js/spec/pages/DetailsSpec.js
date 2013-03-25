@@ -1,21 +1,26 @@
 define(["spec/SpecHelper", "pages/Details", "config", "formBuilder"], function(SpecHelper, Details, config, formBuilder) {
 
     describe("pages/Details", function() {
-        var syncher, subject, oldConfig;
+        var syncher, subject, configData;
 
         beforeEach(function() {
             setFixtures('<section id="pageDetails" style="visibility: hidden">\
                              <header></header>\
                              <div class="content"></div>\
                          </section>');
-            oldConfig = { "detailsFields": config.detailsFields };
-            config.detailsFields = [{ "type": "textarea", "id": "comments", "description": "Comments" }];
-            createEndpoint = spyOn(config, 'createEndpoint');
+            configData = {
+                detailsFields: [{ "type": "textarea", "id": "comments", "description": "Comments" }],
+                genericDetailsFields: [
+                    { "type": "hidden", "id": "lat" },
+                    { "type": "hidden", "id": "lon" },
+                    { "type": "hidden", "id": "config", "value": "clientgis" },
+                    { "type": "hidden", "id": "id", "value": "" }
+                ],
+                createEndpoint: "someCreateEndPoint"
+            }
+            spyOn(config, "data").andReturn(configData);
             syncher = jasmine.createSpyObj("syncher", ["persist"]);
             subject = Details.doNew(syncher);
-        });
-        afterEach(function() {
-            config.detailsFields = oldConfig.detailsFields;
         });
         
         it("should set the page to visible", function() {
