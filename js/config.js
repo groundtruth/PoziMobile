@@ -1,4 +1,4 @@
-define(["jquery"], function($) {
+define(["jquery", "underscore"], function($, _) {
 
     var defaults = {
         "defaultZoomLevel": 15,
@@ -26,15 +26,24 @@ define(["jquery"], function($) {
         ]
     };
 
-    var data;
+    var config;
 
     return {
 
-        getConfig: function() {
+        configURL: function(href) {
+            var client, appName, matches, fileNameBase;
+            if (matches = href.match(/^http:\/\/([^\.]+)/)) { client = matches[1]; }
+            if (matches = href.match(/^\w+:\/\/[^\/]+\/m\/([^\/]+)\//)) { appName = matches[1]; }
+            fileNameBase = _([client, appName]).compact().join("-");
+            return "config/" + fileNameBase + ".json";
+        },
+
+        fetchConfig: function() {
+            var url = this.configURL(window.location.href);
             return $.parseJSON(
                 $.ajax({
                     type: 'GET',
-                    url: 'config/loddon-mc.json',
+                    url: url,
                     dataType: 'json',
                     success: function() { },
                     data: {},
@@ -43,11 +52,13 @@ define(["jquery"], function($) {
             );
         },
 
+        forgetConfig: function() { config = undefined; },
+
         data: function() {
-            if (typeof data === "undefined") {
-                return data = $.extend(defaults, this.getConfig());
+            if (typeof config === "undefined") {
+                return config = $.extend(defaults, this.fetchConfig());
             } else {
-                return data;
+                return config;
             }
         }
 
