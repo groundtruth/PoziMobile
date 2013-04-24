@@ -1,8 +1,8 @@
 define(["jquery", "underscore"], function($, _) {
 
     var defaults = {
-        "defaultZoomLevel": 15,
-        "maxZoom": 18,
+        "defaultZoomLevel": 18,
+        "maxZoom": 19,
         "featuresLimit": 20,
         "genericDetailsFields": [
             {
