@@ -5,7 +5,8 @@ define(["openlayers"], function(OpenLayers) {
         WGS84: OpenLayers.Projection.doNew("EPSG:4326"),
         
         // Google's web mercator (spherical), used for our tiles
-        webMercator: OpenLayers.Projection.doNew("EPSG:900913")
+        // http://gis.stackexchange.com/questions/40538/what-is-the-difference-between-epsg900913-and-epsg3857
+        webMercator: OpenLayers.Projection.doNew("EPSG:3857")
 
     }
 });
