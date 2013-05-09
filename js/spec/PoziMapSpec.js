@@ -31,7 +31,7 @@ define([
         });
 
         it("should set default zoom level", function() {
-            expect(subject.zoom).toEqual(15);
+            expect(subject.zoom).toEqual(18);
         });
 
         describe("#seekToCurrentLocation", function() {
