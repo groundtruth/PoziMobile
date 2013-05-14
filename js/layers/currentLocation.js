@@ -5,6 +5,8 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
     currentLocationLayer.clearLocationMarker = function() { this.destroyFeatures(); };
     currentLocationLayer.setLocation = function(pointInWebMercator, accuracy) {
 
+        var alreadyHadFeatures = this.features.length > 0;
+
         this.destroyFeatures();
         this.addFeatures([
             OpenLayers.Feature.Vector.doNew(
@@ -35,7 +37,11 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             )
         ]);
 
-        this.map.setCenterAndZoomToExtent(pointInWebMercator, this.getDataExtent());
+        if (alreadyHadFeatures) {
+            this.map.setCenterAndZoomToExtent(pointInWebMercator);
+        } else {
+            this.map.setCenterAndZoomToExtent(pointInWebMercator, this.getDataExtent());
+        }
         
     };
 

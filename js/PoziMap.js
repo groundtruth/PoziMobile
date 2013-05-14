@@ -24,8 +24,12 @@ define([
         };
 
         this.setCenterAndZoomToExtent = function(pointInWebMercator, extent) {
-            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
-            this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
+            if (extent) {
+                var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
+                this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
+            } else {
+                this.setCenter([pointInWebMercator.x, pointInWebMercator.y]);
+            }
         };
 
         this.toggleFollowingLocation = function() {
