@@ -22,7 +22,16 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
 
         $("#syncButton").live("click", function() { syncher.processQueue(true); });
         $("#zoomOut").click(function() { map.zoomOut(); });
-        $("#seekToCurrentLocation").click(function() { map.seekToCurrentLocation(); });
+
+        $("#seekToCurrentLocation").on("click", function(e) {
+          map.toggleFollowingLocation();
+          if (map.isFollowingLocation()) {
+            this.classList.add("ui-btn-on-a");
+          } else {
+            this.classList.remove("ui-btn-on-a");
+          }
+        });
+
         $("#zoomIn").click(function() { map.zoomIn(); });
         $("#newButton").click(function() { details.new(map.getCenterInWGS84()).changeTo(); });
 

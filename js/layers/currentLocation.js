@@ -3,13 +3,12 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
     var currentLocationLayer = OpenLayers.Layer.Vector.doNew("Current location", {});
 
     currentLocationLayer.clearLocationMarker = function() { this.destroyFeatures(); };
-    currentLocationLayer.setLocation = function(pointInWGS84, accuracy) {
-
+    currentLocationLayer.setLocation = function(pointInWebMercator, accuracy) {
 
         this.destroyFeatures();
         this.addFeatures([
             OpenLayers.Feature.Vector.doNew(
-                pointInWGS84,
+                pointInWebMercator,
                 {},
                 {
                     graphicName: 'cross',
@@ -21,7 +20,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             ),
             OpenLayers.Feature.Vector.doNew(
                 OpenLayers.Geometry.Polygon.createRegularPolygon(
-                    OpenLayers.Geometry.Point.doNew(pointInWGS84.x, pointInWGS84.y),
+                    pointInWebMercator,
                     accuracy,
                     50,
                     0
@@ -36,8 +35,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             )
         ]);
 
-        var point = OpenLayers.LonLat.doNew(pointInWGS84.x, pointInWGS84.y).transform(proj.WGS84, proj.webMercator);
-        this.map.setCenterAndZoomToExtent(point, this.getDataExtent());
+        this.map.setCenterAndZoomToExtent(pointInWebMercator, this.getDataExtent());
         
     };
 

@@ -16,26 +16,26 @@ define([
 
     var PoziMap = function(detailsPage) {
         var defaultZoomLevel = config.data().defaultZoomLevel;
+        var geolocate = PoziGeolocate.doNew(layers.currentLocation);
         var that = this;
 
         this.getCenterInWGS84 = function() {
             return this.getCenter().transform(proj.webMercator, proj.WGS84);
         };
 
-        this.setCenterAndZoomToExtent = function(locationInWebMercator, extent) {
+        this.setCenterAndZoomToExtent = function(pointInWebMercator, extent) {
             var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
-            this.setCenter(locationInWebMercator, zoomWithinLimit);
+            this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
         };
 
-        this.seekToCurrentLocation = function() {
-            var geolocate = this.getControlsBy("id", "locate-control")[0];
-            layers.currentLocation.clearLocationMarker();
-            if (geolocate.active) {
-              geolocate.getCurrentLocation();
+        this.toggleFollowingLocation = function() {
+            if (geolocate.isFollowing()) {
+                return geolocate.stopFollowing();
             } else {
-              geolocate.activate();
+                return geolocate.startFollowing();
             }
         };
+        this.isFollowingLocation = function() { return geolocate.isFollowing(); };
 
         this.setSize = function() {
             // this height is full window, behind header/footer - allows for scroll off of URL bar on mobile
@@ -81,7 +81,6 @@ define([
         this.addLayers(layers);
 
         this.addControls([
-            PoziGeolocate.doNew(layers.currentLocation),
             OpenLayers.Control.SelectFeature.doNew(layers.data, {
                 autoActivate: true,
                 onSelect: function(feature) {
