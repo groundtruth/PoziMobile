@@ -63,7 +63,7 @@ define([
             units: "m",
             numZoomLevels: 20,
             maxResolution: 156543.0339,
-            maxExtent: OpenLayers.Bounds.doNew(
+            maxExtent: OpenLayers.Bounds.doNew(   /* use restrictedExtent instead to actually stop the user from moving out of it */
                 config.data().maxExtentBounds[0],
                 config.data().maxExtentBounds[1],
                 config.data().maxExtentBounds[2],
