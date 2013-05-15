@@ -70,12 +70,12 @@ There are several resources that may be useful in troubleshooting GPS accuracy i
 
 ### Documentation and discussion
 
-Apple advice about Location Services and related settings:
+Apple's advice about Location Services and related settings:
 [iOS 6: Understanding Location Services](http://support.apple.com/kb/HT5467).
 
 Apple's [CoreLocation API documentation](https://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/LocationAwarenessPG/CoreLocation/CoreLocation.html)
 shows that different levels of accuracy can be requested. There's a
-[related discussion on ycominator](https://news.ycombinator.com/item?id=1526664).
+[related discussion on YCominator](https://news.ycombinator.com/item?id=1526664).
 It's not clear exactly how different browers handle this, but one would assume that
 `enableHighAccuracy` would correspond to a higher level.
 
@@ -100,7 +100,7 @@ As well as paid apps:
   may show some relevant GPS details.
 
 * [MotionX GPS](https://itunes.apple.com/us/app/motionx-gps/id299949744) ($0.99)
-  shows accuracy in meters and signal strength (not num of satellites... probably derived from accuracy). 
+  shows accuracy in meters and signal strength (not number of satellites - probably derived from accuracy). 
   It can be set to use GPS only (no WiFi/cellular).
 
 * [GPS 2 IP](http://www.capsicumdreams.com/iphone/gps2ip/) ($6.99)
@@ -111,6 +111,6 @@ As well as paid apps:
 
 [Bad Elf](http://bad-elf.com/) sells devices ($130-$180) for enhanced GPS performance on iOS.
 Their free app only shows status info when connected to one of their devices. The higher end
-device has its own display that shows detailed status info.
+device has its own display that shows detailed status information.
 
 
