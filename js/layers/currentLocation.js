@@ -38,7 +38,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         ]);
 
         if (alreadyHadFeatures) {
-            this.map.setCenterAndZoomToExtent(pointInWebMercator);
+            this.map.setCenterToPoint(pointInWebMercator);
         } else {
             this.map.setCenterAndZoomToExtent(pointInWebMercator, this.getDataExtent());
         }

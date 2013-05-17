@@ -85,8 +85,16 @@ define([
 
         });
 
-        describe("#setCenterAndZoomToExtent", function() {
+        describe("#setCenterToPoint", function() {
+            it("should set center correctly", function() {
+                var point = { x: jasmine.createSpy("x coord"), y: jasmine.createSpy("y coord") };
+                spyOn(subject, "setCenter");
+                subject.setCenterToPoint(point);
+                expect(subject.setCenter).toHaveBeenCalledWith([point.x, point.y])
+            });
+        });
 
+        describe("#setCenterAndZoomToExtent", function() {
             it("should not zoom above configured max zoom", function() {
                 spyOn(subject, "setCenter");
                 var excessiveZoom = config.data().maxZoom * 2;
@@ -94,13 +102,6 @@ define([
                 subject.setCenterAndZoomToExtent(subject.getCenter(), subject.getExtent());
                 expect(subject.setCenter.mostRecentCall.args[1]).toBeLessThan(excessiveZoom);
             });
-
-            it("should be set on orientationchange", function() {
-                spyOn(subject, "setSize");
-                $(window).trigger("orientationchange");
-                expect(subject.setSize).toHaveBeenCalled();
-            });
-
         });
 
         describe("#updateData",function() {

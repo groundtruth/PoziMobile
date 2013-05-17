@@ -5,7 +5,7 @@ define(["spec/SpecHelper", "underscore", "proj", "layers/currentLocation"], func
 
         beforeEach(function() {
             oldMap = currentLocation.map; // TODO: consider making layers classes to avoid this
-            currentLocation.map = jasmine.createSpyObj("map", ["setCenterAndZoomToExtent"]);
+            currentLocation.map = jasmine.createSpyObj("map", ["setCenterAndZoomToExtent", "setCenterToPoint"]);
             point = OpenLayers.Geometry.Point.doNew(16136538.634305948, -4547536.7868166575).transform(proj.WGS84, proj.webMercator);
             accuracy = 8.1;
         });
@@ -50,7 +50,7 @@ define(["spec/SpecHelper", "underscore", "proj", "layers/currentLocation"], func
                 currentLocation.map.setCenterAndZoomToExtent.reset();
                 currentLocation.setLocation(point, accuracy);
                 expect(currentLocation.map.setCenterAndZoomToExtent).not.toHaveBeenCalledWith(point, currentLocation.getDataExtent());
-                expect(currentLocation.map.setCenterAndZoomToExtent).toHaveBeenCalledWith(point);
+                expect(currentLocation.map.setCenterToPoint).toHaveBeenCalledWith(point);
             });
 
             afterEach(function() { currentLocation.clearLocationMarker(); });

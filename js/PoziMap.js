@@ -23,13 +23,13 @@ define([
             return this.getCenter().transform(proj.webMercator, proj.WGS84);
         };
 
+        this.setCenterToPoint = function(pointInWebMercator) {
+            this.setCenter([pointInWebMercator.x, pointInWebMercator.y]);
+        };
+
         this.setCenterAndZoomToExtent = function(pointInWebMercator, extent) {
-            if (extent) {
-                var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
-                this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
-            } else {
-                this.setCenter([pointInWebMercator.x, pointInWebMercator.y]);
-            }
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
+            this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
         };
 
         this.startFollowingLocation = function() { return geolocate.startFollowing(); };
