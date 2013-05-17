@@ -32,13 +32,8 @@ define([
             }
         };
 
-        this.toggleFollowingLocation = function() {
-            if (geolocate.isFollowing()) {
-                return geolocate.stopFollowing();
-            } else {
-                return geolocate.startFollowing();
-            }
-        };
+        this.startFollowingLocation = function() { return geolocate.startFollowing(); };
+        this.stopFollowingLocation = function() { return geolocate.stopFollowing(); };
         this.isFollowingLocation = function() { return geolocate.isFollowing(); };
 
         this.setSize = function() {

@@ -23,12 +23,13 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
         $("#syncButton").live("click", function() { syncher.processQueue(true); });
         $("#zoomOut").click(function() { map.zoomOut(); });
 
-        $("#seekToCurrentLocation").on("click", function(e) {
-          map.toggleFollowingLocation();
+        $("#followLocation").on("click", function(e) {
           if (map.isFollowingLocation()) {
-            this.classList.add("ui-btn-on-a");
-          } else {
             this.classList.remove("ui-btn-on-a");
+            map.stopFollowingLocation();
+          } else {
+            this.classList.add("ui-btn-on-a");
+            map.startFollowingLocation();
           }
         });
 

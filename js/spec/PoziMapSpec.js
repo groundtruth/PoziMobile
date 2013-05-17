@@ -40,26 +40,26 @@ define([
 
         describe("geolocate functionality", function() {
 
-            describe("#toggleFollowingLocation", function() {
-                it("should follow if not following", function() {
-                    fakeGeolocate.isFollowing.andReturn(false);
-                    subject.toggleFollowingLocation();
-                    expect(fakeGeolocate.startFollowing).toHaveBeenCalled();
-                });
-
-                it("should stop following if already following", function() {
-                    fakeGeolocate.isFollowing.andReturn(true);
-                    subject.toggleFollowingLocation();
-                    expect(fakeGeolocate.stopFollowing).toHaveBeenCalled();
-                });
-            });
-
             describe("#isFollowingLocation", function() {
                 it("should delegate to PoziGeolocate#isFollowing", function() {
                     var geolocateResult = jasmine.createSpy("result");
                     fakeGeolocate.isFollowing.andReturn(geolocateResult);
                     var result = subject.isFollowingLocation();
                     expect(result).toBe(geolocateResult);
+                })
+            });
+
+            describe("#startFollowingLocation", function() {
+                it("should delegate to PoziGeolocate#startFollowing", function() {
+                    subject.startFollowingLocation();
+                    expect(fakeGeolocate.startFollowing).toHaveBeenCalled();
+                })
+            });
+
+            describe("#stopFollowingLocation", function() {
+                it("should delegate to PoziGeolocate#stopFollowing", function() {
+                    subject.stopFollowingLocation();
+                    expect(fakeGeolocate.stopFollowing).toHaveBeenCalled();
                 })
             });
 
