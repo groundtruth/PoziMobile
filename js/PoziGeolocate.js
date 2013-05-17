@@ -6,7 +6,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         var that = this;
         
         this.startFollowing = function() {
-            that.stopFollowing();
+            if (typeof(watchId) !== 'undefined') { throw new Error("Already following."); }
             watchId = navigator.geolocation.watchPosition(
                 function(e) {
                     currentLocationLayer.setLocation(
@@ -30,15 +30,14 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         };
 
         this.stopFollowing = function() {
+            if (typeof(watchId) === 'undefined') { throw new Error("Cant's stop. Not following."); }
             currentLocationLayer.clearLocationMarker();
-            if (that.isFollowing()) {
-                navigator.geolocation.clearWatch(watchId);
-                watchId = undefined;
-            }
+            navigator.geolocation.clearWatch(watchId);
+            watchId = undefined;
         };
 
         this.isFollowing = function() {
-            return watchId !== undefined;
+            return typeof(watchId) !== "undefined";
         };
 
     };

@@ -1,44 +1,86 @@
-define(["spec/SpecHelper", "PoziGeolocate"], function(SpecHelper, PoziGeolocate) {
+define(["spec/SpecHelper", "PoziGeolocate", "proj"], function(SpecHelper, PoziGeolocate, proj) {
 
     describe("PoziGeolocate", function() {
-        var subject, currentLocationLayer;
+        var subject,
+            currentLocationLayer,
+            successHandler,
+            failureHandler,
+            options;
+        var fakeWatchId = jasmine.createSpy("watchId");
 
         beforeEach(function() {
-            currentLocationLayer = jasmine.createSpyObj("currentLocationLayer", ["setLocation"]);
+            currentLocationLayer = jasmine.createSpyObj("currentLocationLayer", ["setLocation", "clearLocationMarker"]);
+            spyOn(window, "alert");
+            spyOn(navigator.geolocation, "watchPosition").andCallFake(function(s, f, o) {
+                successHandler = s;
+                failureHandler = f;
+                options = o;
+                return fakeWatchId; 
+            });
+            spyOn(navigator.geolocation, "clearWatch");
             subject = PoziGeolocate.doNew(currentLocationLayer);
+            subject.startFollowing();
         });
 
-        it("should use high accuracy positioning", function() {
-            expect(subject.geolocationOptions.enableHighAccuracy).toBe(true);
-        });
+        describe("#startFollowing", function() {
+            it("should use high accuracy positioning", function() {
+                expect(options.enableHighAccuracy).toBe(true);
+            });
 
-        describe("locationfailed handler", function() {
-
-            beforeEach(function() { spyOn(window, "alert"); });
+            it("should delegate location update to currentLocation layer", function() {
+                var accuracy = jasmine.createSpy("accuracy");
+                var lon = jasmine.createSpy("lon");
+                var lat = jasmine.createSpy("lat");
+                var point = jasmine.createSpyObj("point", ["transform"]);
+                var webMercatorPoint = jasmine.createSpy("webMercatorPoint");
+                spyOn(OpenLayers.Geometry.Point, "doNew").andReturn(point);
+                point.transform.andReturn(webMercatorPoint);
+                successHandler({ coords: { accuracy: accuracy, longitude: lon, latitude: lat } });
+                expect(OpenLayers.Geometry.Point.doNew).toHaveBeenCalledWith(lon, lat);
+                expect(point.transform).toHaveBeenCalledWith(proj.WGS84, proj.webMercator);
+                expect(currentLocationLayer.setLocation).toHaveBeenCalledWith(webMercatorPoint, accuracy);
+            });
 
             it("should give feedback if there was a timeout", function() {
-                subject.events.triggerEvent("locationfailed", { error: { code: 3 } });
+                failureHandler({ error: { code: 3 }});
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/timed out before retrieving/);
             });
 
             it("should give feedback if the user denied permission", function() {
-                subject.events.triggerEvent("locationfailed", { error: { code: 1 } });
+                failureHandler({ error: { code: 1 }});
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/not allowed to access/);
             });
 
             it("should give feedback if there was some other error", function() {
-                subject.events.triggerEvent("locationfailed", { error: { code: 99, message: "extra message"} });
+                failureHandler({ error: { code: 9, message: "extra message" }});
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/error.*: extra message$/);
             });
-
         });
 
-        describe("locationupdated handler", function() {
-            it("should delegate location update to currentLocation layer", function() {
-                var point = jasmine.createSpy("point");
-                var accuracy = jasmine.createSpy("accuracy");
-                subject.events.triggerEvent("locationupdated", { point: point, position: { coords: { accuracy: accuracy } } });
-                expect(currentLocationLayer.setLocation).toHaveBeenCalledWith(point, accuracy);
+        describe("#stopFollowing", function() {
+            it("should clear the watch (of location)", function() {
+                subject.stopFollowing();
+                expect(navigator.geolocation.clearWatch).toHaveBeenCalledWith(fakeWatchId);
+            });
+        });
+
+        describe("#isFollowing", function() {
+            var newSubject;
+            beforeEach(function() { newSubject = PoziGeolocate.doNew(currentLocationLayer); })
+
+            it("should initially be false", function() {
+                expect(newSubject.isFollowing()).toBe(false);
+            });
+
+            it("should become true when following is started", function() {
+                newSubject.startFollowing();
+                expect(newSubject.isFollowing()).toBe(true);
+            });
+
+            it("should become false again when following is stopped", function() {
+                newSubject.startFollowing();
+                newSubject.stopFollowing();
+                expect(newSubject.isFollowing()).toBe(false);
             });
         });
 
