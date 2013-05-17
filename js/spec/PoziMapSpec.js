@@ -1,12 +1,14 @@
 define([
     "spec/SpecHelper",
     "PoziMap",
+    "PoziGeolocate",
     "layers",
     "openlayers",
     "config"
 ], function(
     SpecHelper,
     PoziMap,
+    PoziGeolocate,
     layers,
     OpenLayers,
     config
@@ -14,6 +16,7 @@ define([
 
     describe("PoziMap", function() {
         var subject, detailsPage;
+        var fakeGeolocate = jasmine.createSpyObj("geolocate", ["startFollowing", "stopFollowing", "isFollowing"]);
         
         // TODO: make PoziMap a wrapper not a subclass of OpenLayers.Map (then it can be better isolated in these specs, etc.).
 
@@ -21,6 +24,7 @@ define([
           setFixtures('<div id="map"></div>');
           spyOn(layers.data, "getFeaturesAround");
           spyOn(OpenLayers.Control.SelectFeature, "doNew").andCallThrough();
+          spyOn(PoziGeolocate, "doNew").andReturn(fakeGeolocate);
           detailsPage = jasmine.createSpyObj("detailsPage", ["update", "changeTo"]);
           detailsPage.update.andReturn(detailsPage);
           subject = PoziMap.doNew(detailsPage);
@@ -34,33 +38,29 @@ define([
             expect(subject.zoom).toEqual(18);
         });
 
-        describe("#seekToCurrentLocation", function() {
-            var geolocate;
+        describe("geolocate functionality", function() {
 
-            beforeEach(function() {
-                spyOn(layers.currentLocation, "clearLocationMarker");
-                geolocate = jasmine.createSpyObj("geolocate", ["activate", "getCurrentLocation"]);
-                spyOn(subject, "getControlsBy").andReturn([geolocate]);
-            });
-
-            it("should clear location markers before getting new location", function() {
-                geolocate.activate.andCallFake(function() {
-                    expect(layers.currentLocation.clearLocationMarker).toHaveBeenCalled();
+            describe("#toggleFollowingLocation", function() {
+                it("should follow if not following", function() {
+                    fakeGeolocate.isFollowing.andReturn(false);
+                    subject.toggleFollowingLocation();
+                    expect(fakeGeolocate.startFollowing).toHaveBeenCalled();
                 });
-                subject.seekToCurrentLocation();
-                expect(geolocate.activate).toHaveBeenCalled();
+
+                it("should stop following if already following", function() {
+                    fakeGeolocate.isFollowing.andReturn(true);
+                    subject.toggleFollowingLocation();
+                    expect(fakeGeolocate.stopFollowing).toHaveBeenCalled();
+                });
             });
 
-            it("should getCurrentLocation() if already active", function() {
-                geolocate.active = true;
-                subject.seekToCurrentLocation();
-                expect(geolocate.getCurrentLocation).toHaveBeenCalled();
-            });
-
-            it("should activate gelocaation if not already active", function() {
-                geolocate.active = false;
-                subject.seekToCurrentLocation();
-                expect(geolocate.activate).toHaveBeenCalled();
+            describe("#isFollowingLocation", function() {
+                it("should delegate to PoziGeolocate#isFollowing", function() {
+                    var geolocateResult = jasmine.createSpy("result");
+                    fakeGeolocate.isFollowing.andReturn(geolocateResult);
+                    var result = subject.isFollowingLocation();
+                    expect(result).toBe(geolocateResult);
+                })
             });
 
         });
