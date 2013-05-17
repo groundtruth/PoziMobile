@@ -10,7 +10,9 @@ define(["spec/SpecHelper", "pages/Main", "PoziMap"], function(SpecHelper, Main, 
                 "updateData",
                 "zoomOut",
                 "zoomIn",
-                "seekToCurrentLocation",
+                "isFollowingLocation",
+                "startFollowingLocation",
+                "stopFollowingLocation",
                 "getCenterInWGS84"
             ]);
             spyOn(PoziMap, "doNew").andReturn(map);
@@ -55,6 +57,46 @@ define(["spec/SpecHelper", "pages/Main", "PoziMap"], function(SpecHelper, Main, 
                 subject.updateData();
                 expect(map.updateData).toHaveBeenCalled();
             });
+        });
+
+        describe("#toggleFollowLocation", function() {
+            var button;
+            var buttonOnClass = "ui-btn-on-a";
+
+            beforeEach(function() {
+                button = { classList: jasmine.createSpyObj("classList", ["add", "remove"]) };
+            });
+
+            describe("when following", function() {
+                beforeEach(function() {
+                    map.isFollowingLocation.andReturn(true);
+                    subject.toggleFollowLocation(button);
+                });
+
+                it("should stop", function() {
+                    expect(map.stopFollowingLocation).toHaveBeenCalled();
+                });
+
+                it("should show button up", function() {
+                    expect(button.classList.remove).toHaveBeenCalledWith(buttonOnClass);
+                });
+            });
+
+            describe("when not following", function() {
+                beforeEach(function() {
+                    map.isFollowingLocation.andReturn(false);
+                    subject.toggleFollowLocation(button);
+                });
+
+                it("should start", function() {
+                    expect(map.startFollowingLocation).toHaveBeenCalled();
+                });
+
+                it("should show button down", function() {
+                    expect(button.classList.add).toHaveBeenCalledWith(buttonOnClass);
+                });
+            });
+
         });
 
         describe("pagebeforeshow handler", function() {

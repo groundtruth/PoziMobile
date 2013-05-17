@@ -11,6 +11,16 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
             $page.find("header").prepend(newButton).trigger("create");
         };
 
+        this.toggleFollowLocation = function(button) {
+            if (map.isFollowingLocation()) {
+                button.classList.remove("ui-btn-on-a");
+                map.stopFollowingLocation();
+            } else {
+                button.classList.add("ui-btn-on-a");
+                map.startFollowingLocation();
+            }
+        };
+
         var $page = $("#pageMain");
         var details = opts.details;
         var syncher = opts.syncher;
@@ -22,17 +32,7 @@ define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
 
         $("#syncButton").live("click", function() { syncher.processQueue(true); });
         $("#zoomOut").click(function() { map.zoomOut(); });
-
-        $("#followLocation").on("click", function(e) {
-          if (map.isFollowingLocation()) {
-            this.classList.remove("ui-btn-on-a");
-            map.stopFollowingLocation();
-          } else {
-            this.classList.add("ui-btn-on-a");
-            map.startFollowingLocation();
-          }
-        });
-
+        $("#followLocation").click(function() { that.toggleFollowLocation(this); });
         $("#zoomIn").click(function() { map.zoomIn(); });
         $("#newButton").click(function() { details.new(map.getCenterInWGS84()).changeTo(); });
 
