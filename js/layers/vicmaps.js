@@ -4,10 +4,10 @@ define(["openlayers"], function(OpenLayers) {
 
         labelClassic: OpenLayers.Layer.WMS.doNew("Labels",
             [
-                "http://m1.pozi.com/geoserver/wms",
-                "http://m2.pozi.com/geoserver/wms",
-                "http://m3.pozi.com/geoserver/wms",
-                "http://m4.pozi.com/geoserver/wms"
+                "http://basemap1.pozi.com/geoserver/wms",
+                "http://basemap2.pozi.com/geoserver/wms",
+                "http://basemap3.pozi.com/geoserver/wms",
+                "http://basemap4.pozi.com/geoserver/wms"
             ],
             {
                 layers: 'LabelClassic',
@@ -23,10 +23,10 @@ define(["openlayers"], function(OpenLayers) {
 
         classic: OpenLayers.Layer.WMS.doNew("Vicmap Classic",
             [
-                "http://m1.pozi.com/geoserver/gwc/service/wms",
-                "http://m2.pozi.com/geoserver/gwc/service/wms",
-                "http://m3.pozi.com/geoserver/gwc/service/wms",
-                "http://m4.pozi.com/geoserver/gwc/service/wms"
+                "http://basemap1.pozi.com/geoserver/gwc/service/wms",
+                "http://basemap2.pozi.com/geoserver/gwc/service/wms",
+                "http://basemap3.pozi.com/geoserver/gwc/service/wms",
+                "http://basemap4.pozi.com/geoserver/gwc/service/wms"
             ],
             {
                 layers: 'VicmapClassic',

@@ -2,7 +2,7 @@
     "dataLayerName": "Minor Culverts",
     "databaseName": "loddongis",
     "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf",
-    "readEndpoint": "http://v3.pozi.com/ws/rest/v3/demo_ws_minor_culvert_geojson.php?callback=?",
+    "readEndpoint": "http://demo.pozi.com/ws/rest/v3/demo_ws_minor_culvert_geojson.php?callback=?",
     "updateEndpoint": "/ws/rest/v3/demo_ws_update_minor_culvert.php",
     "createEndpoint": "/ws/rest/v3/demo_ws_create_minor_culvert.php",
     "deleteEndpoint": "/ws/rest/v3/demo_ws_delete_minor_culvert.php",
