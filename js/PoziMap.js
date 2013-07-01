@@ -3,18 +3,19 @@ define([
     "openlayers",
     "proj",
     "PoziGeolocate",
-    "layers",
+    "Layers",
     "config"
 ], function(
     $,
     OpenLayers,
     proj,
     PoziGeolocate,
-    layers,
+    Layers,
     config
 ) {
 
     var PoziMap = function(detailsPage) {
+        var layers = Layers.doNew().layers;
         var defaultZoomLevel = config.data().defaultZoomLevel;
         var geolocate = PoziGeolocate.doNew(layers.currentLocation);
         var that = this;

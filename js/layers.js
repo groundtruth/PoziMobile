@@ -12,37 +12,39 @@ define([
     data
 ) {
 
-    var layers = [];
+    return function() {
 
-    switch (config.data().basemap) {
+        this.layers = [];
 
-        case "OpenStreetMap":
-            layers.push(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
-            break;
+        switch (config.data().basemap) {
 
-        case "BingRoad":
-            layers.push(Bing.doNew("Road"));
-            break;
+            case "OpenStreetMap":
+                this.layers.push(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
+                break;
 
-        case "BingAerialWithLabels":
-            layers.push(Bing.doNew("AerialWithLabels"));
-            break;
+            case "BingRoad":
+                this.layers.push(Bing.doNew("Road").layer);
+                break;
 
-        default:
-            var vicmaps = Vicmaps.doNew();
-            layers.push(vicmaps.classic);
-            layers.push(vicmaps.labelClassic);
-            break;
+            case "BingAerialWithLabels":
+                this.layers.push(Bing.doNew("AerialWithLabels").layer);
+                break;
 
-    }
+            default:
+                var vicmaps = Vicmaps.doNew();
+                this.layers.push(vicmaps.classic);
+                this.layers.push(vicmaps.labelClassic);
+                break;
 
-    layers.push(currentLocation);
-    layers.push(data);
+        }
 
-    layers.currentLocation = currentLocation;
-    layers.data = data;
+        this.layers.push(currentLocation);
+        this.layers.push(data);
 
-    return layers;
+        this.layers.currentLocation = currentLocation;
+        this.layers.data = data;
+
+    };
 
 });
 

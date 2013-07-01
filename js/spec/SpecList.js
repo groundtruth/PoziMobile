@@ -1,5 +1,6 @@
 define(
   [
+    "spec/LayersSpec",
     "spec/layers/dataSpec",
     "spec/layers/currentLocationSpec",
     "spec/PagesSpec",
