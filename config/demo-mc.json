@@ -1,6 +1,7 @@
 {
     "dataLayerName": "Minor Culverts",
     "databaseName": "loddongis",
+    "basemap": "OpenStreetMap",
     "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf",
     "readEndpoint": "/ws/rest/v3/demo_ws_minor_culvert_geojson.php?callback=?",
     "updateEndpoint": "/ws/rest/v3/demo_ws_update_minor_culvert.php",

@@ -1,8 +1,8 @@
 define(["openlayers"], function(OpenLayers) {
 
-    return {
+    return function() {
 
-        labelClassic: OpenLayers.Layer.WMS.doNew("Labels",
+        this.labelClassic = OpenLayers.Layer.WMS.doNew("Labels",
             [
                 "http://basemap1.pozi.com/geoserver/wms",
                 "http://basemap2.pozi.com/geoserver/wms",
@@ -19,9 +19,9 @@ define(["openlayers"], function(OpenLayers) {
                 singleTile: true,
                 ratio: 1.5
             }
-        ),
+        );
 
-        classic: OpenLayers.Layer.WMS.doNew("Vicmap Classic",
+        this.classic = OpenLayers.Layer.WMS.doNew("Vicmap Classic",
             [
                 "http://basemap1.pozi.com/geoserver/wms",
                 "http://basemap2.pozi.com/geoserver/wms",
@@ -33,7 +33,7 @@ define(["openlayers"], function(OpenLayers) {
                 format: 'image/png8'
             },
             { transitionEffect: 'resize' }
-        )
+        );
 
     };
 
