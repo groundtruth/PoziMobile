@@ -17,13 +17,13 @@ define([
     describe("PoziMap", function() {
         var subject, detailsPage;
         var fakeGeolocate = jasmine.createSpyObj("geolocate", ["startFollowing", "stopFollowing", "isFollowing"]);
-        var layers = Layers.doNew().layers;
+        var layers = Layers.doNew();
         
         // TODO: make PoziMap a wrapper not a subclass of OpenLayers.Map (then it can be better isolated in these specs, etc.).
 
         beforeEach(function() {
           setFixtures('<div id="map"></div>');
-          spyOn(Layers, "doNew").andReturn({ layers: layers });
+          spyOn(Layers, "doNew").andReturn(layers);
           spyOn(layers.data, "getFeaturesAround");
           spyOn(OpenLayers.Control.SelectFeature, "doNew").andCallThrough();
           spyOn(PoziGeolocate, "doNew").andReturn(fakeGeolocate);

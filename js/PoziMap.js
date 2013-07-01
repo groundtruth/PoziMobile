@@ -15,7 +15,7 @@ define([
 ) {
 
     var PoziMap = function(detailsPage) {
-        var layers = Layers.doNew().layers;
+        var layers = Layers.doNew();
         var defaultZoomLevel = config.data().defaultZoomLevel;
         var geolocate = PoziGeolocate.doNew(layers.currentLocation);
         var that = this;
@@ -78,7 +78,7 @@ define([
             center: OpenLayers.LonLat.doNew(config.data().centerLon, config.data().centerLat)
         });
 
-        this.addLayers(layers);
+        this.addLayers(layers.list);
 
         this.addControls([
             OpenLayers.Control.SelectFeature.doNew(layers.data, {

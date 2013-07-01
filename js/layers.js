@@ -14,35 +14,35 @@ define([
 
     return function() {
 
-        this.layers = [];
+        this.list = [];
 
         switch (config.data().basemap) {
 
             case "OpenStreetMap":
-                this.layers.push(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
+                this.list.push(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
                 break;
 
             case "BingRoad":
-                this.layers.push(Bing.doNew("Road").layer);
+                this.list.push(Bing.doNew("Road").layer);
                 break;
 
             case "BingAerialWithLabels":
-                this.layers.push(Bing.doNew("AerialWithLabels").layer);
+                this.list.push(Bing.doNew("AerialWithLabels").layer);
                 break;
 
             default:
                 var vicmaps = Vicmaps.doNew();
-                this.layers.push(vicmaps.classic);
-                this.layers.push(vicmaps.labelClassic);
+                this.list.push(vicmaps.classic);
+                this.list.push(vicmaps.labelClassic);
                 break;
 
         }
 
-        this.layers.push(currentLocation);
-        this.layers.push(data);
+        this.list.push(currentLocation);
+        this.list.push(data);
 
-        this.layers.currentLocation = currentLocation;
-        this.layers.data = data;
+        this.currentLocation = currentLocation;
+        this.data = data;
 
     };
 
