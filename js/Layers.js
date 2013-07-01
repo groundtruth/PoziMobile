@@ -2,12 +2,14 @@ define([
     "config",
     "layers/Bing",
     "layers/Vicmaps",
+    "layers/VectorRoads",
     "layers/currentLocation",
     "layers/data"
 ], function(
     config,
     Bing,
     Vicmaps,
+    VectorRoads,
     currentLocation,
     data
 ) {
@@ -15,6 +17,10 @@ define([
     return function() {
 
         this.list = [];
+
+        if (config.data().showVectorRoads) {
+            this.list.push(VectorRoads.doNew(config.data().lga.toString()).layer);
+        }
 
         switch (config.data().basemap) {
 
