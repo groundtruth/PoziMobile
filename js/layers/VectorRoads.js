@@ -10,7 +10,27 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             })
         });
 
-        var url = "http://basemap.pozi.com/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:3857&typeName=VICMAP_CLASSIC:gt_vmtrans_road_aggr_lga&filter=%3Cogc%3AFilter%20xmlns%3Aogc%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3Cogc%3APropertyIsEqualTo%3E%3Cogc%3APropertyName%3Elga%3C%2Fogc%3APropertyName%3E%3Cogc%3ALiteral%3E" + lga + "%3C%2Fogc%3ALiteral%3E%3C%2Fogc%3APropertyIsEqualTo%3E%3C%2Fogc%3AFilter%3E";
+        var url =
+            "http://basemap.pozi.com/geoserver/wfs?" +
+            _({
+                service: "wfs",
+                version: "2.0.0",
+                request: "GetFeature",
+                outputFormat: "application/json",
+                srsName: "EPSG:3857",
+                typeName: "VICMAP_CLASSIC:gt_vmtrans_road_aggr_lga",
+                filter: ('\
+                            <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">\
+                                <ogc:PropertyIsEqualTo>\
+                                    <ogc:PropertyName>lga</ogc:PropertyName>\
+                                    <ogc:Literal>' + lga + '</ogc:Literal>\
+                                </ogc:PropertyIsEqualTo>\
+                            </ogc:Filter>\
+                        ').trim().replace(/>\s+</g, '><')
+            }).pairs().map(function(pair) {
+                return _(pair).map(function(item) { return encodeURIComponent(item); }).join("=");
+            }).join("&")
+        ;
 
         OpenLayers.Request.GET({
             url: url,
