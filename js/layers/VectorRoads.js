@@ -17,7 +17,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
                 version: "2.0.0",
                 request: "GetFeature",
                 outputFormat: "application/json",
-                srsName: "EPSG:3857",
+                srsName: proj.webMercator.projCode,
                 typeName: "VICMAP_CLASSIC:gt_vmtrans_road_aggr_lga",
                 filter: ('\
                             <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">\
@@ -35,10 +35,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         OpenLayers.Request.GET({
             url: url,
             success: function(response) {
-                var reader = OpenLayers.Format.GeoJSON.doNew({
-                    externalProjection: proj.webMercator,
-                    internalProjection: proj.webMercator
-                });
+                var reader = OpenLayers.Format.GeoJSON.doNew();
                 var features = reader.read(response.responseText);
                 that.layer.addFeatures(features);
             }
