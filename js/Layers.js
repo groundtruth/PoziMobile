@@ -43,7 +43,7 @@ define([
         }
 
         if (config.data().showVectorRoads) {
-            this.list.push(VectorRoads.doNew(config.data().lga.toString()).layer);
+            this.list.push(VectorRoads.doNew(config.data().lga).layer);
         }
 
         this.list.push(currentLocation);

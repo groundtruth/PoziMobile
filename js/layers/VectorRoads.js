@@ -23,7 +23,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
                             <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">\
                                 <ogc:PropertyIsEqualTo>\
                                     <ogc:PropertyName>lga</ogc:PropertyName>\
-                                    <ogc:Literal>' + lga + '</ogc:Literal>\
+                                    <ogc:Literal>' + lga.toString() + '</ogc:Literal>\
                                 </ogc:PropertyIsEqualTo>\
                             </ogc:Filter>\
                         ').trim().replace(/>\s+</g, '><')
