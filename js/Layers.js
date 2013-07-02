@@ -18,9 +18,7 @@ define([
 
         this.list = [];
 
-        if (config.data().showVectorRoads) {
-            this.list.push(VectorRoads.doNew(config.data().lga.toString()).layer);
-        }
+        this.list.push(OpenLayers.Layer.Vector.doNew("Null Basemap", { isBaseLayer: true }));
 
         switch (config.data().basemap) {
 
@@ -42,6 +40,10 @@ define([
                 this.list.push(vicmaps.labelClassic);
                 break;
 
+        }
+
+        if (config.data().showVectorRoads) {
+            this.list.push(VectorRoads.doNew(config.data().lga.toString()).layer);
         }
 
         this.list.push(currentLocation);

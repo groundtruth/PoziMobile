@@ -32,7 +32,10 @@ define(["openlayers"], function(OpenLayers) {
                 layers: 'VICMAP_CLASSIC:VicmapClassic',
                 format: 'image/png8'
             },
-            { transitionEffect: 'resize' }
+            { 
+                isBaseLayer: false,
+                transitionEffect: 'resize'
+            }
         );
 
     };
