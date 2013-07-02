@@ -44,6 +44,19 @@ define([
             expect(layerNames).not.toContain("Labels");
         });
 
+        it("should show the vector roads layer if so configured", function() {
+            spyOn(config, "data").andReturn({ showVectorRoads: true, lga: 338 });
+            var layerNames = _(Layers.doNew().list).map(function(l) { return l.name; });
+            expect(layerNames).toContain("Vector Roads");
+        });
+
+        it("should not show the vector roads layer unless asked", function() {
+            spyOn(config, "data").andReturn({ showVectorRoads: false, lga: 338 });
+            var layerNames = _(Layers.doNew().list).map(function(l) { return l.name; });
+            expect(layerNames).not.toContain("Vector Roads");
+        });
+
+
     });
 
 });
