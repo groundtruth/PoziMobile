@@ -18,8 +18,6 @@ define([
 
         this.list = [];
 
-        this.list.push(OpenLayers.Layer.Vector.doNew("Null Basemap", { isBaseLayer: true }));
-
         switch (config.data().basemap) {
 
             case "OpenStreetMap":
