@@ -60,8 +60,8 @@ define(["jquery", "mustache"], function($, Mustache) {
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}">{{ description }}</label>\
                             <select name="{{ id }}" id="{{ id }}" data-role="slider">\
-                                <option value="off">{{ off_label }}</option>\
-                                <option value="on">{{ on_label }}</option>\
+                                <option value="false">{{ off_label }}</option>\
+                                <option value="true">{{ on_label }}</option>\
                             </select>\
                         </div>\
                     ';
