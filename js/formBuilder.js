@@ -46,6 +46,27 @@ define(["jquery", "mustache"], function($, Mustache) {
                     ';
                     break;
 
+                case "number":
+                    template = '\
+                        <div data-role="fieldcontain">\
+                            <label for="{{ id }}">{{ description }}:</label>\
+                            <input type="number" name="{{ id }}" id="{{ id }}" min="{{ min }}" max="{{ max }}">\
+                        </div>\
+                    ';
+                    break;
+
+                case "flip_switch":
+                    template = '\
+                        <div data-role="fieldcontain">\
+                            <label for="{{ id }}">{{ description }}</label>\
+                            <select name="{{ id }}" id="{{ id }}" data-role="slider">\
+                                <option value="off">{{ off_label }}</option>\
+                                <option value="on">{{ on_label }}</option>\
+                            </select>\
+                        </div>\
+                    ';
+                    break;
+
                 case "hidden" :
                     template = '<input type="hidden" name="{{ id }}" id="{{ id }}" value="{{ value }}" />';
                     break;
