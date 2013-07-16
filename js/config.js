@@ -34,6 +34,17 @@ define(["jquery", "underscore"], function($, _) {
             var client, appName, matches, fileNameBase;
             if (matches = href.match(/^\w+:\/\/([a-z\-]+)/i)) { client = matches[1]; }
             if (matches = href.match(/^\w+:\/\/[^\/]+\/m\/([^\/]+)\//)) { appName = matches[1]; }
+            // Support for development on a localhost server e.g. Tomcat
+            if (matches = href.match(/^\w+:\/\/localhost.*/))
+            {
+                var getURLParameter = function (name) {
+                    return decodeURI(
+                        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+                    );
+                }
+                client = getURLParameter('client');
+                appName = getURLParameter('appName');
+            }
             fileNameBase = _([client, appName]).compact().join("-");
             if (fileNameBase.length > 1) {
                 return "config/" + fileNameBase + ".json";
