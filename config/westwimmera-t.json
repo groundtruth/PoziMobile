@@ -1,0 +1,53 @@
+{
+    "dataLayerName": "Trees",
+    "databaseName": "westwimmeragis",
+    "iconName":"tree.png",
+    "showVectorRoads": true,
+    "lga": 371,    
+    "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf", 
+    "readEndpoint": "/ws/rest/v3/ws_tree_geojson.php?callback=?",
+    "updateEndpoint": "/ws/rest/v3/ws_update_tree.php",
+    "createEndpoint": "/ws/rest/v3/ws_create_tree.php",
+    "deleteEndpoint": "/ws/rest/v3/ws_delete_tree.php",
+    "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
+    "centerLon": 15729159,
+    "centerLat": -4444141,
+    "detailsFields": [
+        {
+            "type": "select",
+            "id": "species",
+            "description": "Species",
+            "options": [
+                { "value": "-1", "label": "" },
+                { "value": "1", "label": "Banksia" },
+                { "value": "2", "label": "Callistemon" },
+                { "value": "3", "label": "Flowering Gum" },
+                { "value": "4", "label": "Lilly Pilly" },
+                { "value": "5", "label": "Melaleuca" },
+                { "value": "6", "label": "Prickly Acacia" },
+                { "value": "7", "label": "Spotted Gum" },
+                { "value": "8", "label": "Wattle" },
+                { "value": "9", "label": "TBI" }
+            ]
+        },
+        {
+            "type": "number",
+            "id": "height",
+            "description": "Height",
+            "min":0,
+            "max":99
+        },
+        {
+            "type": "flip_switch",
+            "id": "power_lines_above",
+            "description": "Power lines above?",
+            "off_label": "No",
+            "on_label": "Yes"            
+        },
+        {
+            "type": "textarea",
+            "id": "comments",
+            "description": "Comments"
+        }
+    ]
+}
