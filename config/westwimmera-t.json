@@ -7,8 +7,8 @@
     "createEndpoint": "/ws/rest/v3/ws_create_tree.php",
     "deleteEndpoint": "/ws/rest/v3/ws_delete_tree.php",
     "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
-    "centerLon": 15986928,
-    "centerLat": -4358362,
+    "centerLon": 15729159,
+    "centerLat": -4444141,
     "detailsFields": [
         {
             "type": "select",
