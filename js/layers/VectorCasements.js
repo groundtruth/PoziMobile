@@ -7,7 +7,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
             styleMap: OpenLayers.StyleMap.doNew({
                 stroke: false,
                 fillColor: "#CCCCCC",
-                fillOpacity: 0.33
+                fillOpacity: 0.5
             })
         });
 
@@ -20,6 +20,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
                 outputFormat: "application/json",
                 srsName: proj.webMercator.projCode,
                 typeName: "VICMAP_CLASSIC:gt_vmtrans_road_casement_lga",
+                propertyName: "the_geom",
                 filter: ('\
                             <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">\
                                 <ogc:PropertyIsEqualTo>\
