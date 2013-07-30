@@ -5,8 +5,9 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
 
         this.layer = OpenLayers.Layer.Vector.doNew("Vector Roads", {
             styleMap: OpenLayers.StyleMap.doNew({
-                strokeWidth: 1,
-                strokeColor: "#FF0000",
+                strokeWidth: 10,
+                strokeColor: "#888888",
+                strokeOpacity: 1
             })
         });
 
@@ -19,6 +20,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
                 outputFormat: "application/json",
                 srsName: proj.webMercator.projCode,
                 typeName: "VICMAP_CLASSIC:gt_vmtrans_road_aggr_lga",
+                propertyName: "the_geom",
                 filter: ('\
                             <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">\
                                 <ogc:PropertyIsEqualTo>\
