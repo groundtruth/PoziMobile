@@ -5,7 +5,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
 
         this.layer = OpenLayers.Layer.Vector.doNew("Vector Roads", {
             styleMap: OpenLayers.StyleMap.doNew({
-                strokeWidth: 10,
+                strokeWidth: 5,
                 strokeColor: "#888888",
                 strokeOpacity: 1
             })
