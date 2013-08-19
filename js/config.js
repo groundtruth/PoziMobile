@@ -34,17 +34,15 @@ define(["jquery", "underscore"], function($, _) {
             var client, appName, matches, fileNameBase;
             if (matches = href.match(/^\w+:\/\/([a-z\-]+)/i)) { client = matches[1]; }
             if (matches = href.match(/^\w+:\/\/[^\/]+\/m\/([^\/]+)\//)) { appName = matches[1]; }
-            // Support for development on a localhost server e.g. Tomcat
-            if (matches = href.match(/^\w+:\/\/localhost.*/))
-            {
-                var getURLParameter = function (name) {
-                    return decodeURI(
-                        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-                    );
-                }
-                client = getURLParameter('client');
-                appName = getURLParameter('appName');
+
+            // override with URL parameters if available, to support development on localhost
+            var getParameterByName = function(name) {
+                var match = RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
+                return match && decodeURIComponent(match[1].replace(/\+/g, " "));
             }
+            client = getParameterByName("client") || client;
+            appName = getParameterByName("appName") || appName;
+
             fileNameBase = _([client, appName]).compact().join("-");
             if (fileNameBase.length > 1) {
                 return "config/" + fileNameBase + ".json";
