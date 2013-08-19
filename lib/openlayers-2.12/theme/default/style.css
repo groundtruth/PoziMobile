@@ -273,9 +273,9 @@ div.olControlSaveFeaturesItemInactive {
 }
 
 .olImageLoadError {
-    background-color: transparent;
-    opacity: 0;
-    filter: alpha(opacity=0); /* IE */
+    background-color: pink;
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* IE */
 }
 
 /**

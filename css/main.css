@@ -65,3 +65,10 @@ body {
 	text-decoration: none;
 }
 
+/* better missing tile style */
+img.olImageLoadError {
+  background-color: transparent;
+  opacity: 0;
+  filter: alpha(opacity=0); /* IE */
+}
+
