@@ -21,32 +21,9 @@ define([
 ) {
 
     return function() {
-        var displayVicmapLabels = false;
+
         this.list = [];
 
-        switch (config.data().basemap) {
-
-            case "OpenStreetMap":
-                this.list.push(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
-                break;
-
-            case "BingRoad":
-                this.list.push(Bing.doNew("Road").layer);
-                break;
-
-            case "BingAerialWithLabels":
-                this.list.push(Bing.doNew("AerialWithLabels").layer);
-                break;
-
-            default:
-                var vicmaps = Vicmaps.doNew();
-                this.list.push(vicmaps.classic);
-                displayVicmapLabels = true;
-                break;
-
-        }
-
-        // Offline layers
         if (config.data().showVectorCasements) {
             this.list.push(VectorCasements.doNew(config.data().lga).layer);
         }
@@ -63,13 +40,30 @@ define([
             this.list.push(VectorAddresses.doNew(config.data().lga).layer);
         }
 
-        // Placing the label layer on top for better readibility when offline
-        if (displayVicmapLabels) {
-            this.list.push(vicmaps.labelClassic);
-        }
-
         this.list.push(currentLocation);
         this.list.push(data);
+
+        switch (config.data().basemap) {
+
+            case "OpenStreetMap":
+                this.list.unshift(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
+                break;
+
+            case "BingRoad":
+                this.list.unshift(Bing.doNew("Road").layer);
+                break;
+
+            case "BingAerialWithLabels":
+                this.list.unshift(Bing.doNew("AerialWithLabels").layer);
+                break;
+
+            default:
+                var vicmaps = Vicmaps.doNew();
+                this.list.unshift(vicmaps.classic);
+                this.list.push(vicmaps.labelClassic); // on top, for readability in offline mode
+                break;
+
+        }
 
         this.currentLocation = currentLocation;
         this.data = data;
