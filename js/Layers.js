@@ -64,8 +64,7 @@ define([
         }
 
         // Placing the label layer on top for better readibility when offline
-        if (displayVicmapLabels)
-        {
+        if (displayVicmapLabels) {
             this.list.push(vicmaps.labelClassic);
         }
 
