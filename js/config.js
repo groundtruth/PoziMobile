@@ -43,9 +43,8 @@ define(["jquery", "underscore"], function($, _) {
             client = getParameterByName("client") || client;
             appName = getParameterByName("appName") || appName;
 
-            fileNameBase = _([client, appName]).compact().join("-");
-            if (fileNameBase.length > 1) {
-                return "config/" + fileNameBase + ".json";
+            if (client && appName) {
+                return "config/" + client + "-" + appName + ".json";
             } else {
                 return "config/demo-mc.json";
             }
