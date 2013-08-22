@@ -22,16 +22,13 @@ At Groundtruth we can deploy the last version pushed to GitHub by running
 ## Run the unit tests
 
 We are using Jasmine for unit testing, but have set it up to run from the
-command line with [Grunt](http://gruntjs.com/) and
-[PhantomJS](http://phantomjs.org/) so that
-[TravisCI](http://about.travis-ci.org/) can be used for automated, continuous
-testing.
+command line so that we can have automated, continuous testing.
 
 Before running the tests locally, you'll need to install:
 
 * [PhantomJS](http://phantomjs.org/download.html)
 * [Node.js](http://nodejs.org/download/)
-* Grunt: `npm install -g grunt-cli`
+* [Grunt](http://gruntjs.com/getting-started): `npm install -g grunt-cli`
 * this project's node modules: `npm install`
 
 Now you're ready to run the tests:
