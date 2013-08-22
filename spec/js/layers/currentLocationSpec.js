@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "underscore", "proj", "layers/currentLocation"], function(SpecHelper, _, proj, currentLocation) {
+define(["spec/SpecHelper", "underscore", "js/proj", "js/layers/currentLocation"], function(SpecHelper, _, proj, currentLocation) {
 
     describe("layers/currentLocation", function() {
         var point, accuracy, oldMap;

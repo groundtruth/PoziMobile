@@ -1,4 +1,4 @@
-define(["openlayers", "proj"], function(OpenLayers, proj) {
+define(["openlayers", "js/proj"], function(OpenLayers, proj) {
 
     var PoziGeolocate = function(currentLocationLayer) {
 
@@ -7,7 +7,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         
         this.startFollowing = function() {
             if (typeof(watchId) !== 'undefined') { throw new Error("Already following."); }
-            watchId = navigator.geolocation.watchPosition(
+            watchId = window.navigator.geolocation.watchPosition(
                 function(e) {
                     currentLocationLayer.setLocation(
                         OpenLayers.Geometry.Point.doNew(e.coords.longitude, e.coords.latitude).transform(proj.WGS84, proj.webMercator),
@@ -32,7 +32,7 @@ define(["openlayers", "proj"], function(OpenLayers, proj) {
         this.stopFollowing = function() {
             if (typeof(watchId) === 'undefined') { throw new Error("Cant's stop. Not following."); }
             currentLocationLayer.clearLocationMarker();
-            navigator.geolocation.clearWatch(watchId);
+            window.navigator.geolocation.clearWatch(watchId);
             watchId = undefined;
         };
 

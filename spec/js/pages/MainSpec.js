@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "pages/Main", "PoziMap"], function(SpecHelper, Main, PoziMap) {
+define(["spec/SpecHelper", "js/pages/Main", "js/PoziMap"], function(SpecHelper, Main, PoziMap) {
 
     describe("pages/Main", function() {
         var details, syncher, map, subject;

@@ -1,4 +1,4 @@
-define(["jquery", "config"], function($, config) {
+define(["jquery", "js/config"], function($, config) {
 
     return function(pages) {
 

@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "formBuilder"], function(SpecHelper, formBuilder) {
+define(["spec/SpecHelper", "js/formBuilder"], function(SpecHelper, formBuilder) {
 
     describe("formBuilder", function() {
 

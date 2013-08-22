@@ -1,4 +1,4 @@
-define(["jquery", "openlayers", "config"], function($, OpenLayers, config) {
+define(["jquery", "openlayers", "js/config"], function($, OpenLayers, config) {
 
     // The style hardcodes the correspondance between a status code and the external graphic name
     // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
@@ -25,9 +25,9 @@ define(["jquery", "openlayers", "config"], function($, OpenLayers, config) {
                 config: config.data().databaseName
             },
             function(data, textStatus) {
+                // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                 var features = reader.read(data);
-                // Checking if some features actually have been retrieved
-                if (textStatus == "success" && features.length) {
+                if (features.length > 0) {
                     layer.destroyFeatures(); // could check for duplicates instead of just clearing all
                     layer.addFeatures(features);
                 }

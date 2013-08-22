@@ -1,0 +1,21 @@
+{
+  "name": "pozimobile",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jasmine": "~0.5.1",
+    "grunt-template-jasmine-requirejs": "~0.1.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/groundtruth/PoziMobile.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/groundtruth/PoziMobile/issues"
+  }
+}

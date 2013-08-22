@@ -1,13 +1,13 @@
 define([
-    "config",
-    "layers/Bing",
-    "layers/Vicmaps",
-    "layers/VectorRoads",
-    "layers/VectorAddresses",
-    "layers/VectorProperties",
-    "layers/VectorCasements",
-    "layers/currentLocation",
-    "layers/data"
+    "js/config",
+    "js/layers/Bing",
+    "js/layers/Vicmaps",
+    "js/layers/VectorRoads",
+    "js/layers/VectorAddresses",
+    "js/layers/VectorProperties",
+    "js/layers/VectorCasements",
+    "js/layers/currentLocation",
+    "js/layers/data"
 ], function(
     config,
     Bing,

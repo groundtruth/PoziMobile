@@ -1,4 +1,4 @@
-define(["pages/Main", "pages/Details", "Syncher"], function(Main, Details, Syncher) {
+define(["js/pages/Main", "js/pages/Details", "js/Syncher"], function(Main, Details, Syncher) {
 
     return function() {
 

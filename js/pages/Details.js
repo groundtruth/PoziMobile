@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "config", "formBuilder"], function($, _, config, formBuilder) {
+define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, config, formBuilder) {
 
     return function(givenSyncher) {
 

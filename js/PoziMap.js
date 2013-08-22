@@ -1,10 +1,10 @@
 define([
     "jquery",
     "openlayers",
-    "proj",
-    "PoziGeolocate",
-    "Layers",
-    "config"
+    "js/proj",
+    "js/PoziGeolocate",
+    "js/Layers",
+    "js/config"
 ], function(
     $,
     OpenLayers,

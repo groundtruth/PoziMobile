@@ -1,4 +1,4 @@
-define(["jquery", "PoziMap", "proj"], function($, PoziMap, proj) {
+define(["jquery", "js/PoziMap", "js/proj"], function($, PoziMap, proj) {
 
     return function(opts) {
         var that = this;

@@ -1,10 +1,10 @@
 define([
     "spec/SpecHelper",
-    "PoziMap",
-    "PoziGeolocate",
-    "Layers",
+    "js/PoziMap",
+    "js/PoziGeolocate",
+    "js/Layers",
     "openlayers",
-    "config"
+    "js/config"
 ], function(
     SpecHelper,
     PoziMap,

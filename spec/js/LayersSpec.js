@@ -1,8 +1,8 @@
 define([
     "spec/SpecHelper",
     "underscore",
-    "config",
-    "Layers"
+    "js/config",
+    "js/Layers"
 ], function(
     SpecHelper,
     _,

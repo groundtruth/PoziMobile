@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "Syncher", "config"], function(SpecHelper, Syncher, config) {
+define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Syncher, config) {
 
     describe("Syncher", function() {
         var pages, subject, formData, configData;

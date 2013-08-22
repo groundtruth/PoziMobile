@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "underscore", "config"], function(SpecHelper, _, config) {
+define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, config) {
 
     describe("config", function() {
 

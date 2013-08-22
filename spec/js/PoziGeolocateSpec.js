@@ -1,25 +1,31 @@
-define(["spec/SpecHelper", "PoziGeolocate", "proj"], function(SpecHelper, PoziGeolocate, proj) {
+define(["spec/SpecHelper", "js/PoziGeolocate", "js/proj"], function(SpecHelper, PoziGeolocate, proj) {
 
     describe("PoziGeolocate", function() {
         var subject,
             currentLocationLayer,
             successHandler,
             failureHandler,
-            options;
+            options,
+            oldNavigator;
         var fakeWatchId = jasmine.createSpy("watchId");
 
         beforeEach(function() {
             currentLocationLayer = jasmine.createSpyObj("currentLocationLayer", ["setLocation", "clearLocationMarker"]);
             spyOn(window, "alert");
-            spyOn(navigator.geolocation, "watchPosition").andCallFake(function(s, f, o) {
+            oldNavigator = window.navigator;
+            window.navigator = { geolocation: jasmine.createSpyObj("geolocation", ["watchPosition", "clearWatch"]) };
+            window.navigator.geolocation.watchPosition.andCallFake(function(s, f, o) {
                 successHandler = s;
                 failureHandler = f;
                 options = o;
                 return fakeWatchId; 
             });
-            spyOn(navigator.geolocation, "clearWatch");
             subject = PoziGeolocate.doNew(currentLocationLayer);
             subject.startFollowing();
+        });
+
+        afterEach(function() {
+            window.navigator = oldNavigator;
         });
 
         describe("#startFollowing", function() {
@@ -60,7 +66,7 @@ define(["spec/SpecHelper", "PoziGeolocate", "proj"], function(SpecHelper, PoziGe
         describe("#stopFollowing", function() {
             it("should clear the watch (of location)", function() {
                 subject.stopFollowing();
-                expect(navigator.geolocation.clearWatch).toHaveBeenCalledWith(fakeWatchId);
+                expect(window.navigator.geolocation.clearWatch).toHaveBeenCalledWith(fakeWatchId);
             });
         });
 

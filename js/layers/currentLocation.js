@@ -1,4 +1,4 @@
-define(["openlayers", "proj"], function(OpenLayers, proj) {
+define(["openlayers", "js/proj"], function(OpenLayers, proj) {
 
     var currentLocationLayer = OpenLayers.Layer.Vector.doNew("Current location", {});
 

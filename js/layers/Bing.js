@@ -1,4 +1,4 @@
-define(["openlayers", "config"], function(OpenLayers, config) {
+define(["openlayers", "js/config"], function(OpenLayers, config) {
 
     return function(kind) {
 

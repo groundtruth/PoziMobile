@@ -1,12 +1,12 @@
-define(["spec/SpecHelper", "config", "layers/data"], function(SpecHelper, config, data) {
+define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, config, data) {
 
     describe("layers/data", function() {
         describe("#getFeaturesAround", function() {
 
-            var configData, lon, lat, handler;
+            var configData, lon, lat, handler, responseData;
 
             beforeEach(function() {
-                configData = jasmine.createSpyObj("configData", ["readEndpoint", "featuresLimit", "databaseName"]);
+                configData = jasmine.createSpyObj("configData", ["readEndpoint", "featuresLimit", "databaseName", "iconName"]);
                 spyOn(config, "data").andReturn(configData);
                 lon = 143.65305771415987;
                 lat = -36.43791886509164;
@@ -32,6 +32,7 @@ define(["spec/SpecHelper", "config", "layers/data"], function(SpecHelper, config
                 beforeEach(function() {
                     data.getFeaturesAround({ lon: lon, lat: lat });
                     var handler = $.getJSON.mostRecentCall.args[2];
+                    debugger;
                     handler(responseData, jasmine.createSpy("textStatus"));
                 });
 
