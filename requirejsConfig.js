@@ -3,19 +3,17 @@ define([], function() {
     requirejs.config({
         urlArgs: "bust=" +  (new Date()).getTime(),
         paths: {
-            "jasmine-jquery": "lib/jasmine-jquery/jasmine-jquery",
-            "underscore": "lib/underscore-1.4.3/underscore",
-            "jquery": "lib/jquery-1.8.3/jquery-1.8.3.min",
-            "jquery.mobile": "lib/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
-            "openlayers": "lib/openlayers-2.12/OpenLayers.mobile",
-            "mustache": "lib/mustache-0.7.2/mustache",
-            // "json": "lib/JSON-js/json2"
+            "jasmine-jquery": "vendor/jasmine-jquery/jasmine-jquery",
+            "underscore": "vendor/underscore-1.4.3/underscore",
+            "jquery": "vendor/jquery-1.8.3/jquery-1.8.3.min",
+            "jquery.mobile": "vendor/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
+            "openlayers": "vendor/openlayers-2.12/OpenLayers.mobile",
+            "mustache": "vendor/mustache-0.7.2/mustache"
         },
         shim: {
             "jasmine-jquery": { deps: ["jquery"], exports: "jasmine" },
             "underscore": { exports: "_" },
             "openlayers": { exports: "OpenLayers" }
-            // "json": { exports: "JSON" }
         },
         callback: function($) {
             // CREATE A METHOD TO WRAP THE PROCESS OF OBJECT CONSTRUCTION
