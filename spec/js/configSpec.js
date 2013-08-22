@@ -13,7 +13,7 @@ define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, c
             });
 
             it("should default to demo config if there is no subdomain or app name", function() {
-                expect(config.configURL("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual("config/demo-mc.json");
+                expect(config.configURL("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual("config-demo.json");
             });
 
         });

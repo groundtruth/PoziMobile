@@ -47,7 +47,7 @@ define(["jquery", "underscore"], function($, _) {
             if (client && appName) {
                 return "config/" + client + "-" + appName + ".json";
             } else {
-                return "config/demo-mc.json";
+                return "config-demo.json";
             }
         },
 
