@@ -2,6 +2,8 @@
 
 A mobile-optimised web app for collection of location-related data.
 
+[![Build Status](https://travis-ci.org/groundtruth/PoziMobile.png?branch=master)](https://travis-ci.org/groundtruth/PoziMobile)
+
 
 ## External dependencies
 
@@ -22,7 +24,8 @@ At Groundtruth we can deploy the last version pushed to GitHub by running
 ## Run the unit tests
 
 We are using Jasmine for unit testing, but have set it up to run from the
-command line so that we can have automated, continuous testing.
+command line so that we can have automated, continuous testing done on
+[TravisCI](https://travis-ci.org/groundtruth/PoziMobile).
 
 Before running the tests locally, you'll need to install:
 
