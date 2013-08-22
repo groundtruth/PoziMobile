@@ -21,6 +21,16 @@ At Groundtruth we can deploy the last version pushed to GitHub by running
 `./deploy.sh`.
 
 
+## Configuration
+
+This repository tracks the PoziMobile application in a generic form. As such
+it contains a single demonstration configuration file. Additional,
+application-specific configuration is expected to be found in a `config/`
+subdirectory. This may be done by cloning a repository of configuration into
+that location, or by making `config` a link to a directory where configuration
+is maintained.
+
+
 ## Run the unit tests
 
 We are using Jasmine for unit testing, but have set it up to run from the
