@@ -3,6 +3,7 @@ define(["jquery", "underscore"], function($, _) {
     var defaults = {
         "defaultZoomLevel": 18,
         "maxZoom": 19,
+        "iconFile": "img/mobile-loc-1.png",
         "featuresLimit": 20,
         "genericDetailsFields": [
             {

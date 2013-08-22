@@ -4,7 +4,7 @@ define(["jquery", "openlayers", "js/config"], function($, OpenLayers, config) {
     // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
     var layer = OpenLayers.Layer.Vector.doNew(config.data().dataLayerName, {
         styleMap: OpenLayers.StyleMap.doNew({
-            externalGraphic: "img/"+(config.data().iconName?config.data().iconName:"mobile-loc-1.png"),
+            externalGraphic: config.data().iconFile,
             graphicOpacity: 1.0,
             graphicWith: 16,
             graphicHeight: 26,
