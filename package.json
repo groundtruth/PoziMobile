@@ -7,7 +7,7 @@
     "grunt-template-jasmine-requirejs": "~0.1.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt jasmine"
   },
   "repository": {
     "type": "git",
