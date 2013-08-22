@@ -6,27 +6,56 @@ A mobile-optimised web app for collection of location-related data.
 ## External dependencies
 
 PoziMobile depends on some small web services to handle server-side persistence.
+[RestfulGeof](http://github.com/groundtruth/restful_geof) was built to perform
+this function.
 
 
 ## Deployment
 
 This repository should be served as static files from the same webserver that
-hosts the web services. Running `./deploy.sh` should redeploy the last version
-pushed to GitHub.
+hosts the web services.
+
+At Groundtruth we can deploy the last version pushed to GitHub by running
+`./deploy.sh`.
 
 
 ## Run the unit tests
 
-Just open `SpecRunner.html` (via a web server).
+We are using Jasmine for unit testing, but have set it up to run from the
+command line with [Grunt](http://gruntjs.com/) and
+[PhantomJS](http://phantomjs.org/) so that
+[TravisCI](http://about.travis-ci.org/) can be used for automated, continuous
+testing.
+
+Before running the tests locally, you'll need to install:
+
+* [PhantomJS](http://phantomjs.org/download.html)
+* [Node.js](http://nodejs.org/download/)
+* Grunt: `npm install -g grunt-cli`
+* this project's node modules: `npm install`
+
+Now you're ready to run the tests:
+
+    grunt jasmine          # run the tests in the console
+    grunt jasmine -v       # with more verbose output
+
+    grunt jasmine::build   # this generates _SpecRunner.html
+
+By opening the `_SpecRunner.html` file in the browser (it's important to do
+this via a web server), you can run the specs directly, without Grunt. This
+can be useful when debugging. Note that the `_SpecRunner.html` file will
+need to be regenerated if you change the name of any spec file.
 
 
 ## Check code coverage
 
-To check code coverage, install [JSCoverage](http://siliconforks.com/jscoverage/manual.html)
+To check code coverage, follow the testing steps above, then install
+[JSCoverage](http://siliconforks.com/jscoverage/manual.html)
 (e.g. `brew update && brew install jscoverage`) and run `./coverage.sh`.
 
 In the future it may be worth switching to [JSCover](http://tntim96.github.com/JSCover/)
-(a updated version, rewritten in Java instead of C++).
+(a updated version, rewritten in Java instead of C++), or
+[Istanbul](https://github.com/gotwarlost/istanbul) (a Node.js-based coverage tool).
 
 
 ## Full stack testing with WebDriver and PhantomJS, in JavaScript
