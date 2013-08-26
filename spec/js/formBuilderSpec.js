@@ -76,6 +76,41 @@ define(["spec/SpecHelper", "js/formBuilder"], function(SpecHelper, formBuilder) 
                 '));
             });
 
+            it("should be able to build a number field with a min and a max", function() {
+                var result = formBuilder.buildField({
+                    "type": "number",
+                    "id": "mynum",
+                    "description": "My Number",
+                    "min": 0,
+                    "max": 6
+                });
+                expect(noWhitespace(result)).toEqual(noWhitespace('\
+                    <div data-role="fieldcontain">\
+                        <label for="mynum">My Number:</label>\
+                        <input type="number" name="mynum" id="mynum" min="0" max="6">\
+                    </div>\
+                '));
+            });
+
+            it("should be able to build a flip switch with labels", function() {
+                var result = formBuilder.buildField({
+                    "type": "flip_switch",
+                    "id": "myflip",
+                    "description": "My Sliding Flip Switch",
+                    "off_label": "Off",
+                    "on_label": "On" 
+                });
+                expect(noWhitespace(result)).toEqual(noWhitespace('\
+                    <div data-role="fieldcontain">\
+                        <label for="myflip">My Sliding Flip Switch</label>\
+                        <select name="myflip" id="myflip" data-role="slider">\
+                            <option value="false">Off</option>\
+                            <option value="true">On</option>\
+                        </select>\
+                    </div>\
+                '));
+            });
+
             it("should be able to build a hidden input with a value", function() {
                 var result = formBuilder.buildField({
                     "type": "hidden",
