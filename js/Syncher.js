@@ -2,53 +2,63 @@ define(["jquery", "js/config"], function($, config) {
 
     return function(pages) {
 
-        var queue = [];
-        var requestCount = 0;
+        var waitingQueue = [];
+        var activeQueue = [];
 
         var doSync = function(item) {
-            requestCount++;
             updateInterface();
             $.ajax({
                 type: "POST", // TODO: use different verbs when server side is re-done
                 url: config.data()[item.action+"Endpoint"],
                 data: item.data,
                 success: function(e) {
-                    requestCount--;
+                    activeQueue = _(activeQueue).without(item);
                     updateInterface();
                 },
                 error: function(e) {
-                    queue.push(item);
-                    requestCount--;
+                    waitingQueue.push(item);
+                    activeQueue = _(activeQueue).without(item);
                     updateInterface();
                 }
             });
         };
 
-        var updateInterface = function() {
-            var icon;
-            if (requestCount > 0) { icon = "pm-spinner"; }
-            else if (queue.length === 0) { icon = "check"; }
-            else { icon = "refresh"; }
+        var unsyncdCount = function() {
+            return waitingQueue.length + activeQueue.length;
+        };
 
-            var count = queue.length + requestCount;
-            var label = count === 0 ? "&nbsp;" : count;
+        var nothingToSync = function() {
+            return unsyncdCount() === 0;
+        };
+
+        var updateInterface = function() {
+            var label = nothingToSync() ? "&nbsp;" : unsyncdCount();
+            var icon;
+
+            if (activeQueue.length > 0) { icon = "pm-spinner"; }
+            else if (nothingToSync()) { icon = "check"; }
+            else { icon = "refresh"; }
 
             pages.setSyncButton(icon, label);
 
-            if (requestCount === 0 && queue.length === 0) { pages.updateData(); }
+            if (nothingToSync()) { pages.updateData(); }
         };
 
         this.persist = function(action, data) {
-            queue.push({ action: action, data: data });
+            waitingQueue.push({ action: action, data: data });
             this.processQueue();
         };
 
         this.processQueue = function(manual) {
             var item;
-            if (manual && queue.length === 0 && requestCount === 0) {
+            if (manual && nothingToSync()) {
                 alert("There are no unsynchronised changes.");
             } else {
-                while (item = queue.shift()) { doSync(item); }
+                while (item = _(waitingQueue).first()) {
+                    activeQueue.push(item);
+                    waitingQueue = _(waitingQueue).without(item);
+                    doSync(item);
+                }
             }
         };
 
