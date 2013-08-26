@@ -7,7 +7,7 @@
 ) &
 
 jscoverage-server \
-    --no-instrument=/lib \
+    --no-instrument=/vendor \
     --no-instrument=/spec \
     --no-instrument=.grunt \
     --verbose
