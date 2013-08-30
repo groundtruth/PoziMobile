@@ -4,8 +4,11 @@ define(["jquery", "js/config"], function($, config) {
 
         var queues = { waiting: [], active: [] };
 
+        var appId = config.appId(window.location.href);
+        var localStorageKey = ["pozimobile", appId.client, appId.appName].join("-");
+
         var backupQueues = function() {
-            localStorage.setItem("key", JSON.stringify(queues));
+            localStorage.setItem(localStorageKey, JSON.stringify(queues));
         };
 
         var doSync = function(item) {

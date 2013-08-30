@@ -32,6 +32,7 @@ define(["jquery", "underscore"], function($, _) {
     return {
 
         appId: function(href) {
+            if (href === undefined) { throw(new Error("Need to supply a URL!")); }
             var client, appName, matches;
             // example: http://client.domain.tld/m/appName
             if (matches = href.match(/^\w+:\/\/([a-z\-]+)\.[^\/\.]+\.[^\/\.]+/i)) { client = matches[1]; }

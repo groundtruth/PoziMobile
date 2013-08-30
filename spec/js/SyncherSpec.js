@@ -140,21 +140,21 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
             beforeEach(function() {
                 spyOn(localStorage, "setItem");
                 spyOn($, "ajax");
-                subject.persist("create", formData);
+                subject.persist("create", "form data");
                 $.ajax.mostRecentCall.args[0].success(jasmine.createSpy("ajaxEvent"));
-                subject.persist("delete", formData);
+                subject.persist("delete", "form data");
                 $.ajax.mostRecentCall.args[0].error(jasmine.createSpy("ajaxEvent"));
             });
 
             it("should initially backup in waiting queue", function() {
                 expect(localStorage.setItem.argsForCall[0]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [{ action: "create", data: formData }], active: []})
+                    JSON.stringify({ waiting: [{ action: "create", data: "form data" }], active: []})
                 ]);
             });
 
             it("should backup again when moved into active queue", function() {
                 expect(localStorage.setItem.argsForCall[1]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [], active: [{ action: "create", data: formData }]})
+                    JSON.stringify({ waiting: [], active: [{ action: "create", data: "form data" }]})
                 ]);
             });
 
@@ -168,8 +168,25 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 // localStorage.setItem.argsForCall[3]; // queue delete
                 // localStorage.setItem.argsForCall[4]; // waiting->active for delete
                 expect(localStorage.setItem.argsForCall[5]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [{ action: "delete", data: formData }], active: []})
+                    JSON.stringify({ waiting: [{ action: "delete", data: "form data" }], active: []})
                 ]);
+            });
+
+            it("should use a key that is unqiue for this application (not just domain)", function() {
+                var id = config.appId(window.location.href);
+                expect(localStorage.setItem.argsForCall.length).toBeGreaterThan(0);
+                _(localStorage.setItem.argsForCall).each(function(args) {
+                    expect(args[0]).toEqual(["pozimobile", id.client, id.appName].join("-"));
+                });
+            });
+
+            xit("should load any back up when starting", function() {
+            });
+
+            xit("should alert if localStorage isn't available", function() {
+            });
+
+            xit("should alert if localStorage quota is exceeded", function() {
             });
 
         });
