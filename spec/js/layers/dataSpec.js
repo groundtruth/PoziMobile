@@ -32,7 +32,6 @@ define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, 
                 beforeEach(function() {
                     data.getFeaturesAround({ lon: lon, lat: lat });
                     var handler = $.getJSON.mostRecentCall.args[2];
-                    debugger;
                     handler(responseData, jasmine.createSpy("textStatus"));
                 });
 
