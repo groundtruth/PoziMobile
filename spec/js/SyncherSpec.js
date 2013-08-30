@@ -4,7 +4,6 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
         var pages, subject, formData, configData;
 
         beforeEach(function() {
-            
             configData = jasmine.createSpyObj("configData", ["createEndpoint", "updateEndpoint", "deleteEndpoint"]);
             spyOn(config, "data").andReturn(configData);
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
@@ -18,22 +17,16 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 var setSyncButtonCalls = [];
 
                 beforeEach(function() {
-                    var successHandler;
-                    spyOn($, 'ajax').andCallFake(function(req) { successHandler = req.success; });
+                    spyOn($, 'ajax');
 
                     subject.persist("create", formData);
-                    
                     expect(pages.setSyncButton.callCount).toEqual(1);
-                    setSyncButtonCalls.push(pages.setSyncButton.mostRecentCall.args);
-
-                    successHandler(jasmine.createSpy("ajaxEvent"));
-
+                    $.ajax.argsForCall[0][0].success(jasmine.createSpy("ajaxEvent"));
                     expect(pages.setSyncButton.callCount).toEqual(2);
-                    setSyncButtonCalls.push(pages.setSyncButton.mostRecentCall.args);
                 });
 
                 it("should show the spinner and a count active requests", function() {
-                    expect(setSyncButtonCalls[0]).toEqual(['pm-spinner', 1]);
+                    expect(pages.setSyncButton.argsForCall[0]).toEqual(['pm-spinner', 1]);
                 });
 
                 it("should make the right ajax call", function() {
@@ -44,24 +37,18 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                     expect(req.data).toEqual(formData);
                 });
 
-                it("should show the tick and no count", function() {
-                    expect(setSyncButtonCalls[1]).toEqual(['check', '&nbsp;']);
+                it("should show the tick and no count when done", function() {
                     expect(pages.setSyncButton.mostRecentCall.args).toEqual(['check', '&nbsp;']);
                 });
 
             });
 
             describe("with a failing change", function() {
-                var handlers;
 
                 beforeEach(function() {
-                    handlers = []; // TODO: replace this with `.argsForCall[n]`
-                    spyOn($, 'ajax').andCallFake(function(req) {
-                        handlers.push({ success: req.success, error: req.error });
-                    });
-
+                    spyOn($, 'ajax');
                     subject.persist("delete", formData);
-                    handlers[0].error(jasmine.createSpy("ajaxEvent"));
+                    $.ajax.argsForCall[0][0].error(jasmine.createSpy("ajaxEvent"));
                 });
 
                 it("should remember failed change", function() {
@@ -82,10 +69,10 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                     subject.persist("update", formData);
                     expect(pages.setSyncButton.mostRecentCall.args).toEqual(['pm-spinner', 2]);
 
-                    handlers[handlers.length-2].success(jasmine.createSpy("ajaxEvent"));
+                    $.ajax.argsForCall[$.ajax.argsForCall.length-2][0].success(jasmine.createSpy("ajaxEvent"));
                     expect(pages.setSyncButton.mostRecentCall.args).toEqual(['pm-spinner', 1]);
 
-                    handlers[handlers.length-1].error(jasmine.createSpy("ajaxEvent"));
+                    $.ajax.argsForCall[$.ajax.argsForCall.length-1][0].error(jasmine.createSpy("ajaxEvent"));
                     expect(pages.setSyncButton.mostRecentCall.args).toEqual(['refresh', 1]);
                 });
 
@@ -108,18 +95,14 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
         describe("#processQueue", function() {
 
             describe("with one change waiting, one change active", function() {
-                var handlers;
 
                 beforeEach(function() {
-                    handlers = [];
                     spyOn(window, 'alert');
-                    spyOn($, 'ajax').andCallFake(function(req) {
-                        handlers.push({ success: req.success, error: req.error });
-                    });
+                    spyOn($, 'ajax');
 
                     subject.persist("delete", formData);
                     subject.persist("update", formData);
-                    handlers[0].error(jasmine.createSpy("ajaxEvent"));
+                    $.ajax.argsForCall[0][0].error(jasmine.createSpy("ajaxEvent"));
 
                     expect($.ajax.callCount).toEqual(2);
                 });
