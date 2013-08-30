@@ -77,6 +77,7 @@ define(["jquery", "js/config"], function($, config) {
             else if (nothingToSync()) { icon = "check"; }
             else { icon = "refresh"; }
 
+            debugger;
             pages.setSyncButton(icon, label);
 
             if (nothingToSync()) { pages.updateData(); }
