@@ -2,8 +2,11 @@ define(["jquery", "js/config"], function($, config) {
 
     return function(pages) {
 
-        var waitingQueue = [];
-        var activeQueue = [];
+        var queues = { waiting: [], active: [] };
+
+        var backupQueues = function() {
+            localStorage.setItem("key", JSON.stringify(queues));
+        };
 
         var doSync = function(item) {
             updateInterface();
@@ -12,19 +15,21 @@ define(["jquery", "js/config"], function($, config) {
                 url: config.data()[item.action+"Endpoint"],
                 data: item.data,
                 success: function(e) {
-                    activeQueue = _(activeQueue).without(item);
+                    queues.active = _(queues.active).without(item);
+                    backupQueues();
                     updateInterface();
                 },
                 error: function(e) {
-                    waitingQueue.push(item);
-                    activeQueue = _(activeQueue).without(item);
+                    queues.waiting.push(item);
+                    queues.active = _(queues.active).without(item);
+                    backupQueues();
                     updateInterface();
                 }
             });
         };
 
         var unsyncdCount = function() {
-            return waitingQueue.length + activeQueue.length;
+            return queues.waiting.length + queues.active.length;
         };
 
         var nothingToSync = function() {
@@ -35,7 +40,7 @@ define(["jquery", "js/config"], function($, config) {
             var label = nothingToSync() ? "&nbsp;" : unsyncdCount();
             var icon;
 
-            if (activeQueue.length > 0) { icon = "pm-spinner"; }
+            if (queues.active.length > 0) { icon = "pm-spinner"; }
             else if (nothingToSync()) { icon = "check"; }
             else { icon = "refresh"; }
 
@@ -45,7 +50,8 @@ define(["jquery", "js/config"], function($, config) {
         };
 
         this.persist = function(action, data) {
-            waitingQueue.push({ action: action, data: data });
+            queues.waiting.push({ action: action, data: data });
+            backupQueues();
             this.processQueue();
         };
 
@@ -54,14 +60,14 @@ define(["jquery", "js/config"], function($, config) {
             if (manual && nothingToSync()) {
                 alert("There are no unsynchronised changes.");
             } else {
-                while (item = _(waitingQueue).first()) {
-                    activeQueue.push(item);
-                    waitingQueue = _(waitingQueue).without(item);
+                while (item = _(queues.waiting).first()) {
+                    queues.active.push(item);
+                    queues.waiting = _(queues.waiting).without(item);
+                    backupQueues();
                     doSync(item);
                 }
             }
         };
-
 
     };
 
