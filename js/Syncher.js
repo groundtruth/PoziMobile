@@ -3,10 +3,12 @@ define(["jquery", "js/config"], function($, config) {
     return function(pages, localStorage) {
         localStorage = typeof localStorage !== "undefined" ? localStorage : window.localStorage;
 
-        var queues = { waiting: [], active: [] };
-
         var appId = config.appId(window.location.href);
         var localStorageKey = ["pozimobile", appId.client, appId.appName].join("-");
+
+        var that = this;
+
+        this.queues = { waiting: [], active: [] };
 
         var localStorageIsAvailable = function() {
             try {
@@ -19,7 +21,7 @@ define(["jquery", "js/config"], function($, config) {
         var backupQueues = function() {
             if (localStorageIsAvailable()) {
                 try {
-                    localStorage.setItem(localStorageKey, JSON.stringify(queues));
+                    localStorage.setItem(localStorageKey, JSON.stringify(that.queues));
                 } catch(e) {
                     alert(
                         "The web storage quota has been exceeded. Some unsynchronised changes"+
@@ -34,7 +36,7 @@ define(["jquery", "js/config"], function($, config) {
                 var data = localStorage.getItem(localStorageKey);
                 if (data) {
                     var recoveredQueues = JSON.parse(data);
-                    queues.waiting = recoveredQueues.waiting.concat(recoveredQueues.active);
+                    that.queues.waiting = recoveredQueues.waiting.concat(recoveredQueues.active);
                     backupQueues();
                     return true;
                 }
@@ -42,51 +44,50 @@ define(["jquery", "js/config"], function($, config) {
         };
 
         var doSync = function(item) {
-            updateInterface();
+            that.updateInterface();
             $.ajax({
                 type: "POST", // TODO: use different verbs when server side is re-done
                 url: config.data()[item.action+"Endpoint"],
                 data: item.data,
                 success: function(e) {
-                    queues.active = _(queues.active).without(item);
+                    that.queues.active = _(that.queues.active).without(item);
                     backupQueues();
-                    updateInterface();
+                    that.updateInterface();
                 },
                 error: function(e) {
-                    queues.waiting.push(item);
-                    queues.active = _(queues.active).without(item);
+                    that.queues.waiting.push(item);
+                    that.queues.active = _(that.queues.active).without(item);
                     backupQueues();
-                    updateInterface();
+                    that.updateInterface();
                 }
             });
         };
 
         var unsyncdCount = function() {
-            return queues.waiting.length + queues.active.length;
+            return that.queues.waiting.length + that.queues.active.length;
         };
 
         var nothingToSync = function() {
             return unsyncdCount() === 0;
         };
 
-        var updateInterface = function() {
+        this.updateInterface = function() {
             var label = nothingToSync() ? "&nbsp;" : unsyncdCount();
             var icon;
 
-            if (queues.active.length > 0) { icon = "pm-spinner"; }
+            if (that.queues.active.length > 0) { icon = "pm-spinner"; }
             else if (nothingToSync()) { icon = "check"; }
             else { icon = "refresh"; }
 
-            debugger;
             pages.setSyncButton(icon, label);
 
             if (nothingToSync()) { pages.updateData(); }
         };
 
         this.persist = function(action, data) {
-            queues.waiting.push({ action: action, data: data });
+            that.queues.waiting.push({ action: action, data: data });
             backupQueues();
-            this.processQueue();
+            that.processQueue();
         };
 
         this.processQueue = function(manual) {
@@ -94,9 +95,9 @@ define(["jquery", "js/config"], function($, config) {
             if (manual && nothingToSync()) {
                 alert("There are no unsynchronised changes.");
             } else {
-                while (item = _(queues.waiting).first()) {
-                    queues.active.push(item);
-                    queues.waiting = _(queues.waiting).without(item);
+                while (item = _(that.queues.waiting).first()) {
+                    that.queues.active.push(item);
+                    that.queues.waiting = _(that.queues.waiting).without(item);
                     backupQueues();
                     doSync(item);
                 }
@@ -110,9 +111,7 @@ define(["jquery", "js/config"], function($, config) {
             );
         }
 
-        if (restoreQueues()) {
-            updateInterface();
-        };
+        restoreQueues();
 
     };
 

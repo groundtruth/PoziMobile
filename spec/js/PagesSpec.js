@@ -1,11 +1,28 @@
-define(["spec/SpecHelper", "js/Pages", "js/pages/Main"], function(SpecHelper, Pages, Main) {
+define([
+    "spec/SpecHelper",
+    "js/Pages",
+    "js/pages/Main",
+    "js/Syncher"
+], function(
+    SpecHelper,
+    Pages,
+    Main,
+    Syncher
+) {
 
     describe("Pages", function() {
         var subject, main, details, syncher;
 
         beforeEach(function() {
             spyOn(Main, "doNew").andReturn(main = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]));
+            spyOn(Syncher, "doNew").andReturn(syncher = jasmine.createSpyObj("syncher", ["updateInterface"]));
             subject = Pages.doNew(); 
+        });
+
+        describe("constructor", function() {
+            it("should tell syncher to update the interface", function() {
+                expect(syncher.updateInterface).toHaveBeenCalled();
+            });
         });
 
         describe("#setSyncButton", function() {

@@ -9,6 +9,8 @@ define(["js/pages/Main", "js/pages/Details", "js/Syncher"], function(Main, Detai
         this.setSyncButton = function(icon, label) { main.setSyncButton(icon, label); };
         this.updateData = function() { main.updateData(); };
 
+        syncher.updateInterface();
+
     };
 
 });

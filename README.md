@@ -31,6 +31,16 @@ that location, or by making `config` a link to a directory where configuration
 is maintained.
 
 
+## To do
+
+* Refactor `Syncher` and friends so that:
+  - `Syncher` maintains its status info which is relevant to the interface.
+  - `Syncher` does not know about the `Main` page.
+  - the `Main` page can ask the `Syncher` for its status.
+  - the `Syncher` can fire an event about a status change which the `Main`
+    page may listen for.
+
+
 ## Run the unit tests
 
 We are using Jasmine for unit testing, but have set it up to run from the

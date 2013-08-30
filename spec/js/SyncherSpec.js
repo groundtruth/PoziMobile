@@ -210,7 +210,8 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 })]);
             });
 
-            it("should update the interface to show any pending changes", function() {
+            it("should show recovered unsynched changes when asked", function() {
+                subject.updateInterface();
                 expect(pages.setSyncButton.mostRecentCall.args).toEqual(["refresh", 2]);
             });
 
