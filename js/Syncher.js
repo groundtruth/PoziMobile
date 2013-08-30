@@ -1,22 +1,42 @@
 define(["jquery", "js/config"], function($, config) {
 
-    return function(pages) {
+    return function(pages, localStorage) {
+        localStorage = typeof localStorage !== "undefined" ? localStorage : window.localStorage;
 
         var queues = { waiting: [], active: [] };
 
         var appId = config.appId(window.location.href);
         var localStorageKey = ["pozimobile", appId.client, appId.appName].join("-");
 
+        var localStorageIsAvailable = function() {
+            try {
+                return typeof localStorage !== "undefined" && localStorage !== null;
+            } catch (e) {
+                return false;
+            }
+        };
+
         var backupQueues = function() {
-            localStorage.setItem(localStorageKey, JSON.stringify(queues));
+            if (localStorageIsAvailable()) {
+                try {
+                    localStorage.setItem(localStorageKey, JSON.stringify(queues));
+                } catch(e) {
+                    alert(
+                        "The web storage quota has been exceeded. Some unsynchronised changes"+
+                        "may be lost if you close or reload the page!"
+                    );
+                }
+            }
         };
 
         var restoreQueues = function() {
-            var data = localStorage.getItem(localStorageKey);
-            if (data) {
-                var recoveredQueues = JSON.parse(data);
-                queues.waiting = recoveredQueues.waiting.concat(recoveredQueues.active);
-                backupQueues();
+            if (localStorageIsAvailable()) {
+                var data = localStorage.getItem(localStorageKey);
+                if (data) {
+                    var recoveredQueues = JSON.parse(data);
+                    queues.waiting = recoveredQueues.waiting.concat(recoveredQueues.active);
+                    backupQueues();
+                }
             }
         };
 
@@ -80,6 +100,13 @@ define(["jquery", "js/config"], function($, config) {
                 }
             }
         };
+
+        if (!localStorageIsAvailable()) {
+            alert(
+              "You browser is not providing web storage (localStorage). "+
+              "If you close or reload the page, any unsynchronised changes will be lost!"
+            );
+        }
 
         restoreQueues();
 

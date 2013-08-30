@@ -181,12 +181,6 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 });
             });
 
-            xit("should alert if localStorage isn't available", function() {
-            });
-
-            xit("should alert if localStorage quota is exceeded", function() {
-            });
-
         });
 
         describe("queue recovery via web storage", function() {
@@ -208,9 +202,34 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
 
             it("should move any previously active changes back into waiting", function() {
                 expect(localStorage.setItem.argsForCall[0]).toEqual([key, JSON.stringify({
-                    waiting: [{ action: "create", data: "form data" }, { action: "update", data: "new data" }],
+                    waiting: [
+                        { action: "create", data: "form data" },
+                        { action: "update", data: "new data" }
+                    ],
                     active: []
                 })]);
+            });
+
+        });
+
+        describe("localStorage errors", function() {
+
+            it("should alert on instantiation when not available", function() {
+                spyOn(window, "alert");
+                var replacementLocalStorage = null
+                Syncher.doNew(pages, replacementLocalStorage);
+                expect(window.alert).toHaveBeenCalled();
+                expect(window.alert.mostRecentCall.args[0]).toMatch(/not providing web storage/);
+            });
+
+            it("should alert if localStorage quota is exceeded", function() {
+                spyOn(window, "alert");
+                spyOn(window.localStorage, "setItem").andThrow(new Error("Quota exceeded!"));
+                spyOn($, "ajax");
+                var subject = Syncher.doNew(pages);
+                subject.persist("create", "form data");
+                expect(window.alert).toHaveBeenCalled();
+                expect(window.alert.mostRecentCall.args[0]).toMatch(/quota.*exceeded/);
             });
 
         });
