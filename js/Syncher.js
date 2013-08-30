@@ -11,6 +11,15 @@ define(["jquery", "js/config"], function($, config) {
             localStorage.setItem(localStorageKey, JSON.stringify(queues));
         };
 
+        var restoreQueues = function() {
+            var data = localStorage.getItem(localStorageKey);
+            if (data) {
+                var recoveredQueues = JSON.parse(data);
+                queues.waiting = recoveredQueues.waiting.concat(recoveredQueues.active);
+                backupQueues();
+            }
+        };
+
         var doSync = function(item) {
             updateInterface();
             $.ajax({
@@ -71,6 +80,8 @@ define(["jquery", "js/config"], function($, config) {
                 }
             }
         };
+
+        restoreQueues();
 
     };
 

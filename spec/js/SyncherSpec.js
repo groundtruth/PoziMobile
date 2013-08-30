@@ -1,13 +1,15 @@
 define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Syncher, config) {
 
     describe("Syncher", function() {
-        var pages, subject, formData, configData;
+        var pages, subject, formData, configData, appId;
 
         beforeEach(function() {
+            localStorage.clear();
+            appId = config.appId(window.location.href);
             configData = jasmine.createSpyObj("configData", ["createEndpoint", "updateEndpoint", "deleteEndpoint"]);
             spyOn(config, "data").andReturn(configData);
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
-            formData = jasmine.createSpy("formData");
+            formData = "formData";
             subject = Syncher.doNew(pages);
         });
 
@@ -135,7 +137,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
 
         }); // #processQueue
 
-        describe("queue durability via web storage", function() {
+        describe("queue backup via web storage", function() {
 
             beforeEach(function() {
                 spyOn(localStorage, "setItem");
@@ -173,20 +175,42 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
             });
 
             it("should use a key that is unqiue for this application (not just domain)", function() {
-                var id = config.appId(window.location.href);
                 expect(localStorage.setItem.argsForCall.length).toBeGreaterThan(0);
                 _(localStorage.setItem.argsForCall).each(function(args) {
-                    expect(args[0]).toEqual(["pozimobile", id.client, id.appName].join("-"));
+                    expect(args[0]).toEqual(["pozimobile", appId.client, appId.appName].join("-"));
                 });
-            });
-
-            xit("should load any back up when starting", function() {
             });
 
             xit("should alert if localStorage isn't available", function() {
             });
 
             xit("should alert if localStorage quota is exceeded", function() {
+            });
+
+        });
+
+        describe("queue recovery via web storage", function() {
+            var key, subject;
+
+            beforeEach(function() {
+                key = ["pozimobile", appId.client, appId.appName].join("-");
+                spyOn(localStorage, "getItem").andReturn(JSON.stringify({
+                  waiting: [{ action: "create", data: "form data" }],
+                  active: [{ action: "update", data: "new data" }]
+                }));
+                spyOn(localStorage, "setItem");
+                subject = Syncher.doNew(pages);
+            });
+
+            it("should load any backup when starting", function() {
+                expect(localStorage.getItem).toHaveBeenCalledWith(key);
+            });
+
+            it("should move any previously active changes back into waiting", function() {
+                expect(localStorage.setItem.argsForCall[0]).toEqual([key, JSON.stringify({
+                    waiting: [{ action: "create", data: "form data" }, { action: "update", data: "new data" }],
+                    active: []
+                })]);
             });
 
         });
