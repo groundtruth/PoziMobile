@@ -31,9 +31,10 @@ define(["jquery", "underscore"], function($, _) {
 
     return {
 
-        configURL: function(href) {
-            var client, appName, matches, fileNameBase;
-            if (matches = href.match(/^\w+:\/\/([a-z\-]+)/i)) { client = matches[1]; }
+        appId: function(href) {
+            var client, appName, matches;
+            // example: http://client.domain.tld/m/appName
+            if (matches = href.match(/^\w+:\/\/([a-z\-]+)\.[^\/\.]+\.[^\/\.]+/i)) { client = matches[1]; }
             if (matches = href.match(/^\w+:\/\/[^\/]+\/m\/([^\/]+)\//)) { appName = matches[1]; }
 
             // override with URL parameters if available, to support development on localhost
@@ -41,13 +42,18 @@ define(["jquery", "underscore"], function($, _) {
                 var match = RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
                 return match && decodeURIComponent(match[1].replace(/\+/g, " "));
             }
-            client = getParameterByName("client") || client;
-            appName = getParameterByName("appName") || appName;
+            client = getParameterByName("client") || client || "demo";
+            appName = getParameterByName("appName") || appName || "demo";
 
-            if (client && appName) {
-                return "config/" + client + "-" + appName + ".json";
-            } else {
+            return { client: client, appName: appName };
+        },
+
+        configURL: function(href) {
+            var id = this.appId(href);
+            if (id.client === "demo" && id.appName === "demo") {
                 return "config-demo.json";
+            } else {
+                return "config/" + id.client + "-" + id.appName + ".json";
             }
         },
 

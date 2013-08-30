@@ -2,14 +2,28 @@ define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, c
 
     describe("config", function() {
 
+        describe("#appId", function() {
+
+            it("should get client name right", function() {
+                expect(config.appId("http://client.pozi.com/m/app/").client).toEqual("client");
+            });
+
+            it("should get app name right, even if there is a filename", function() {
+                expect(config.appId("http://client.pozimobile.dev/m/app/index.html").appName).toEqual("app");
+            });
+
+            it("should default to 'demo' for both if there is no subdomain or app name", function() {
+                expect(config.appId("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual(
+                  { client: "demo", appName: "demo" }
+                );
+            });
+
+        });
+
         describe("#configURL", function() {
 
             it("should combine client name and app name", function() {
                 expect(config.configURL("http://client.pozi.com/m/app/")).toEqual("config/client-app.json");
-            });
-
-            it("should not mistake file part of URL for app name", function() {
-                expect(config.configURL("http://client.pozimobile.dev/m/app/index.html")).toEqual("config/client-app.json");
             });
 
             it("should default to demo config if there is no subdomain or app name", function() {
