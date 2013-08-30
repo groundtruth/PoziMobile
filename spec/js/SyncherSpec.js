@@ -210,6 +210,10 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 })]);
             });
 
+            it("should update the interface to show any pending changes", function() {
+                expect(pages.setSyncButton.mostRecentCall.args).toEqual(["refresh", 2]);
+            });
+
         });
 
         describe("localStorage errors", function() {

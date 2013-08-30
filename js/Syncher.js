@@ -36,6 +36,7 @@ define(["jquery", "js/config"], function($, config) {
                     var recoveredQueues = JSON.parse(data);
                     queues.waiting = recoveredQueues.waiting.concat(recoveredQueues.active);
                     backupQueues();
+                    return true;
                 }
             }
         };
@@ -108,7 +109,9 @@ define(["jquery", "js/config"], function($, config) {
             );
         }
 
-        restoreQueues();
+        if (restoreQueues()) {
+            updateInterface();
+        };
 
     };
 
