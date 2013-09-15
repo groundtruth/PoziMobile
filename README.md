@@ -39,6 +39,7 @@ is maintained.
   - the `Main` page can ask the `Syncher` for its status.
   - the `Syncher` can fire an event about a status change which the `Main`
     page may listen for.
+* Add [coveralls.io](https://coveralls.io/) to track coverage.
 
 
 ## Run the unit tests
