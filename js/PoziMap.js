@@ -101,5 +101,5 @@ define([
     return PoziMap;
 
 });
-  
+
 
