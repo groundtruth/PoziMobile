@@ -1,4 +1,4 @@
-define(["jquery", "openlayers", "js/config"], function($, OpenLayers, config) {
+define(["jquery", "openlayers", "js/config", "js/proj"], function($, OpenLayers, config, proj) {
 
     // The style hardcodes the correspondance between a status code and the external graphic name
     // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
@@ -14,16 +14,13 @@ define(["jquery", "openlayers", "js/config"], function($, OpenLayers, config) {
 
     layer.getFeaturesAround = function(pointInWGS84) {
 
-        var reader = OpenLayers.Format.GeoJSON.doNew();
+        var reader = OpenLayers.Format.GeoJSON.doNew({
+            'internalProjection': proj.webMercator,
+            'externalProjection': proj.WGS84
+        });
 
         $.getJSON(
-            config.data().readEndpoint,
-            {
-                lat: pointInWGS84.lat,
-                lon: pointInWGS84.lon,
-                limit: config.data().featuresLimit,
-                config: config.data().databaseName
-            },
+            config.data().restEndpoint + '/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+config.data().featuresLimit,
             function(data, textStatus) {
                 // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                 var features = reader.read(data);
