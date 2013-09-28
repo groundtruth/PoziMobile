@@ -16,11 +16,6 @@ define(["jquery", "underscore"], function($, _) {
             },
             {
                 "type": "hidden",
-                "id": "config",
-                "value": "loddongis"
-            },
-            {
-                "type": "hidden",
                 "id": "id",
                 "value": ""
             }

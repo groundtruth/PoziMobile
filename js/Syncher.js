@@ -1,4 +1,4 @@
-define(["jquery", "js/config"], function($, config) {
+define(["jquery", "underscore", "js/config"], function($, _, config) {
 
     return function(pages, localStorage) {
         localStorage = typeof localStorage !== "undefined" ? localStorage : window.localStorage;
@@ -45,10 +45,18 @@ define(["jquery", "js/config"], function($, config) {
 
         var doSync = function(item) {
             that.updateInterface();
+            var geoJSON = JSON.stringify(item.data);
+            var verb = {
+                "create": "POST",
+                "update": "PUT",
+                "delete": "DELETE"
+            }[item.action];
+            var body = item.action === "delete" ? "" : geoJSON;
+            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.data.properties.id : '';
             $.ajax({
-                type: "POST", // TODO: use different verbs when server side is re-done
-                url: config.data()[item.action+"Endpoint"],
-                data: item.data,
+                type: verb,
+                url: config.data().restEndpoint + idSuffix,
+                data: body,
                 success: function(e) {
                     that.queues.active = _(that.queues.active).without(item);
                     backupQueues();

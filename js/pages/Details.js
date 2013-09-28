@@ -6,8 +6,25 @@ define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, c
         var $page = $("#pageDetails");
         var that = this;
 
+        var asGeoFeature = function() {
+            var nameValueHashes = $page.find("#detailsForm").serializeArray();
+            var singlePairHashes = _(nameValueHashes).map(function(h) { var result = {}; result[h.name] = h.value; return result; });
+            var combinedHash = _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
+            var ignoredFormProperties = ['lon', 'lat'];
+            if (combinedHash.id === '') { ignoredFormProperties.push('id'); }
+            return {
+                "type": "Feature",
+                "properties": _(combinedHash).omit(ignoredFormProperties),
+                "geometry": {
+                    "type": "Point",
+                    "crs": { "type": "name", "properties": { "name": "EPSG:4326" } },
+                    "coordinates": [parseFloat(combinedHash.lon), parseFloat(combinedHash.lat)]
+                }
+            };
+        };
+
         this.enhanceForm = function() {
-            $page.find(".content").first().trigger("create"); 
+            $page.find(".content").first().trigger("create");
         };
 
         this.initForm = function(data) {
@@ -15,7 +32,6 @@ define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, c
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields)
-            $page.find('[name="config"]').first().val(config.data().databaseName);
             if (data) {
               formBuilder.repopulateForm($page, data);
             };
@@ -44,7 +60,7 @@ define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, c
             that.initButtons({
                 save: function() {
                     history.back();
-                    syncher.persist("create", $page.find("#detailsForm").serialize());
+                    syncher.persist("create", asGeoFeature());
                     return false;
                 }
             });
@@ -57,13 +73,13 @@ define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, c
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
                         history.back();
-                        syncher.persist("delete", $page.find("#detailsForm").serialize());
+                        syncher.persist("delete", asGeoFeature());
                     }
                     return false;
                 },
                 save: function() {
                     history.back();
-                    syncher.persist("update", $page.find("#detailsForm").serialize());
+                    syncher.persist("update", asGeoFeature());
                     return false;
                 }
             });
