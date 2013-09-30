@@ -7,9 +7,9 @@ A mobile-optimised web app for collection of location-related data.
 
 ## External dependencies
 
-PoziMobile depends on some small web services to handle server-side persistence.
-[RestfulGeof](http://github.com/groundtruth/restful_geof) was built to perform
-this function.
+PoziMobile is a browser-based app that depends on a separate web service to
+handle server-side querying and persistence.
+[RestfulGeof](http://github.com/groundtruth/restful_geof) is that web service.
 
 
 ## Deployment
@@ -81,37 +81,7 @@ In the future it may be worth switching to [JSCover](http://tntim96.github.com/J
 
 ## Full stack testing with WebDriver and PhantomJS, in JavaScript
 
-It's possible. Here are some notes to help get started.
-
-    brew update
-    brew install node
-    brew install phantomjs
-
-    npm install selenium-webdriver
-    open https://code.google.com/p/selenium/wiki/WebDriverJs
-    open https://npmjs.org/package/selenium-webdriver
-
-    phantomjs --webdriver=4444 &
-    node <<< '
-        var webdriver = require("selenium-webdriver");
-        var driver = new webdriver.Builder().build();
-        var fs = require("fs");
-
-        driver.get("http://www.google.com");
-        driver.findElement(webdriver.By.name("q")).sendKeys("webdriver");
-        driver.takeScreenshot().then(function(data){
-            fs.writeFile("screenshot.png", data, "base64", function(err) {
-                if(err) { console.log(err); }
-                else { console.log("Saved a screenshot."); }
-            });
-        });
-        driver.quit();
-    '
-    killall phantomjs
-
-    open screenshot.png
-
-    open https://npmjs.org/package/webdriverjs # alternative JS bindings for webdriver
+It's possible. See the tests for PoziExplorer to get started.
 
 
 ## GPS troubleshooting
@@ -137,7 +107,7 @@ There are several free iOS apps that provide information about location services
 
 * [GPS Info!](https://itunes.apple.com/us/app/gps-info!/id333178016)
   shows various GPS status info, including location method (GPS, cell, wifi) and time since last update.
-  
+
 * [GPS Status](https://itunes.apple.com/app/gps-status/id378085995)
   shows some GPS fix information.
 
@@ -150,7 +120,7 @@ As well as paid apps:
   may show some relevant GPS details.
 
 * [MotionX GPS](https://itunes.apple.com/us/app/motionx-gps/id299949744) ($0.99)
-  shows accuracy in meters and signal strength (not number of satellites - probably derived from accuracy). 
+  shows accuracy in meters and signal strength (not number of satellites - probably derived from accuracy).
   It can be set to use GPS only (no WiFi/cellular).
 
 * [GPS 2 IP](http://www.capsicumdreams.com/iphone/gps2ip/) ($6.99)
