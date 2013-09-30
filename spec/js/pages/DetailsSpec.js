@@ -13,16 +13,14 @@ define(["spec/SpecHelper", "js/pages/Details", "js/config", "js/formBuilder"], f
                 genericDetailsFields: [
                     { "type": "hidden", "id": "lat" },
                     { "type": "hidden", "id": "lon" },
-                    { "type": "hidden", "id": "config", "value": "clientgis" },
                     { "type": "hidden", "id": "id", "value": "" }
-                ],
-                createEndpoint: "someCreateEndPoint"
+                ]
             }
             spyOn(config, "data").andReturn(configData);
             syncher = jasmine.createSpyObj("syncher", ["persist"]);
             subject = Details.doNew(syncher);
         });
-        
+
         it("should set the page to visible", function() {
             expect($("#pageDetails")).toHaveCss({ visibility: "visible"});
         });
@@ -52,16 +50,17 @@ define(["spec/SpecHelper", "js/pages/Details", "js/config", "js/formBuilder"], f
                 spyOn(history, "back");
                 $("#saveButton").click();
                 expect(history.back).toHaveBeenCalled();
-                expect(syncher.persist).toHaveBeenCalledWith("create", jasmine.any(String));
+                expect(syncher.persist).toHaveBeenCalledWith("create", jasmine.any(Object));
             });
 
         });
 
         describe("#update", function() {
-            var feature, commentsPreEnhancement;
+            var feature, commentsOnEnhance;
 
             beforeEach(function() {
-                feature = { data: { id: 66, comments: "hello" } };
+                feature = { data: { id: 66, comments: "hello" }, geometry: { transform: function() {} } };
+                spyOn(feature.geometry, "transform").andReturn({ x: 22, y: 99 });
                 spyOn(history, "back");
                 spyOn(subject, "enhanceForm").andCallFake(function() { commentsOnEnhance = $('[name="comments"]').val(); })
                 subject.update(feature);
@@ -82,7 +81,7 @@ define(["spec/SpecHelper", "js/pages/Details", "js/config", "js/formBuilder"], f
             it("should return and persist with correct action on click of save", function() {
                 $("#saveButton").click();
                 expect(history.back).toHaveBeenCalled();
-                expect(syncher.persist).toHaveBeenCalledWith("update", jasmine.any(String));
+                expect(syncher.persist).toHaveBeenCalledWith("update", jasmine.any(Object));
             });
 
             it("should confirm, return and persist with correct action on click of delete", function() {
@@ -90,7 +89,7 @@ define(["spec/SpecHelper", "js/pages/Details", "js/config", "js/formBuilder"], f
                 $("#deleteButton").click();
                 expect(window.confirm).toHaveBeenCalledWith(jasmine.any(String));
                 expect(history.back).toHaveBeenCalled();
-                expect(syncher.persist).toHaveBeenCalledWith("delete", jasmine.any(String));
+                expect(syncher.persist).toHaveBeenCalledWith("delete", jasmine.any(Object));
             });
 
         });

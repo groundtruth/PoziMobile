@@ -31,7 +31,7 @@ define(["jquery", "underscore", "js/config", "js/formBuilder", "js/proj"], funct
             var formFields = _(config.data().detailsFields.concat(config.data().genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
-            $page.find(".content").first().html(formFields)
+            $page.find(".content").first().html(formFields);
             if (feature) {
               var pointInWGS84 = feature.geometry.transform(proj.webMercator, proj.WGS84);
               $page.find('[name="lon"]').first().val(pointInWGS84.x);
