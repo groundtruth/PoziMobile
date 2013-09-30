@@ -1,15 +1,15 @@
 define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Syncher, config) {
 
     describe("Syncher", function() {
-        var pages, subject, formData, configData, appId;
+        var pages, subject, data, configData, appId;
 
         beforeEach(function() {
             localStorage.clear();
             appId = config.appId(window.location.href);
-            configData = jasmine.createSpyObj("configData", ["createEndpoint", "updateEndpoint", "deleteEndpoint"]);
+            configData = { restEndpoint: "http://example.com/rest" };
             spyOn(config, "data").andReturn(configData);
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
-            formData = "formData";
+            data = { properties: { id: 22 } };
             subject = Syncher.doNew(pages);
         });
 
@@ -21,7 +21,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 beforeEach(function() {
                     spyOn($, "ajax");
 
-                    subject.persist("create", formData);
+                    subject.persist("create", data);
                     expect(pages.setSyncButton.callCount).toEqual(1);
 
                     $.ajax.argsForCall[0][0].success(jasmine.createSpy("ajaxEvent"));
@@ -36,8 +36,8 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                     expect($.ajax.callCount).toEqual(1);
                     var req = $.ajax.mostRecentCall.args[0];
                     expect(req.type).toEqual("POST");
-                    expect(req.url).toEqual(configData.createEndpoint);
-                    expect(req.data).toEqual(formData);
+                    expect(req.url).toEqual(configData.restEndpoint);
+                    expect(req.data).toEqual(JSON.stringify(data));
                 });
 
                 it("should show the tick and no count when done", function() {
@@ -50,7 +50,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
 
                 beforeEach(function() {
                     spyOn($, "ajax");
-                    subject.persist("delete", formData);
+                    subject.persist("delete", data);
                     $.ajax.argsForCall[0][0].error(jasmine.createSpy("ajaxEvent"));
                 });
 
@@ -64,12 +64,12 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
 
                 it("should retry previously failed changes (as well as new one) on next #persist call", function() {
                     expect($.ajax.callCount).toEqual(1);
-                    subject.persist("update", formData);
+                    subject.persist("update", data);
                     expect($.ajax.callCount).toEqual(3);
                 });
 
                 it("should handle old change succeeding, new failing", function() {
-                    subject.persist("update", formData);
+                    subject.persist("update", data);
                     expect(pages.setSyncButton.mostRecentCall.args).toEqual(["pm-spinner", 2]);
 
                     $.ajax.argsForCall[$.ajax.argsForCall.length-2][0].success(jasmine.createSpy("ajaxEvent"));
@@ -85,9 +85,9 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
 
                 xit("should try the new change immediately (not just add and wait for ac)", function() {
                     spyOn($, "ajax");
-                    subject.persist("delete", formData);
+                    subject.persist("delete", data);
                     expect($.ajax.callCount).toEqual(1); // first request made but not returned
-                    subject.persist("update", formData);
+                    subject.persist("update", data);
                     expect($.ajax.callCount).toEqual(2); // second request
                 });
 
@@ -103,8 +103,8 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                     spyOn(window, "alert");
                     spyOn($, "ajax");
 
-                    subject.persist("delete", formData);
-                    subject.persist("update", formData);
+                    subject.persist("delete", data);
+                    subject.persist("update", data);
                     $.ajax.argsForCall[0][0].error(jasmine.createSpy("ajaxEvent"));
 
                     expect($.ajax.callCount).toEqual(2);
@@ -138,25 +138,27 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
         }); // #processQueue
 
         describe("queue backup via web storage", function() {
+            var dataWithID = { properties: { id: 22 } };
+            var dataWithoutID = { properties: {} };
 
             beforeEach(function() {
                 spyOn(localStorage, "setItem");
                 spyOn($, "ajax");
-                subject.persist("create", "form data");
+                subject.persist("create", dataWithoutID);
                 $.ajax.mostRecentCall.args[0].success(jasmine.createSpy("ajaxEvent"));
-                subject.persist("delete", "form data");
+                subject.persist("delete", dataWithID);
                 $.ajax.mostRecentCall.args[0].error(jasmine.createSpy("ajaxEvent"));
             });
 
             it("should initially backup in waiting queue", function() {
                 expect(localStorage.setItem.argsForCall[0]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [{ action: "create", data: "form data" }], active: []})
+                    JSON.stringify({ waiting: [{ action: "create", data: dataWithoutID }], active: []})
                 ]);
             });
 
             it("should backup again when moved into active queue", function() {
                 expect(localStorage.setItem.argsForCall[1]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [], active: [{ action: "create", data: "form data" }]})
+                    JSON.stringify({ waiting: [], active: [{ action: "create", data: dataWithoutID }]})
                 ]);
             });
 
@@ -170,7 +172,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
                 // localStorage.setItem.argsForCall[3]; // queue delete
                 // localStorage.setItem.argsForCall[4]; // waiting->active for delete
                 expect(localStorage.setItem.argsForCall[5]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [{ action: "delete", data: "form data" }], active: []})
+                    JSON.stringify({ waiting: [{ action: "delete", data: dataWithID }], active: []})
                 ]);
             });
 
