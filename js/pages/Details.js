@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, config, formBuilder) {
+define(["jquery", "underscore", "js/config", "js/formBuilder", "js/proj"], function($, _, config, formBuilder, proj) {
 
     return function(givenSyncher) {
 
@@ -27,13 +27,16 @@ define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, c
             $page.find(".content").first().trigger("create");
         };
 
-        this.initForm = function(data) {
+        this.initForm = function(feature) {
             var formFields = _(config.data().detailsFields.concat(config.data().genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields)
-            if (data) {
-              formBuilder.repopulateForm($page, data);
+            if (feature) {
+              var pointInWGS84 = feature.geometry.transform(proj.webMercator, proj.WGS84);
+              $page.find('[name="lon"]').first().val(pointInWGS84.x);
+              $page.find('[name="lat"]').first().val(pointInWGS84.y);
+              formBuilder.repopulateForm($page, feature.data);
             };
             that.enhanceForm(); // important: this must be done after form population
         };
@@ -68,7 +71,7 @@ define(["jquery", "underscore", "js/config", "js/formBuilder"], function($, _, c
         };
 
         this.update = function(feature) {
-            that.initForm(feature.data);
+            that.initForm(feature);
             that.initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
