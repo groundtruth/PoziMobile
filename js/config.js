@@ -47,7 +47,7 @@ define(["jquery", "underscore"], function($, _) {
         configURL: function(href) {
             var id = this.appId(href);
             if (id.client === "demo" && id.appName === "demo") {
-                return "config-demo.json";
+                return "config-demo-demo.json";
             } else {
                 return "config/" + id.client + "-" + id.appName + ".json";
             }
