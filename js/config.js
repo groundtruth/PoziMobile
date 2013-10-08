@@ -55,7 +55,7 @@ define(["jquery", "underscore"], function($, _) {
 
         fetchConfig: function() {
             var url = this.configURL(window.location.href);
-            return JSON.parse(
+            return $.parseJSON(
                 $.ajax({
                     type: 'GET',
                     url: url,
