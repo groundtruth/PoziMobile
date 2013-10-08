@@ -27,14 +27,14 @@ define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, c
             });
 
             it("should default to demo config if there is no subdomain or app name", function() {
-                expect(config.configURL("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual("config-demo.json");
+                expect(config.configURL("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual("config-demo-demo.json");
             });
 
         });
 
         describe("#fetchConfig", function() {
             var result;
-            
+
             beforeEach(function() {
                 spyOn(config, "configURL").andReturn("correctURL");
                 spyOn($, "ajax").andReturn({ responseText: '{ "someKey": 32 }' });
