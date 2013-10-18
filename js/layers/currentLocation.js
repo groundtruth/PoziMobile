@@ -42,7 +42,7 @@ define(["openlayers", "js/proj"], function(OpenLayers, proj) {
         } else {
             this.map.setCenterAndZoomToExtent(pointInWebMercator, this.getDataExtent());
         }
-        
+
     };
 
     return currentLocationLayer;
