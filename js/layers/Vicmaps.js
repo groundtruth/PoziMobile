@@ -30,9 +30,12 @@ define(["openlayers"], function(OpenLayers) {
             ],
             {
                 layers: 'VICMAP_CLASSIC:VicmapClassic',
-                format: 'image/png8'
+                format: 'image/png8',
+                tiled: true
             },
-            { transitionEffect: 'resize' }
+            {
+                transitionEffect: 'resize'
+            }
         );
 
     };
