@@ -52,7 +52,7 @@ define(["jquery", "underscore", "js/config"], function($, _, config) {
                 "delete": "DELETE"
             }[item.action];
             var body = item.action === "delete" ? "" : geoJSON;
-            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.data.properties.id : '';
+            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.data.properties[config.data().idField] : '';
             $.ajax({
                 type: verb,
                 url: config.data().restEndpoint + idSuffix,

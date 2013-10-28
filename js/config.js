@@ -1,6 +1,7 @@
 define(["jquery", "underscore"], function($, _) {
 
     var defaults = {
+        "idField": "id",
         "defaultZoomLevel": 18,
         "maxZoom": 19,
         "iconFile": "img/mobile-loc-1.png",
