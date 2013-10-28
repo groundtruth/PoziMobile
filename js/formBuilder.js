@@ -47,10 +47,15 @@ define(["jquery", "mustache"], function($, Mustache) {
                     break;
 
                 case "number":
+                    if (!fieldDef.step) { fieldDef.step = 1; }
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}">{{ description }}:</label>\
-                            <input type="number" name="{{ id }}" id="{{ id }}" min="{{ min }}" max="{{ max }}">\
+                            <input type="number" name="{{ id }}" id="{{ id }}"\
+                                 {{#min}}min="{{ min }}"{{/min}}\
+                                 {{#max}}max="{{ max }}"{{/max}}\
+                                 {{#step}}step="{{ step }}"{{/step}}\
+                            >\
                         </div>\
                     ';
                     break;
