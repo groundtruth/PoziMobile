@@ -3,6 +3,7 @@
 A mobile-optimised web app for collection of location-related data.
 
 [![Build Status](https://travis-ci.org/groundtruth/PoziMobile.png?branch=master)](https://travis-ci.org/groundtruth/PoziMobile)
+[![Code Climate](https://codeclimate.com/github/groundtruth/PoziMobile.png)](https://codeclimate.com/github/groundtruth/PoziMobile)
 
 
 ## External dependencies
