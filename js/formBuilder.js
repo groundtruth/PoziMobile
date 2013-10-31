@@ -1,4 +1,4 @@
-define(["jquery", "mustache"], function($, Mustache) {
+define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
 
     return {
 
@@ -12,6 +12,13 @@ define(["jquery", "mustache"], function($, Mustache) {
                         break;
                     case 'radio':
                         $el.filter('[value="'+val+'"]').attr("checked", "checked");
+                        break;
+                    case 'select':
+                        var existingValues = _($el.find("option")).map(function(option) { return option.value; });
+                        if (! _(existingValues).contains(val)) {
+                            $el.append('<option value="'+val+'">'+val+'</option>');
+                        }
+                        $el.val(val);
                         break;
                     default:
                         $el.val(val);
