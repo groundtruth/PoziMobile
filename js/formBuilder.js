@@ -17,8 +17,8 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
 
                 } else if ($el.is("select")) {
 
-                    var existingValues = _($el.find("option")).map(function(option) { return option.value; });
-                    if (! _(existingValues).contains(val)) {
+                    var existingValues = _($el.find("option")).map(function(option) { return option.value.toString(); });
+                    if (! _(existingValues).contains(val.toString())) {
                         $el.append('<option value="'+val+'">'+val+'</option>');
                     }
                     $el.val(val);
