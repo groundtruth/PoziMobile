@@ -6,23 +6,28 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
             // http://blog.mrnepal.com/2012/03/21/use-jquery-to-re-populate-form-with-json-data/
             $.each(data, function(name, val){
                 var $el = $scope.find('[name="'+name+'"]');
-                switch($el.attr("type")) {
-                    case "checkbox":
-                        $el.attr("checked", "checked");
-                        break;
-                    case 'radio':
-                        $el.filter('[value="'+val+'"]').attr("checked", "checked");
-                        break;
-                    case 'select':
-                        var existingValues = _($el.find("option")).map(function(option) { return option.value; });
-                        if (! _(existingValues).contains(val)) {
-                            $el.append('<option value="'+val+'">'+val+'</option>');
-                        }
-                        $el.val(val);
-                        break;
-                    default:
-                        $el.val(val);
+
+                if ($el.is("input:checkbox")) {
+
+                    $el.attr("checked", "input:checked");
+
+                } else if ($el.is("input:radio")) {
+
+                    $el.filter('[value="'+val+'"]').attr("checked", "checked");
+
+                } else if ($el.is("select")) {
+
+                    var existingValues = _($el.find("option")).map(function(option) { return option.value; });
+                    if (! _(existingValues).contains(val)) {
+                        $el.append('<option value="'+val+'">'+val+'</option>');
+                    }
+                    $el.val(val);
+
+                } else {
+                    $el.val(val);
+
                 }
+
             });
         },
 
