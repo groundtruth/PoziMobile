@@ -1,4 +1,4 @@
-define(["openlayers", "js/proj"], function(OpenLayers, proj) {
+define(["underscore", "openlayers", "js/proj"], function(_, OpenLayers, proj) {
 
     return function(lga) {
         var that = this;
