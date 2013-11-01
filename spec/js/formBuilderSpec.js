@@ -98,7 +98,7 @@ define(["spec/SpecHelper", "js/formBuilder"], function(SpecHelper, formBuilder) 
                     "id": "myflip",
                     "description": "My Sliding Flip Switch",
                     "off_label": "Off",
-                    "on_label": "On" 
+                    "on_label": "On"
                 });
                 expect(noWhitespace(result)).toEqual(noWhitespace('\
                     <div data-role="fieldcontain">\

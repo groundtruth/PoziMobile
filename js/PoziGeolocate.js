@@ -4,7 +4,7 @@ define(["openlayers", "js/proj"], function(OpenLayers, proj) {
 
         var watchId = undefined;
         var that = this;
-        
+
         this.startFollowing = function() {
             if (typeof(watchId) !== 'undefined') { throw new Error("Already following."); }
             watchId = window.navigator.geolocation.watchPosition(
