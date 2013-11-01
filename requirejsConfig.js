@@ -3,6 +3,7 @@ define([], function() {
     requirejs.config({
         urlArgs: "bust=" +  (new Date()).getTime(),
         paths: {
+            "text": "vendor/requirejs-text-2.0.10/text",
             "jasmine-jquery": "vendor/jasmine-jquery/jasmine-jquery",
             "underscore": "vendor/underscore-1.4.3/underscore",
             "jquery": "vendor/jquery-1.8.3/jquery-1.8.3.min",
