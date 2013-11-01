@@ -59,7 +59,9 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     break;
 
                 case "number":
-                    if (!fieldDef.step) { fieldDef.step = 1; }
+                    if (_(fieldDef).has('min')) { fieldDef['min'] = fieldDef['min'].toString(); }
+                    if (_(fieldDef).has('max')) { fieldDef['max'] = fieldDef['max'].toString(); }
+                    if (_(fieldDef).has('step')) { fieldDef['step'] = fieldDef['step'].toString(); }
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}">{{ description }}:</label>\
