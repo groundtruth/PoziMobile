@@ -1,11 +1,11 @@
-define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Syncher, config) {
+define(["spec/SpecHelper", "js/Syncher", "js/config", "js/appId"], function(SpecHelper, Syncher, config, appId) {
 
     describe("Syncher", function() {
-        var pages, subject, data, configData, appId;
+        var pages, subject, data, configData, id;
 
         beforeEach(function() {
             localStorage.clear();
-            appId = config.appId(window.location.href);
+            id = appId.doNew(window.location.href);
             configData = { restEndpoint: "http://example.com/rest" };
             spyOn(config, "data").andReturn(configData);
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
@@ -118,7 +118,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
             });
 
             describe("with no waiting or active changes", function() {
-              
+
                 it("should do nothing when invoked programatically", function() {
                     spyOn(window, "alert");
                     spyOn($, "ajax");
@@ -179,7 +179,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
             it("should use a key that is unqiue for this application (not just domain)", function() {
                 expect(localStorage.setItem.argsForCall.length).toBeGreaterThan(0);
                 _(localStorage.setItem.argsForCall).each(function(args) {
-                    expect(args[0]).toEqual(["pozimobile", appId.client, appId.appName].join("-"));
+                    expect(args[0]).toEqual(["pozimobile", id.client(), id.appName()].join("-"));
                 });
             });
 
@@ -189,7 +189,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config"], function(SpecHelper, Sync
             var key, subject;
 
             beforeEach(function() {
-                key = ["pozimobile", appId.client, appId.appName].join("-");
+                key = ["pozimobile", id.client(), id.appName()].join("-");
                 spyOn(localStorage, "getItem").andReturn(JSON.stringify({
                   waiting: [{ action: "create", data: "form data" }],
                   active: [{ action: "update", data: "new data" }]

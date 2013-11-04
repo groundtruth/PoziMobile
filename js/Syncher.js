@@ -1,10 +1,10 @@
-define(["jquery", "underscore", "js/config"], function($, _, config) {
+define(["jquery", "underscore", "js/config", "js/appId"], function($, _, config, appId) {
 
     return function(pages, localStorage) {
         localStorage = typeof localStorage !== "undefined" ? localStorage : window.localStorage;
 
-        var appId = config.appId(window.location.href);
-        var localStorageKey = ["pozimobile", appId.client, appId.appName].join("-");
+        var id = appId.doNew(window.location.href);
+        var localStorageKey = ["pozimobile", id.client(), id.appName()].join("-");
 
         var that = this;
 

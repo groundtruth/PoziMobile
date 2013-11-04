@@ -1,42 +1,12 @@
-define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, config) {
+define(["spec/SpecHelper", "underscore", "js/config", "js/appId"], function(SpecHelper, _, config, appId) {
 
     describe("config", function() {
-
-        describe("#appId", function() {
-
-            it("should get client name right", function() {
-                expect(config.appId("http://client.pozi.com/m/app/").client).toEqual("client");
-            });
-
-            it("should get app name right, even if there is a filename", function() {
-                expect(config.appId("http://client.pozimobile.dev/m/app/index.html").appName).toEqual("app");
-            });
-
-            it("should default to 'demo' for both if there is no subdomain or app name", function() {
-                expect(config.appId("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual(
-                  { client: "demo", appName: "demo" }
-                );
-            });
-
-        });
-
-        describe("#configURL", function() {
-
-            it("should combine client name and app name", function() {
-                expect(config.configURL("http://client.pozi.com/m/app/")).toEqual("config/client-app.json");
-            });
-
-            it("should default to demo config if there is no subdomain or app name", function() {
-                expect(config.configURL("http://127.0.0.1:8080/SpecRunner.html?spec=config")).toEqual("config-demo-demo.json");
-            });
-
-        });
 
         describe("#fetchConfig", function() {
             var result;
 
             beforeEach(function() {
-                spyOn(config, "configURL").andReturn("correctURL");
+                spyOn(appId, "doNew").andReturn({ configURL: function() { return "correctURL"; } });
                 spyOn($, "ajax").andReturn({ responseText: '{ "someKey": 32 }' });
                 result = config.fetchConfig();
             });
@@ -45,12 +15,12 @@ define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, c
                 expect($.ajax.mostRecentCall.args[0].async).toEqual(false);
             });
 
-            it("should make its request with URL given by #configURL", function() {
+            it("should make its request with URL given by appId#configURL", function() {
                 expect($.ajax.mostRecentCall.args[0].url).toEqual("correctURL");
             });
 
-            it("should pass window.location.href to #configURL", function() {
-                expect(config.configURL).toHaveBeenCalledWith(window.location.href);
+            it("should pass window.location.href to appId.doNew()", function() {
+                expect(appId.doNew).toHaveBeenCalledWith(window.location.href);
             });
 
             it("should return parsed JSON", function() {

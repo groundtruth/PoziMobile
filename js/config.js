@@ -1,4 +1,4 @@
-define(["jquery", "underscore"], function($, _) {
+define(["jquery", "underscore", "js/appId"], function($, _, appId) {
 
     var defaults = {
         "idField": "id",
@@ -27,35 +27,8 @@ define(["jquery", "underscore"], function($, _) {
 
     return {
 
-        appId: function(href) {
-            if (href === undefined) { throw(new Error("Need to supply a URL!")); }
-            var client, appName, matches;
-            // example: http://client.domain.tld/m/appName
-            if (matches = href.match(/^\w+:\/\/([a-z\-]+)\.[^\/\.]+\.[^\/\.]+/i)) { client = matches[1]; }
-            if (matches = href.match(/^\w+:\/\/[^\/]+\/m\/([^\/]+)\//)) { appName = matches[1]; }
-
-            // override with URL parameters if available, to support development on localhost
-            var getParameterByName = function(name) {
-                var match = RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
-                return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-            }
-            client = getParameterByName("client") || client || "demo";
-            appName = getParameterByName("appName") || appName || "demo";
-
-            return { client: client, appName: appName };
-        },
-
-        configURL: function(href) {
-            var id = this.appId(href);
-            if (id.client === "demo" && id.appName === "demo") {
-                return "config-demo-demo.json";
-            } else {
-                return "config/" + id.client + "-" + id.appName + ".json";
-            }
-        },
-
         fetchConfig: function() {
-            var url = this.configURL(window.location.href);
+            var url = appId.doNew(window.location.href).configURL();
             return $.parseJSON(
                 $.ajax({
                     type: 'GET',
