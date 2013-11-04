@@ -52,7 +52,7 @@ define(["spec/SpecHelper", "underscore", "js/config"], function(SpecHelper, _, c
             it("should pass window.location.href to #configURL", function() {
                 expect(config.configURL).toHaveBeenCalledWith(window.location.href);
             });
-            
+
             it("should return parsed JSON", function() {
                 expect(result).toEqual({ "someKey": 32 });
             });
