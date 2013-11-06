@@ -4,9 +4,11 @@ define(["spec/SpecHelper", "Squire", "underscore"], function(SpecHelper, Squire,
 
         describe(".load", function() {
 
-            it("should load config from the right JSON file", function() {
-                var isDone = false;
-                var userCallback = jasmine.createSpy("userCallback").andCallFake(function() { isDone = true; });
+            var isDone, userCallback;
+
+            beforeEach(function() {
+                isDone = false;
+                userCallback = jasmine.createSpy("userCallback").andCallFake(function() { isDone = true; });
                 runs(function(){
                     var injector = new Squire();
                     injector.mock("js/appId", Squire.Helpers.constructs({ configURL: function() { return "config-demo-demo.json"; }}));
@@ -15,18 +17,17 @@ define(["spec/SpecHelper", "Squire", "underscore"], function(SpecHelper, Squire,
                     });
                 });
                 waitsFor(function(){ return isDone; });
-                runs(function() {
-                    expect(userCallback.mostRecentCall.args[0]["demoTestKey"]).toEqual("demoTestValue");
-                });
+            });
+
+            it("should load config from the right JSON file", function() {
+                expect(userCallback.mostRecentCall.args[0]["demoTestKey"]).toEqual("demoTestValue");
+            });
+
+            it("should combine fetched config with some defaults", function() {
+                expect(userCallback.mostRecentCall.args[0]["defaultTestKey"]).toEqual("defaultTestValue");
             });
 
         });
-
-        // it("should combine fetched config with some defaults", function() {
-        // });
-
-        // it("should load the correct URL", function() {
-        // });
 
     });
 

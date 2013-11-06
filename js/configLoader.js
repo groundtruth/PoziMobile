@@ -1,6 +1,7 @@
 define(["underscore", "js/appId"], function(_, appId) {
 
     var defaults = {
+        "defaultTestKey": "defaultTestValue",
         "idField": "id",
         "defaultZoomLevel": 18,
         "maxZoom": 19,
