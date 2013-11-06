@@ -1,4 +1,5 @@
 {
+    "demoTestKey": "demoTestValue",
     "dataLayerName": "Minor Culverts",
     "databaseName": "loddongis",
     "basemap": "OpenStreetMap",
