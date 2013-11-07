@@ -1,6 +1,6 @@
-define(["jquery", "underscore", "js/config", "js/formBuilder", "js/proj"], function($, _, config, formBuilder, proj) {
+define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, formBuilder, proj) {
 
-    return function(givenSyncher) {
+    return function(givenSyncher, config) {
 
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
@@ -28,7 +28,7 @@ define(["jquery", "underscore", "js/config", "js/formBuilder", "js/proj"], funct
         };
 
         this.initForm = function(feature) {
-            var formFields = _(config.data().detailsFields.concat(config.data().genericDetailsFields)).map(function(fieldConf) {
+            var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields);

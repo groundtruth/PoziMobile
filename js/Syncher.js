@@ -1,6 +1,6 @@
-define(["jquery", "underscore", "js/config", "js/appId"], function($, _, config, appId) {
+define(["jquery", "underscore", "js/appId"], function($, _, appId) {
 
-    return function(pages, localStorage) {
+    return function(pages, config, localStorage) {
         localStorage = typeof localStorage !== "undefined" ? localStorage : window.localStorage;
 
         var id = appId.doNew(window.location.href);
@@ -52,10 +52,10 @@ define(["jquery", "underscore", "js/config", "js/appId"], function($, _, config,
                 "delete": "DELETE"
             }[item.action];
             var body = item.action === "delete" ? "" : geoJSON;
-            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.data.properties[config.data().idField] : '';
+            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.data.properties[config.idField] : '';
             $.ajax({
                 type: verb,
-                url: config.data().restEndpoint + idSuffix,
+                url: config.restEndpoint + idSuffix,
                 data: body,
                 success: function(e) {
                     that.queues.active = _(that.queues.active).without(item);

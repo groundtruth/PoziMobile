@@ -1,5 +1,4 @@
 define([
-    "js/config",
     "js/layers/Bing",
     "js/layers/Vicmaps",
     "js/layers/VectorRoads",
@@ -9,7 +8,6 @@ define([
     "js/layers/currentLocation",
     "js/layers/data"
 ], function(
-    config,
     Bing,
     Vicmaps,
     VectorRoads,
@@ -20,41 +18,42 @@ define([
     data
 ) {
 
-    return function() {
+    return function(config) {
 
         this.list = [];
 
-        if (config.data().showVectorCasements) {
-            this.list.push(VectorCasements.doNew(config.data().lga).layer);
+        if (config.showVectorCasements) {
+            this.list.push(VectorCasements.doNew(config.lga).layer);
         }
 
-        if (config.data().showVectorProperties) {
-            this.list.push(VectorProperties.doNew(config.data().lga).layer);
+        if (config.showVectorProperties) {
+            this.list.push(VectorProperties.doNew(config.lga).layer);
         }
 
-        if (config.data().showVectorRoads) {
-            this.list.push(VectorRoads.doNew(config.data().lga).layer);
+        if (config.showVectorRoads) {
+            this.list.push(VectorRoads.doNew(config.lga).layer);
         }
 
-        if (config.data().showVectorAddresses) {
-            this.list.push(VectorAddresses.doNew(config.data().lga).layer);
+        if (config.showVectorAddresses) {
+            this.list.push(VectorAddresses.doNew(config.lga).layer);
         }
 
         this.list.push(currentLocation);
-        this.list.push(data);
+        var dataLayer = data.doNew(config).layer;
+        this.list.push(dataLayer);
 
-        switch (config.data().basemap) {
+        switch (config.basemap) {
 
             case "OpenStreetMap":
                 this.list.unshift(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
                 break;
 
             case "BingRoad":
-                this.list.unshift(Bing.doNew("Road").layer);
+                this.list.unshift(Bing.doNew("Road", config.bingApiKey).layer);
                 break;
 
             case "BingAerialWithLabels":
-                this.list.unshift(Bing.doNew("AerialWithLabels").layer);
+                this.list.unshift(Bing.doNew("AerialWithLabels", config.bingApiKey).layer);
                 break;
 
             default:
@@ -66,7 +65,7 @@ define([
         }
 
         this.currentLocation = currentLocation;
-        this.data = data;
+        this.data = dataLayer;
 
     };
 

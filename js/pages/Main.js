@@ -22,21 +22,19 @@ define(["jquery", "js/PoziMap", "js/proj"], function($, PoziMap, proj) {
         };
 
         var $page = $("#pageMain");
-        var details = opts.details;
-        var syncher = opts.syncher;
-        var map = PoziMap.doNew(details);
+        var map = PoziMap.doNew(opts.details, opts.config);
 
         this.setSyncButton("check", "&nbsp;");
 
         $page.on("pagebeforeshow", function() { that.updateData(); });
 
-        $("#syncButton").live("click", function() { syncher.processQueue(true); });
+        $("#syncButton").live("click", function() { opts.syncher.processQueue(true); });
         $("#zoomOut").click(function() { map.zoomOut(); });
         $("#followLocation").click(function() { that.toggleFollowLocation(this); });
         $("#zoomIn").click(function() { map.zoomIn(); });
-        $("#newButton").click(function() { details.new(map.getCenterInWGS84()).changeTo(); });
+        $("#newButton").click(function() { opts.details.new(map.getCenterInWGS84()).changeTo(); });
 
     };
 
 });
- 
+

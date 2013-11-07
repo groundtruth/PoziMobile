@@ -1,18 +1,31 @@
-define(["js/pages/Main", "js/pages/Details", "js/Syncher"], function(Main, Details, Syncher) {
+define([
+    "js/pages/Main",
+    "js/pages/Details",
+    "js/Syncher",
+    "js/configLoader"
+], function(
+    Main,
+    Details,
+    Syncher,
+    configLoader
+) {
 
-    return function() {
+    return function(done) {
+        var that = this;
+        configLoader.load(function(config) {
 
-        var syncher = Syncher.doNew(this);
-        var details = Details.doNew(syncher);
-        var main = Main.doNew({ details: details, syncher: syncher });
+            var syncher = Syncher.doNew(that, config);
+            var details = Details.doNew(syncher, config);
+            var main = Main.doNew({ details: details, syncher: syncher, config: config });
 
-        this.setSyncButton = function(icon, label) { main.setSyncButton(icon, label); };
-        this.updateData = function() { main.updateData(); };
+            that.setSyncButton = function(icon, label) { main.setSyncButton(icon, label); };
+            that.updateData = function() { main.updateData(); };
 
-        syncher.updateInterface();
+            syncher.updateInterface();
 
+            if (typeof done === 'Function') { done(that); }
+        });
     };
 
 });
-  
 

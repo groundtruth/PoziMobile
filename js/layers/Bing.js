@@ -1,12 +1,12 @@
-define(["openlayers", "js/config"], function(OpenLayers, config) {
+define(["openlayers"], function(OpenLayers) {
 
-    return function(kind) {
+    return function(kind, bingApiKey) {
 
         switch (kind) {
 
             case "AerialWithLabels":
                 this.layer = OpenLayers.Layer.Bing.doNew({
-                    key: config.data().bingApiKey, // note: a trial key will generate erorrs "Uncaught TypeError: Cannot read property 'resources' of undefined"
+                    key: bingApiKey, // note: a trial key will generate erorrs "Uncaught TypeError: Cannot read property 'resources' of undefined"
                     type: "AerialWithLabels",
                     name: "Bing Aerial + Labels",
                     transitionEffect: 'resize'
@@ -15,7 +15,7 @@ define(["openlayers", "js/config"], function(OpenLayers, config) {
 
             default:
                 this.layer = OpenLayers.Layer.Bing.doNew({
-                    key: config.data().bingApiKey, // note: a trial key will generate erorrs "Uncaught TypeError: Cannot read property 'resources' of undefined"
+                    key: bingApiKey, // note: a trial key will generate erorrs "Uncaught TypeError: Cannot read property 'resources' of undefined"
                     type: "Road",
                     name: "Bing Road",
                     transitionEffect: 'resize'

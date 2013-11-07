@@ -1,9 +1,9 @@
-define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, config, data) {
+define(["spec/SpecHelper", "js/layers/data"], function(SpecHelper, data) {
 
     describe("layers/data", function() {
         describe("#getFeaturesAround", function() {
 
-            var lon, lat, lonWebMercator, latWebMercator, handler, responseData, configData;
+            var lon, lat, lonWebMercator, latWebMercator, handler, responseData, configData, subject;
 
             beforeEach(function() {
                 configData = {
@@ -11,7 +11,6 @@ define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, 
                   featuresLimit: 33,
                   iconName: "somicon.png"
                 };
-                spyOn(config, "data").andReturn(configData);
                 lon = 143.65305771415987;
                 lat = -36.43791886509164;
                 lonWebMercator = 15990432.821168;
@@ -23,10 +22,11 @@ define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, 
                     ]
                 };
                 spyOn($, "getJSON");
+                subject = data.doNew(configData).layer;
             });
 
             it("should make the right request to the server", function() {
-                data.getFeaturesAround({ lon: lon, lat: lat });
+                subject.getFeaturesAround({ lon: lon, lat: lat });
                 expect($.getJSON).toHaveBeenCalled();
                 var querySuffix = '/closest/'+lon+'/'+lat+'/limit/'+configData.featuresLimit;
                 expect($.getJSON.mostRecentCall.args[0]).toEqual(configData.restEndpoint+querySuffix);
@@ -36,31 +36,31 @@ define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, 
             describe("success handler", function() {
 
                 beforeEach(function() {
-                    data.getFeaturesAround({ lon: lon, lat: lat });
+                    subject.getFeaturesAround({ lon: lon, lat: lat });
                     var handler = $.getJSON.mostRecentCall.args[1];
                     handler(responseData, jasmine.createSpy("textStatus"));
                 });
 
                 it("should place the features with the right data", function() {
-                    expect(data.features[0].data).toEqual({
+                    expect(subject.features[0].data).toEqual({
                         comments: responseData.features[0].properties.comments,
                         id: responseData.features[0].properties.id
                     });
                 });
 
                 it("should place the features in the right places", function() {
-                    expect(data.features[0].geometry.x).toBeCloseTo(lonWebMercator, -4);
-                    expect(data.features[0].geometry.y).toBeCloseTo(latWebMercator, -3);
+                    expect(subject.features[0].geometry.x).toBeCloseTo(lonWebMercator, -4);
+                    expect(subject.features[0].geometry.y).toBeCloseTo(latWebMercator, -3);
                 });
 
                 it("should not duplicate features or 'remove' them without destroying them", function() {
-                    data.getFeaturesAround({ lon: lon, lat: lat });
+                    subject.getFeaturesAround({ lon: lon, lat: lat });
                     $.getJSON.mostRecentCall.args[1](responseData, jasmine.createSpy("textStatus"));
-                    expect(data.features.length).toEqual(1);
+                    expect(subject.features.length).toEqual(1);
 
-                    data.getFeaturesAround({ lon: lon, lat: lat });
+                    subject.getFeaturesAround({ lon: lon, lat: lat });
                     $.getJSON.mostRecentCall.args[1](responseData, jasmine.createSpy("textStatus"));
-                    expect(data.features.length).toEqual(1);
+                    expect(subject.features.length).toEqual(1);
 
                 });
 
@@ -69,12 +69,12 @@ define(["spec/SpecHelper", "js/config", "js/layers/data"], function(SpecHelper, 
             describe("when no success", function() {
 
                 it("should not remove features from a previously successful fetch", function() {
-                    data.getFeaturesAround({ lon: lon, lat: lat });
+                    subject.getFeaturesAround({ lon: lon, lat: lat });
                     var handler = $.getJSON.mostRecentCall.args[1];
                     handler(responseData, jasmine.createSpy("textStatus"));
-                    var successfullyFetchedFeatureId = data.features[0].id;
-                    data.getFeaturesAround({ lon: lon, lat: lat });
-                    expect(data.features[0].id).toEqual(successfullyFetchedFeatureId);
+                    var successfullyFetchedFeatureId = subject.features[0].id;
+                    subject.getFeaturesAround({ lon: lon, lat: lat });
+                    expect(subject.features[0].id).toEqual(successfullyFetchedFeatureId);
                 });
 
             });

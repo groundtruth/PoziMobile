@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "js/Syncher", "js/config", "js/appId"], function(SpecHelper, Syncher, config, appId) {
+define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Syncher, appId) {
 
     describe("Syncher", function() {
         var pages, subject, data, configData, id;
@@ -7,10 +7,9 @@ define(["spec/SpecHelper", "js/Syncher", "js/config", "js/appId"], function(Spec
             localStorage.clear();
             id = appId.doNew(window.location.href);
             configData = { restEndpoint: "http://example.com/rest" };
-            spyOn(config, "data").andReturn(configData);
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
             data = { properties: { id: 22 } };
-            subject = Syncher.doNew(pages);
+            subject = Syncher.doNew(pages, configData);
         });
 
         describe("#persist", function() {
@@ -195,7 +194,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config", "js/appId"], function(Spec
                   active: [{ action: "update", data: "new data" }]
                 }));
                 spyOn(localStorage, "setItem");
-                subject = Syncher.doNew(pages);
+                subject = Syncher.doNew(pages, configData);
             });
 
             it("should load any backup when starting", function() {
@@ -224,7 +223,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config", "js/appId"], function(Spec
             it("should alert on instantiation when not available", function() {
                 spyOn(window, "alert");
                 var replacementLocalStorage = null
-                Syncher.doNew(pages, replacementLocalStorage);
+                Syncher.doNew(pages, configData, replacementLocalStorage);
                 expect(window.alert).toHaveBeenCalled();
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/not providing web storage/);
             });
@@ -233,7 +232,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/config", "js/appId"], function(Spec
                 spyOn(window, "alert");
                 spyOn(window.localStorage, "setItem").andThrow(new Error("Quota exceeded!"));
                 spyOn($, "ajax");
-                var subject = Syncher.doNew(pages);
+                var subject = Syncher.doNew(pages, configData);
                 subject.persist("create", "form data");
                 expect(window.alert).toHaveBeenCalled();
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/quota.*exceeded/);

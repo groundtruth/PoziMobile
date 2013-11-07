@@ -3,20 +3,18 @@ define([
     "openlayers",
     "js/proj",
     "js/PoziGeolocate",
-    "js/Layers",
-    "js/config"
+    "js/Layers"
 ], function(
     $,
     OpenLayers,
     proj,
     PoziGeolocate,
-    Layers,
-    config
+    Layers
 ) {
 
-    var PoziMap = function(detailsPage) {
-        var layers = Layers.doNew();
-        var defaultZoomLevel = config.data().defaultZoomLevel;
+    var PoziMap = function(detailsPage, config) {
+        var layers = Layers.doNew(config);
+        var defaultZoomLevel = config.defaultZoomLevel;
         var geolocate = PoziGeolocate.doNew(layers.currentLocation);
         var that = this;
 
@@ -29,7 +27,7 @@ define([
         };
 
         this.setCenterAndZoomToExtent = function(pointInWebMercator, extent) {
-            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.data().maxZoom);
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.maxZoom);
             this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
         };
 
@@ -60,10 +58,10 @@ define([
             numZoomLevels: 20,
             maxResolution: 156543.0339,
             maxExtent: OpenLayers.Bounds.doNew(   /* use restrictedExtent instead to actually stop the user from moving out of it */
-                config.data().maxExtentBounds[0],
-                config.data().maxExtentBounds[1],
-                config.data().maxExtentBounds[2],
-                config.data().maxExtentBounds[3]
+                config.maxExtentBounds[0],
+                config.maxExtentBounds[1],
+                config.maxExtentBounds[2],
+                config.maxExtentBounds[3]
             ),
             controls: [
                 OpenLayers.Control.Attribution.doNew(),
@@ -75,7 +73,7 @@ define([
                     }
                 })
             ],
-            center: OpenLayers.LonLat.doNew(config.data().centerLon, config.data().centerLat)
+            center: OpenLayers.LonLat.doNew(config.centerLon, config.centerLat)
         });
 
         this.addLayers(layers.list);

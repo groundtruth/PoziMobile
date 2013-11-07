@@ -16,7 +16,12 @@ define([
         beforeEach(function() {
             spyOn(Main, "doNew").andReturn(main = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]));
             spyOn(Syncher, "doNew").andReturn(syncher = jasmine.createSpyObj("syncher", ["updateInterface"]));
-            subject = Pages.doNew(); 
+
+            isDone = false;
+            runs(function(){
+                subject = Pages.doNew(function() { isDone = true; });
+            });
+            waitsFor(function(){ return isDone; });
         });
 
         describe("constructor", function() {

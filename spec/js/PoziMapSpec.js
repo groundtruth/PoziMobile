@@ -3,22 +3,35 @@ define([
     "js/PoziMap",
     "js/PoziGeolocate",
     "js/Layers",
-    "openlayers",
-    "js/config"
+    "openlayers"
 ], function(
     SpecHelper,
     PoziMap,
     PoziGeolocate,
     Layers,
-    OpenLayers,
-    config
+    OpenLayers
 ) {
 
     describe("PoziMap", function() {
         var subject, detailsPage;
         var fakeGeolocate = jasmine.createSpyObj("geolocate", ["startFollowing", "stopFollowing", "isFollowing"]);
-        var layers = Layers.doNew();
-        
+        var config = {
+            "dataLayerName": "Minor Culverts",
+            "databaseName": "loddongis",
+            "basemap": "OpenStreetMap",
+            "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf",
+            "restEndpoint": "/api/v1/loddongis/demo_minor_culvert",
+            "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
+            "centerLon": 16245331,
+            "centerLat": -4601721,
+            "idField": "id",
+            "defaultZoomLevel": 18,
+            "maxZoom": 19,
+            "iconFile": "img/mobile-loc-1.png",
+            "featuresLimit": 20
+        };
+        var layers = Layers.doNew(config);
+
         // TODO: make PoziMap a wrapper not a subclass of OpenLayers.Map (then it can be better isolated in these specs, etc.).
 
         beforeEach(function() {
@@ -29,7 +42,7 @@ define([
           spyOn(PoziGeolocate, "doNew").andReturn(fakeGeolocate);
           detailsPage = jasmine.createSpyObj("detailsPage", ["update", "changeTo"]);
           detailsPage.update.andReturn(detailsPage);
-          subject = PoziMap.doNew(detailsPage);
+          subject = PoziMap.doNew(detailsPage, config);
         });
 
         it("should have meters as map units", function() {
@@ -99,7 +112,7 @@ define([
         describe("#setCenterAndZoomToExtent", function() {
             it("should not zoom above configured max zoom", function() {
                 spyOn(subject, "setCenter");
-                var excessiveZoom = config.data().maxZoom * 2;
+                var excessiveZoom = config.maxZoom * 2;
                 spyOn(subject, "getZoomForExtent").andReturn(excessiveZoom);
                 subject.setCenterAndZoomToExtent(subject.getCenter(), subject.getExtent());
                 expect(subject.setCenter.mostRecentCall.args[1]).toBeLessThan(excessiveZoom);
@@ -142,7 +155,7 @@ define([
                 control.handler(feature);
                 expect(control.unselect).toHaveBeenCalledWith(feature);
             });
-            
+
         });
 
     });

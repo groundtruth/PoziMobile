@@ -1,4 +1,4 @@
-define(["spec/SpecHelper", "js/pages/Details", "js/config", "js/formBuilder"], function(SpecHelper, Details, config, formBuilder) {
+define(["spec/SpecHelper", "js/pages/Details", "js/formBuilder"], function(SpecHelper, Details, formBuilder) {
 
     describe("pages/Details", function() {
         var syncher, subject, configData;
@@ -16,9 +16,8 @@ define(["spec/SpecHelper", "js/pages/Details", "js/config", "js/formBuilder"], f
                     { "type": "hidden", "id": "id", "value": "" }
                 ]
             }
-            spyOn(config, "data").andReturn(configData);
             syncher = jasmine.createSpyObj("syncher", ["persist"]);
-            subject = Details.doNew(syncher);
+            subject = Details.doNew(syncher, configData);
         });
 
         it("should set the page to visible", function() {
