@@ -23,7 +23,7 @@ define([
 
             syncher.updateInterface();
 
-            if (typeof done === 'Function') { done(that); }
+            if (typeof done === 'function') { done(that); }
         });
     };
 
