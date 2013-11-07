@@ -30,7 +30,9 @@ define(["underscore", "js/appId"], function(_, appId) {
             var configURL = appId.doNew(window.location.href).configURL();
             require(["text!"+configURL], function(configJSON) {
                 var config = _.defaults(JSON.parse(configJSON), defaults);
-                callback(config);
+                require(_(config.prePopulators).toArray(), function() {
+                    callback(config);
+                });
             });
         }
 

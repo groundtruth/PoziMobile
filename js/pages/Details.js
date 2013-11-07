@@ -27,6 +27,12 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             $page.find(".content").first().trigger("create");
         };
 
+        this.triggerPrePopulators = function() {
+            _(config.prePopulators).each(function(prePopulator) {
+                require(prePopulator)($page); // can require sync cos these were preloaded with the config
+            });
+        };
+
         this.initForm = function(feature) {
             var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
@@ -60,6 +66,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.initForm();
             $page.find('[name="lon"]').first().val(position.lon);
             $page.find('[name="lat"]').first().val(position.lat);
+            that.triggerPrePopulators();
             that.initButtons({
                 save: function() {
                     history.back();
@@ -72,6 +79,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
         this.update = function(feature) {
             that.initForm(feature);
+            that.triggerPrePopulators();
             that.initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
