@@ -15,11 +15,6 @@ define(["underscore", "js/appId"], function(_, appId) {
             {
                 "type": "hidden",
                 "id": "lon"
-            },
-            {
-                "type": "hidden",
-                "id": "id",
-                "value": ""
             }
         ]
     };
