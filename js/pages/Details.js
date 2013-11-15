@@ -11,7 +11,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             var singlePairHashes = _(nameValueHashes).map(function(h) { var result = {}; result[h.name] = h.value; return result; });
             var combinedHash = _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
             var ignoredFormProperties = ['lon', 'lat'];
-            if (combinedHash.id === '') { ignoredFormProperties.push('id'); }
+            if (combinedHash[config.idField] === '') { ignoredFormProperties.push(config.idField); }
             return {
                 "type": "Feature",
                 "properties": _(combinedHash).omit(ignoredFormProperties),
