@@ -25,7 +25,11 @@ define(["underscore", "js/appId"], function(_, appId) {
             var configURL = appId.doNew(window.location.href).configURL();
             require(["text!"+configURL], function(configJSON) {
                 var config = _.defaults(JSON.parse(configJSON), defaults);
-                require(_(config.prePopulators).toArray(), function() {
+                var extraScripts = _.union(
+                    _(config.prePopulators).toArray(),
+                    _(config.onSaves).toArray()
+                );
+                require(extraScripts, function() {
                     callback(config);
                 });
             });

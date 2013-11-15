@@ -33,6 +33,12 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             });
         };
 
+        this.triggerOnSaves = function() {
+            _(config.onSaves).each(function(onSave) {
+                require(onSave)($page); // can require sync cos these were preloaded with the config
+            });
+        };
+
         this.initForm = function(feature) {
             var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
@@ -69,8 +75,9 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.triggerPrePopulators();
             that.initButtons({
                 save: function() {
-                    history.back();
+                    that.triggerOnSaves();
                     syncher.persist("create", asGeoFeature());
+                    history.back();
                     return false;
                 }
             });
