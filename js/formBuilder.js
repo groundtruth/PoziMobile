@@ -1,5 +1,9 @@
 define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
 
+    var to_s = function(value) {
+        return (value === null) ? '' : value.toString();
+    };
+
     return {
 
         repopulateForm: function($scope, data) {
@@ -17,8 +21,8 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
 
                 } else if ($el.is("select")) {
 
-                    var existingValues = _($el.find("option")).map(function(option) { return option.value.toString(); });
-                    if (! _(existingValues).contains(val.toString())) {
+                    var existingValues = _($el.find("option")).map(function(option) { return to_s(option.value); });
+                    if (! _(existingValues).contains(to_s(val))) {
                         $el.append('<option value="'+val+'">'+val+'</option>');
                     }
                     $el.val(val);
@@ -59,9 +63,9 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     break;
 
                 case "number":
-                    if (_(fieldDef).has('min')) { fieldDef['min'] = fieldDef['min'].toString(); }
-                    if (_(fieldDef).has('max')) { fieldDef['max'] = fieldDef['max'].toString(); }
-                    if (_(fieldDef).has('step')) { fieldDef['step'] = fieldDef['step'].toString(); }
+                    if (_(fieldDef).has('min')) { fieldDef['min'] = to_s(fieldDef['min']); }
+                    if (_(fieldDef).has('max')) { fieldDef['max'] = to_s(fieldDef['max']); }
+                    if (_(fieldDef).has('step')) { fieldDef['step'] = to_s(fieldDef['step']); }
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}">{{ description }}:</label>\
