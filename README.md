@@ -34,6 +34,7 @@ is maintained.
 
 ## To do
 
+* Have data layer refreshed after change (can currently return just before).
 * Refactor `Syncher` and friends so that:
   - `Syncher` maintains its status info which is relevant to the interface.
   - `Syncher` does not know about the `Main` page.
