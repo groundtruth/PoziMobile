@@ -10,12 +10,14 @@ define([], function() {
             "jquery": "vendor/jquery-1.8.3/jquery-1.8.3.min",
             "jquery.mobile": "vendor/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
             "openlayers": "vendor/openlayers-2.12/OpenLayers.mobile",
+            "openlayers.rule": "vendor/openlayers-2.12/OpenLayers.Rule",
             "mustache": "vendor/mustache-0.7.2/mustache"
         },
         shim: {
             "jasmine-jquery": { deps: ["jquery"], exports: "jasmine" },
             "underscore": { exports: "_" },
-            "openlayers": { exports: "OpenLayers" }
+            "openlayers": { exports: "OpenLayers" },
+            "openlayers.rule": { exports: "OpenLayers" }
         },
         callback: function($) {
             // CREATE A METHOD TO WRAP THE PROCESS OF OBJECT CONSTRUCTION
