@@ -90,14 +90,16 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
-                        history.back();
+                        that.triggerOnSaves();
                         syncher.persist("delete", asGeoFeature());
+                        history.back();
                     }
                     return false;
                 },
                 save: function() {
-                    history.back();
+                    that.triggerOnSaves();
                     syncher.persist("update", asGeoFeature());
+                    history.back();
                     return false;
                 }
             });
