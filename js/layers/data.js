@@ -3,17 +3,26 @@ define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
     return function(config) {
         var that = this;
 
-        // The style hardcodes the correspondance between a status code and the external graphic name
-        // We tried with adduniquerules but OpenLayers.Rule does not seem defined in Openlayers mobile
-        that.layer = OpenLayers.Layer.Vector.doNew(config.dataLayerName, {
-            styleMap: OpenLayers.StyleMap.doNew({
-                externalGraphic: config.iconFile,
-                graphicOpacity: 1.0,
-                graphicWith: 16,
-                graphicHeight: 26,
-                graphicYOffset: -26
-            })
+        var style = OpenLayers.Style.doNew({
+            externalGraphic: config.iconFile,
+            graphicOpacity: 1.0,
+            graphicWith: 16,
+            graphicHeight: 26,
+            graphicYOffset: -26
         });
+
+        var styleRules = _(config.styleRules).chain().map(function(styleRulesPart) {
+            // these are expected to be arrays of OpenLayers.Style objects
+            return require(styleRulesPart); // can require sync cos these were preloaded with the config
+        }).flatten().value();
+
+        // if any styleRules are present, default style won't work
+        // (so custom ones should handle a default case too)
+        style.addRules(styleRules);
+
+        var styleMap = OpenLayers.StyleMap.doNew(style);
+
+        that.layer = OpenLayers.Layer.Vector.doNew(config.dataLayerName, { styleMap: styleMap });
 
         that.layer.getFeaturesAround = function(pointInWGS84) {
 

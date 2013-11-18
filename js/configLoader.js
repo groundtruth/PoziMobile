@@ -27,7 +27,8 @@ define(["underscore", "js/appId"], function(_, appId) {
                 var config = _.defaults(JSON.parse(configJSON), defaults);
                 var extraScripts = _.union(
                     _(config.prePopulators).toArray(),
-                    _(config.onSaves).toArray()
+                    _(config.onSaves).toArray(),
+                    _(config.styleRules).toArray()
                 );
                 require(extraScripts, function() {
                     callback(config);
