@@ -1,7 +1,6 @@
 {
     "demoTestKey": "demoTestValue",
     "dataLayerName": "Minor Culverts",
-    "databaseName": "loddongis",
     "basemap": "OpenStreetMap",
     "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf",
     "restEndpoint": "http://demo.pozi.com/api/v1/loddongis/demo_minor_culvert",
@@ -9,6 +8,7 @@
     "centerLon": 16245331,
     "centerLat": -4601721,
     "detailsFields": [
+        { "type": "hidden", "id": "id", "value": "" },
         {
             "type": "select",
             "id": "culvert_type",
