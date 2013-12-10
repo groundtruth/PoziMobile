@@ -1,6 +1,6 @@
 define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
 
-    return function(config) {
+    return function(config, detailsPage) {
         var that = this;
 
         var style = OpenLayers.Style.doNew({
@@ -23,6 +23,18 @@ define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
         var styleMap = OpenLayers.StyleMap.doNew(style);
 
         that.layer = OpenLayers.Layer.Vector.doNew(config.dataLayerName, { styleMap: styleMap });
+
+        that.layer.controls = function() {
+            return [
+                OpenLayers.Control.SelectFeature.doNew(that.layer, {
+                    autoActivate: true,
+                    onSelect: function(feature) {
+                        this.unselect(feature);
+                        detailsPage.update(feature).changeTo();
+                    }
+                })
+            ];
+        };
 
         that.layer.getFeaturesAround = function(pointInWGS84) {
 

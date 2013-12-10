@@ -18,7 +18,7 @@ define([
     data
 ) {
 
-    return function(config) {
+    return function(config, detailsPage) {
 
         this.list = [];
 
@@ -39,7 +39,7 @@ define([
         }
 
         this.list.push(currentLocation);
-        var dataLayer = data.doNew(config).layer;
+        var dataLayer = data.doNew(config, detailsPage).layer;
         this.list.push(dataLayer);
 
         switch (config.basemap) {

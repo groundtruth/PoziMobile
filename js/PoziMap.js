@@ -13,7 +13,7 @@ define([
 ) {
 
     var PoziMap = function(detailsPage, config) {
-        var layers = Layers.doNew(config);
+        var layers = Layers.doNew(config, detailsPage);
         var defaultZoomLevel = config.defaultZoomLevel;
         var geolocate = PoziGeolocate.doNew(layers.currentLocation);
         var that = this;
@@ -78,15 +78,9 @@ define([
 
         this.addLayers(layers.list);
 
-        this.addControls([
-            OpenLayers.Control.SelectFeature.doNew(layers.data, {
-                autoActivate: true,
-                onSelect: function(feature) {
-                    this.unselect(feature);
-                    detailsPage.update(feature).changeTo();
-                }
-            })
-        ]);
+        this.addControls(_(layers.list).chain().map(function(layer) {
+            return typeof(layer.controls) === 'function' ? layer.controls() : undefined;
+        }).flatten().compact().value());
 
         this.events.register('moveend', this, function() { this.updateData(); });
 
