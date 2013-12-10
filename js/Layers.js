@@ -6,7 +6,7 @@ define([
     "js/layers/VectorProperties",
     "js/layers/VectorCasements",
     "js/layers/currentLocation",
-    "js/layers/data"
+    "js/layers/Data"
 ], function(
     Bing,
     Vicmaps,
@@ -15,7 +15,7 @@ define([
     VectorProperties,
     VectorCasements,
     currentLocation,
-    data
+    Data
 ) {
 
     return function(config, detailsPage) {
@@ -39,7 +39,7 @@ define([
         }
 
         this.list.push(currentLocation);
-        var dataLayer = data.doNew(config, detailsPage).layer;
+        var dataLayer = Data.doNew(config, detailsPage).layer;
         this.list.push(dataLayer);
 
         switch (config.basemap) {
