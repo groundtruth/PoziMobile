@@ -1,6 +1,6 @@
 define(["jquery", "underscore", "js/appId"], function($, _, appId) {
 
-    return function(pages, config, localStorage) {
+    return function(pages, localStorage) {
         localStorage = typeof localStorage !== "undefined" ? localStorage : window.localStorage;
 
         var id = appId.doNew(window.location.href);
@@ -52,10 +52,10 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
                 "delete": "DELETE"
             }[item.action];
             var body = item.action === "delete" ? "" : geoJSON;
-            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.data.properties[config.idField] : '';
+            var idSuffix = _(["update", "delete"]).contains(item.action) ? '/'+item.id : '';
             $.ajax({
                 type: verb,
-                url: config.restEndpoint + idSuffix,
+                url: item.restEndpoint + idSuffix,
                 data: body,
                 success: function(e) {
                     that.queues.active = _(that.queues.active).without(item);
@@ -92,8 +92,8 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
             if (nothingToSync()) { pages.updateData(); }
         };
 
-        this.persist = function(action, data) {
-            that.queues.waiting.push({ action: action, data: data });
+        this.persist = function(item) {
+            that.queues.waiting.push(item);
             backupQueues();
             that.processQueue();
         };

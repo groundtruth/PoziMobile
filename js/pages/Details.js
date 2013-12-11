@@ -6,21 +6,24 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         var $page = $("#pageDetails");
         var that = this;
 
-        var asGeoFeature = function() {
+        var combinedHash = function() {
             var nameValueHashes = $page.find("#detailsForm").serializeArray();
             var singlePairHashes = _(nameValueHashes).map(function(h) { var result = {}; result[h.name] = h.value; return result; });
-            var combinedHash = _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
+            return _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
+        };
+
+        var asGeoFeature = function() {
             var ignoredFormProperties = ['lon', 'lat'];
-            if (combinedHash[layerOptions.idField] === '') {
+            if (combinedHash()[layerOptions.idField] === '') {
                 ignoredFormProperties.push(layerOptions.idField);
             }
             return {
                 "type": "Feature",
-                "properties": _(combinedHash).omit(ignoredFormProperties),
+                "properties": _(combinedHash()).omit(ignoredFormProperties),
                 "geometry": {
                     "type": "Point",
                     "crs": { "type": "name", "properties": { "name": "EPSG:4326" } },
-                    "coordinates": [parseFloat(combinedHash.lon), parseFloat(combinedHash.lat)]
+                    "coordinates": [parseFloat(combinedHash().lon), parseFloat(combinedHash().lat)]
                 }
             };
         };
@@ -79,7 +82,11 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.initButtons({
                 save: function() {
                     that.triggerOnSaves();
-                    syncher.persist("create", asGeoFeature());
+                    syncher.persist({
+                        restEndpoint: layerOptions.restEndpoint,
+                        action: "create",
+                        data: asGeoFeature()
+                    });
                     history.back();
                     return false;
                 }
@@ -94,14 +101,24 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
                         that.triggerOnSaves();
-                        syncher.persist("delete", asGeoFeature());
+                        syncher.persist({
+                            restEndpoint: layerOptions.restEndpoint,
+                            action: "delete",
+                            data: asGeoFeature(),
+                            id: combinedHash()[layerOptions.idField]
+                        });
                         history.back();
                     }
                     return false;
                 },
                 save: function() {
                     that.triggerOnSaves();
-                    syncher.persist("update", asGeoFeature());
+                    syncher.persist({
+                        restEndpoint: layerOptions.restEndpoint,
+                        action: "update",
+                        data: asGeoFeature(),
+                        id: combinedHash()[layerOptions.idField]
+                    });
                     history.back();
                     return false;
                 }
