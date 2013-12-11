@@ -15,8 +15,7 @@ define([
         configLoader.load(function(config) {
 
             var syncher = Syncher.doNew(that, config);
-            var details = Details.doNew(syncher, config);
-            var main = Main.doNew({ details: details, syncher: syncher, config: config });
+            var main = Main.doNew({ syncher: syncher, config: config });
 
             that.setSyncButton = function(icon, label) { main.setSyncButton(icon, label); };
             that.updateData = function() { main.updateData(); };

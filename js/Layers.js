@@ -8,7 +8,8 @@ define([
     "js/layers/VectorProperties",
     "js/layers/VectorCasements",
     "js/layers/currentLocation",
-    "js/layers/Data"
+    "js/layers/Data",
+    "js/pages/Details"
 ], function(
     _,
     Bing,
@@ -19,10 +20,11 @@ define([
     VectorProperties,
     VectorCasements,
     currentLocation,
-    Data
+    Data,
+    Details
 ) {
 
-    return function(config, detailsPage) {
+    return function(config, syncher) {
 
         var that = this;
 
@@ -34,7 +36,7 @@ define([
                 that.currentLocation = currentLocation;
 
             } else if (layerConfig.type === 'Data') {
-                var dataLayer = Data.doNew(config, detailsPage).layer;
+                var dataLayer = Data.doNew(layerConfig, syncher).layer;
                 that.list.unshift(dataLayer);
                 that.data = dataLayer;
 
@@ -69,6 +71,10 @@ define([
                 throw Error("Invalid layer type '"+layerConfig.type+"'");
             }
         });
+
+        that.newAt = function(centerInWGS84) {
+            that.data.newAt(centerInWGS84);
+        };
 
     };
 

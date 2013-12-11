@@ -1,4 +1,4 @@
-define(["jquery", "js/PoziMap", "js/proj"], function($, PoziMap, proj) {
+define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, proj, Layers) {
 
     return function(opts) {
         var that = this;
@@ -22,7 +22,9 @@ define(["jquery", "js/PoziMap", "js/proj"], function($, PoziMap, proj) {
         };
 
         var $page = $("#pageMain");
-        var map = PoziMap.doNew(opts.details, opts.config);
+
+        var layers = Layers.doNew(opts.config, opts.syncher);
+        var map = PoziMap.doNew(opts.config, layers);
 
         this.setSyncButton("check", "&nbsp;");
 
@@ -32,7 +34,7 @@ define(["jquery", "js/PoziMap", "js/proj"], function($, PoziMap, proj) {
         $("#zoomOut").click(function() { map.zoomOut(); });
         $("#followLocation").click(function() { that.toggleFollowLocation(this); });
         $("#zoomIn").click(function() { map.zoomIn(); });
-        $("#newButton").click(function() { opts.details.new(map.getCenterInWGS84()).changeTo(); });
+        $("#newButton").click(function() { layers.newAt(map.getCenterInWGS84()); });
 
     };
 

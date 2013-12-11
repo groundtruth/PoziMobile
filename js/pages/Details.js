@@ -1,6 +1,6 @@
 define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, formBuilder, proj) {
 
-    return function(givenSyncher, config) {
+    return function(givenSyncher, layerOptions) {
 
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
@@ -11,7 +11,9 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             var singlePairHashes = _(nameValueHashes).map(function(h) { var result = {}; result[h.name] = h.value; return result; });
             var combinedHash = _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
             var ignoredFormProperties = ['lon', 'lat'];
-            if (combinedHash[config.idField] === '') { ignoredFormProperties.push(config.idField); }
+            if (combinedHash[layerOptions.idField] === '') {
+                ignoredFormProperties.push(layerOptions.idField);
+            }
             return {
                 "type": "Feature",
                 "properties": _(combinedHash).omit(ignoredFormProperties),
@@ -28,19 +30,20 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         this.triggerPrePopulators = function() {
-            _(config.prePopulators).each(function(prePopulator) {
+            _(layerOptions.prePopulators).each(function(prePopulator) {
                 require(prePopulator)($page); // can require sync cos these were preloaded with the config
             });
         };
 
         this.triggerOnSaves = function() {
-            _(config.onSaves).each(function(onSave) {
+            _(layerOptions.onSaves).each(function(onSave) {
                 require(onSave)($page); // can require sync cos these were preloaded with the config
             });
         };
 
         this.initForm = function(feature) {
-            var formFields = _(config.detailsFields.concat(config.genericDetailsFields)).map(function(fieldConf) {
+            var fieldConfs = layerOptions.detailsFields.concat(layerOptions.genericDetailsFields);
+            var formFields = _(fieldConfs).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields);

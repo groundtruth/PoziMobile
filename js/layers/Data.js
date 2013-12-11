@@ -1,17 +1,37 @@
-define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
+define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, OpenLayers, proj, Details) {
 
-    return function(config, detailsPage) {
+    return function(layerConfig, syncher) {
         var that = this;
 
+        var optionsDefaults = {
+            "idField": "id",
+            "iconFile": "img/mobile-loc-1.png",
+            "featuresLimit": 20,
+            "genericDetailsFields": [
+                {
+                    "type": "hidden",
+                    "id": "lat"
+                },
+                {
+                    "type": "hidden",
+                    "id": "lon"
+                }
+            ]
+        };
+
+        var options = _.defaults(layerConfig.options, optionsDefaults);
+
+        var detailsPage = Details.doNew(syncher, options);
+
         var style = OpenLayers.Style.doNew({
-            externalGraphic: config.iconFile,
+            externalGraphic: options.iconFile,
             graphicOpacity: 1.0,
             graphicWith: 16,
             graphicHeight: 26,
             graphicYOffset: -26
         });
 
-        var styleRules = _(config.styleRules).chain().map(function(styleRulesPart) {
+        var styleRules = _(options.styleRules).chain().map(function(styleRulesPart) {
             // these are expected to be arrays of OpenLayers.Style objects
             return require(styleRulesPart); // can require sync cos these were preloaded with the config
         }).flatten().value();
@@ -22,7 +42,7 @@ define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
 
         var styleMap = OpenLayers.StyleMap.doNew(style);
 
-        that.layer = OpenLayers.Layer.Vector.doNew(config.dataLayerName, { styleMap: styleMap });
+        that.layer = OpenLayers.Layer.Vector.doNew(options.name, { styleMap: styleMap });
 
         that.layer.controls = function() {
             return [
@@ -44,7 +64,7 @@ define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
             });
 
             $.getJSON(
-                config.restEndpoint + '/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+config.featuresLimit,
+                options.restEndpoint + '/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit,
                 function(data, textStatus) {
                     // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                     var features = reader.read(data);
@@ -55,6 +75,10 @@ define(["jquery", "openlayers", "js/proj"], function($, OpenLayers, proj) {
                 }
             );
 
+        };
+
+        that.layer.newAt = function(centerInWGS84) {
+            detailsPage.new(centerInWGS84).changeTo();
         };
     };
 
