@@ -11,13 +11,15 @@ define([], function() {
             "jquery.mobile": "vendor/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
             "openlayers": "vendor/openlayers-2.12/OpenLayers.mobile",
             "openlayers.rule": "vendor/openlayers-2.12/OpenLayers.Rule",
-            "mustache": "vendor/mustache-0.7.2/mustache"
+            "mustache": "vendor/mustache-0.7.2/mustache",
+            "jsonpath": "vendor/jsonpath/jsonpath-0.8.0"
         },
         shim: {
             "jasmine-jquery": { deps: ["jquery"], exports: "jasmine" },
             "underscore": { exports: "_" },
             "openlayers": { exports: "OpenLayers" },
-            "openlayers.rule": { exports: "OpenLayers" }
+            "openlayers.rule": { exports: "OpenLayers" },
+            "jsonpath": { exports: "jsonPath" }
         },
         callback: function($) {
             // CREATE A METHOD TO WRAP THE PROCESS OF OBJECT CONSTRUCTION
