@@ -1,6 +1,8 @@
 define([
+    "underscore",
     "js/layers/Bing",
-    "js/layers/Vicmaps",
+    "js/layers/VicmapClassic",
+    "js/layers/VicmapLabelClassic",
     "js/layers/VectorRoads",
     "js/layers/VectorAddresses",
     "js/layers/VectorProperties",
@@ -8,8 +10,10 @@ define([
     "js/layers/currentLocation",
     "js/layers/Data"
 ], function(
+    _,
     Bing,
-    Vicmaps,
+    VicmapClassic,
+    VicmapLabelClassic,
     VectorRoads,
     VectorAddresses,
     VectorProperties,
@@ -20,52 +24,51 @@ define([
 
     return function(config, detailsPage) {
 
-        this.list = [];
+        var that = this;
 
-        if (config.showVectorCasements) {
-            this.list.push(VectorCasements.doNew(config.lga).layer);
-        }
+        that.list = [];
 
-        if (config.showVectorProperties) {
-            this.list.push(VectorProperties.doNew(config.lga).layer);
-        }
+        _(config.layers).each(function(layerConfig) {
+            if (layerConfig.type === 'currentLocation') {
+                that.list.unshift(currentLocation);
+                that.currentLocation = currentLocation;
 
-        if (config.showVectorRoads) {
-            this.list.push(VectorRoads.doNew(config.lga).layer);
-        }
+            } else if (layerConfig.type === 'Data') {
+                var dataLayer = Data.doNew(config, detailsPage).layer;
+                that.list.unshift(dataLayer);
+                that.data = dataLayer;
 
-        if (config.showVectorAddresses) {
-            this.list.push(VectorAddresses.doNew(config.lga).layer);
-        }
+            } else if (layerConfig.type === 'VectorCasements') {
+                that.list.unshift(VectorCasements.doNew(layerConfig.options.lga).layer);
 
-        this.list.push(currentLocation);
-        var dataLayer = Data.doNew(config, detailsPage).layer;
-        this.list.push(dataLayer);
+            } else if (layerConfig.type === 'VectorProperties') {
+                that.list.unshift(VectorProperties.doNew(layerConfig.options.lga).layer);
 
-        switch (config.basemap) {
+            } else if (layerConfig.type === 'VectorRoads') {
+                that.list.unshift(VectorRoads.doNew(layerConfig.options.lga).layer);
 
-            case "OpenStreetMap":
-                this.list.unshift(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
-                break;
+            } else if (layerConfig.type === 'VectorAddresses') {
+                that.list.unshift(VectorAddresses.doNew(layerConfig.options.lga).layer);
 
-            case "BingRoad":
-                this.list.unshift(Bing.doNew("Road", config.bingApiKey).layer);
-                break;
+            } else if (layerConfig.type === 'VicmapLabelClassic') {
+                that.list.unshift(VicmapLabelClassic.doNew().layer);
 
-            case "BingAerialWithLabels":
-                this.list.unshift(Bing.doNew("AerialWithLabels", config.bingApiKey).layer);
-                break;
+            } else if (layerConfig.type === 'VicmapClassic') {
+                that.list.unshift(VicmapClassic.doNew().layer);
 
-            default:
-                var vicmaps = Vicmaps.doNew();
-                this.list.unshift(vicmaps.classic);
-                this.list.push(vicmaps.labelClassic); // on top, for readability in offline mode
-                break;
+            } else if (layerConfig.type === 'OpenStreetMap') {
+                that.list.unshift(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
 
-        }
+            } else if (layerConfig.type === 'BingRoad') {
+                that.list.unshift(Bing.doNew("Road", layerConfig.options.bingApiKey).layer);
 
-        this.currentLocation = currentLocation;
-        this.data = dataLayer;
+            } else if (layerConfig.type === 'BingAerialWithLabels') {
+                that.list.unshift(Bing.doNew("AerialWithLabels", layerConfig.options.bingApiKey).layer);
+
+            } else {
+                throw Error("Invalid layer type '"+layerConfig.type+"'");
+            }
+        });
 
     };
 
