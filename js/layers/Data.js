@@ -6,17 +6,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
         var optionsDefaults = {
             "idField": "id",
             "iconFile": "img/mobile-loc-1.png",
-            "featuresLimit": 20,
-            "genericDetailsFields": [
-                {
-                    "type": "hidden",
-                    "id": "lat"
-                },
-                {
-                    "type": "hidden",
-                    "id": "lon"
-                }
-            ]
+            "featuresLimit": 20
         };
 
         var options = _.defaults(rawLayerConfig.options, optionsDefaults);

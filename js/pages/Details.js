@@ -2,9 +2,10 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
     return function(givenSyncher, layerOptions) {
 
+        var that = this;
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
-        var that = this;
+        var jsonGeometryPart;
 
         var combinedHash = function() {
             var nameValueHashes = $page.find("#detailsForm").serializeArray();
@@ -13,17 +14,22 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         var asGeoFeature = function() {
-            var ignoredFormProperties = ['lon', 'lat'];
+            var ignoredFormProperties = [];
             if (combinedHash()[layerOptions.idField] === '') {
                 ignoredFormProperties.push(layerOptions.idField);
             }
-            return {
+            return _({
                 "type": "Feature",
-                "properties": _(combinedHash()).omit(ignoredFormProperties),
+                "properties": _(combinedHash()).omit(ignoredFormProperties)
+            }).extend(jsonGeometryPart);
+        };
+
+        var jsonGeometryPartAt = function(pointInWGS84) {
+            return {
                 "geometry": {
                     "type": "Point",
                     "crs": { "type": "name", "properties": { "name": "EPSG:4326" } },
-                    "coordinates": [parseFloat(combinedHash().lon), parseFloat(combinedHash().lat)]
+                    "coordinates": [parseFloat(pointInWGS84.x), parseFloat(pointInWGS84.y)]
                 }
             };
         };
@@ -45,17 +51,20 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         this.initForm = function(feature) {
-            var fieldConfs = layerOptions.detailsFields.concat(layerOptions.genericDetailsFields);
-            var formFields = _(fieldConfs).map(function(fieldConf) {
+            var formFields = _(layerOptions.detailsFields).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields);
+
+            jsonGeometryPart = {};
             if (feature) {
-              var pointInWGS84 = feature.geometry.transform(proj.webMercator, proj.WGS84);
-              $page.find('[name="lon"]').first().val(pointInWGS84.x);
-              $page.find('[name="lat"]').first().val(pointInWGS84.y);
-              formBuilder.repopulateForm($page, feature.data);
+                if (_(feature).has('geometry')) {
+                    var pointInWGS84 = feature.geometry.transform(proj.webMercator, proj.WGS84);
+                    jsonGeometryPart = jsonGeometryPartAt(pointInWGS84);
+                }
+                formBuilder.repopulateForm($page, feature.data);
             };
+
             that.enhanceForm(); // important: this must be done after form population
         };
 
@@ -76,8 +85,8 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
         this.new = function(position) {
             that.initForm();
-            $page.find('[name="lon"]').first().val(position.lon);
-            $page.find('[name="lat"]').first().val(position.lat);
+            jsonGeometryPart = jsonGeometryPartAt({ x: position.lon, y: position.lat });
+
             that.triggerPrePopulators();
             that.initButtons({
                 save: function() {
