@@ -47,9 +47,11 @@ define([
                 that.list.unshift(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
 
             } else if (layerConfig.type === 'BingRoad') {
+                if (!_(layerConfig.options).has('bingApiKey')) { throw Error('Bing API key requried!'); }
                 that.list.unshift(Bing.doNew("Road", layerConfig.options.bingApiKey).layer);
 
             } else if (layerConfig.type === 'BingAerialWithLabels') {
+                if (!_(layerConfig.options).has('bingApiKey')) { throw Error('Bing API key requried!'); }
                 that.list.unshift(Bing.doNew("AerialWithLabels", layerConfig.options.bingApiKey).layer);
 
             } else {
