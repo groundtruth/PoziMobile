@@ -1,227 +1,235 @@
 {
     "demoTestKey": "demoTestValue",
-    "dataLayerName": "Minor Culverts",
-    "basemap": "OpenStreetMap",
-    "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf",
-    "restEndpoint": "http://demo.pozi.com/api/v1/loddongis/demo_minor_culvert",
     "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
     "centerLon": 16245331,
     "centerLat": -4601721,
-    "detailsFields": [
-        { "type": "hidden", "id": "id", "value": "" },
-        {
-            "type": "select",
-            "id": "culvert_type",
-            "description": "Culvert type",
-            "options": [
-                { "value": "1", "label": "Box Culvert" },
-                { "value": "2", "label": "Crown Unit" },
-                { "value": "3", "label": "Pipe" },
-                { "value": "4", "label": "Major Culvert" },
-                { "value": "5", "label": "Major structure" }
+
+    "layers": [
+        { "type": "currentLocation", "options": {} },
+        { "type": "Data", "options": {
+
+            "name": "Minor Culverts",
+            "restEndpoint": "http://demo.pozi.com/api/v1/loddongis/demo_minor_culvert",
+            "detailsFields": [
+                { "type": "hidden", "id": "id", "value": "" },
+                {
+                    "type": "select",
+                    "id": "culvert_type",
+                    "description": "Culvert type",
+                    "options": [
+                        { "value": "1", "label": "Box Culvert" },
+                        { "value": "2", "label": "Crown Unit" },
+                        { "value": "3", "label": "Pipe" },
+                        { "value": "4", "label": "Major Culvert" },
+                        { "value": "5", "label": "Major structure" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "culvert_size",
+                    "description": "Size",
+                    "options": [
+                        { "value": "1",  "label": "150 dia" },
+                        { "value": "2",  "label": "225 dia" },
+                        { "value": "3",  "label": "300 dia" },
+                        { "value": "4",  "label": "375 dia" },
+                        { "value": "5",  "label": "450 dia" },
+                        { "value": "6",  "label": "525 dia" },
+                        { "value": "7",  "label": "600 dia" },
+                        { "value": "8",  "label": "675 dia" },
+                        { "value": "9",  "label": "750 dia" },
+                        { "value": "10", "label": "825 dia" },
+                        { "value": "11", "label": "900 dia" },
+                        { "value": "12", "label": "975 dia" },
+                        { "value": "13", "label": "1050 dia" },
+                        { "value": "14", "label": "1125 dia" },
+                        { "value": "15", "label": "1200 dia" },
+                        { "value": "16", "label": "1275 dia" },
+                        { "value": "17", "label": "1350 dia" },
+                        { "value": "18", "label": "1500 dia" },
+                        { "value": "19", "label": "375x150" },
+                        { "value": "20", "label": "375x225" },
+                        { "value": "21", "label": "375x300" },
+                        { "value": "22", "label": "375x375" },
+                        { "value": "23", "label": "375x450" },
+                        { "value": "24", "label": "375x600" },
+                        { "value": "25", "label": "375x750" },
+                        { "value": "26", "label": "375x900" },
+                        { "value": "27", "label": "375x1200" },
+                        { "value": "28", "label": "450x150" },
+                        { "value": "29", "label": "450x225" },
+                        { "value": "30", "label": "450x300" },
+                        { "value": "31", "label": "450x375" },
+                        { "value": "32", "label": "450x450" },
+                        { "value": "33", "label": "450x600" },
+                        { "value": "34", "label": "450x750" },
+                        { "value": "35", "label": "450x900" },
+                        { "value": "36", "label": "450x1200" },
+                        { "value": "37", "label": "600x150" },
+                        { "value": "38", "label": "600x225" },
+                        { "value": "39", "label": "600x300" },
+                        { "value": "40", "label": "600x375" },
+                        { "value": "41", "label": "600x450" },
+                        { "value": "42", "label": "600x600" },
+                        { "value": "43", "label": "600x750" },
+                        { "value": "44", "label": "600x900" },
+                        { "value": "45", "label": "600x1200" },
+                        { "value": "46", "label": "750x150" },
+                        { "value": "47", "label": "750x225" },
+                        { "value": "48", "label": "750x300" },
+                        { "value": "49", "label": "750x375" },
+                        { "value": "50", "label": "750x450" },
+                        { "value": "51", "label": "750x600" },
+                        { "value": "52", "label": "750x750" },
+                        { "value": "53", "label": "750x900" },
+                        { "value": "54", "label": "750x1200" },
+                        { "value": "55", "label": "900x150" },
+                        { "value": "56", "label": "900x225" },
+                        { "value": "57", "label": "900x300" },
+                        { "value": "58", "label": "900x375" },
+                        { "value": "59", "label": "900x450" },
+                        { "value": "60", "label": "900x600" },
+                        { "value": "61", "label": "900x750" },
+                        { "value": "62", "label": "900x900" },
+                        { "value": "63", "label": "900x1200" },
+                        { "value": "64", "label": "1200x150" },
+                        { "value": "65", "label": "1200x225" },
+                        { "value": "66", "label": "1200x300" },
+                        { "value": "67", "label": "1200x375" },
+                        { "value": "68", "label": "1200x450" },
+                        { "value": "69", "label": "1200x600" },
+                        { "value": "70", "label": "1200x750" },
+                        { "value": "71", "label": "1200x900" },
+                        { "value": "72", "label": "1200x1200" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "culvert_material",
+                    "description": "Material",
+                    "options": [
+                        { "value": "1", "label": "Brick" },
+                        { "value": "2", "label": "Corrugated Galvanised Steel" },
+                        { "value": "3", "label": "Earthenware" },
+                        { "value": "4", "label": "Fibre Reinforced Concrete" },
+                        { "value": "5", "label": "PVC" },
+                        { "value": "6", "label": "Reinforced Concrete" },
+                        { "value": "7", "label": "Steel" },
+                        { "value": "8", "label": "Timber" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "cell_count",
+                    "description": "Number of cells",
+                    "options": [
+                        { "value": "1",  "label": "1" },
+                        { "value": "2",  "label": "2" },
+                        { "value": "3",  "label": "3" },
+                        { "value": "4",  "label": "4" },
+                        { "value": "5",  "label": "5" },
+                        { "value": "6",  "label": "6" },
+                        { "value": "7",  "label": "7" },
+                        { "value": "8",  "label": "8" },
+                        { "value": "9",  "label": "9" },
+                        { "value": "10", "label": "10" },
+                        { "value": "11", "label": "11" },
+                        { "value": "12", "label": "12" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "culvert_condition",
+                    "description": "Culvert condition",
+                    "options": [
+                        { "value": "-1", "label": "" },
+                        { "value": "0",  "label": "0 - New" },
+                        { "value": "1",  "label": "1 - Good Condition" },
+                        { "value": "2",  "label": "2 - Good Condition" },
+                        { "value": "3",  "label": "3 - Good Condition" },
+                        { "value": "4",  "label": "4 - Good Condition" },
+                        { "value": "5",  "label": "5 - Obvious deterioration" },
+                        { "value": "6",  "label": "6 - Obvious deterioration" },
+                        { "value": "7",  "label": "7 - Obvious deterioration" },
+                        { "value": "8",  "label": "8 - Severe deterioration" },
+                        { "value": "9",  "label": "9 - Severe deterioration" },
+                        { "value": "10", "label": "10 - Unserviceable" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "endwall_count",
+                    "description": "Number of endwalls",
+                    "options": [
+                        { "value": "0", "label": "0" },
+                        { "value": "1", "label": "1" },
+                        { "value": "2", "label": "2" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "endwall_condition",
+                    "description": "Endwall condition",
+                    "options": [
+                        { "value": "-1", "label": "" },
+                        { "value": "0",  "label": "0 - New" },
+                        { "value": "1",  "label": "1 - Good Condition" },
+                        { "value": "2",  "label": "2 - Good Condition" },
+                        { "value": "3",  "label": "3 - Good Condition" },
+                        { "value": "4",  "label": "4 - Good Condition" },
+                        { "value": "5",  "label": "5 - Obvious deterioration" },
+                        { "value": "6",  "label": "6 - Obvious deterioration" },
+                        { "value": "7",  "label": "7 - Obvious deterioration" },
+                        { "value": "8",  "label": "8 - Severe deterioration" },
+                        { "value": "9",  "label": "9 - Severe deterioration" },
+                        { "value": "10", "label": "10 - Unserviceable" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "culvert_posts_needed",
+                    "description": "Endwall posts needed",
+                    "options": [
+                        { "value": "1", "label": "No" },
+                        { "value": "2", "label": "Yes" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "unblock_culvert",
+                    "description": "Unblock culvert",
+                    "options": [
+                        { "value": "1", "label": "No" },
+                        { "value": "2", "label": "Yes" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "bridge_register",
+                    "description": "Bridge register",
+                    "options": [
+                        { "value": "1", "label": "No" },
+                        { "value": "2", "label": "Yes" }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "further_inspection_required",
+                    "description": "Further inspection required",
+                    "options": [
+                        { "value": "1", "label": "No" },
+                        { "value": "2", "label": "Yes" }
+                    ]
+                },
+                {
+                    "type": "textarea",
+                    "id": "comments",
+                    "description": "Comments"
+                }
             ]
-        },
-        {
-            "type": "select",
-            "id": "culvert_size",
-            "description": "Size",
-            "options": [
-                { "value": "1",  "label": "150 dia" },
-                { "value": "2",  "label": "225 dia" },
-                { "value": "3",  "label": "300 dia" },
-                { "value": "4",  "label": "375 dia" },
-                { "value": "5",  "label": "450 dia" },
-                { "value": "6",  "label": "525 dia" },
-                { "value": "7",  "label": "600 dia" },
-                { "value": "8",  "label": "675 dia" },
-                { "value": "9",  "label": "750 dia" },
-                { "value": "10", "label": "825 dia" },
-                { "value": "11", "label": "900 dia" },
-                { "value": "12", "label": "975 dia" },
-                { "value": "13", "label": "1050 dia" },
-                { "value": "14", "label": "1125 dia" },
-                { "value": "15", "label": "1200 dia" },
-                { "value": "16", "label": "1275 dia" },
-                { "value": "17", "label": "1350 dia" },
-                { "value": "18", "label": "1500 dia" },
-                { "value": "19", "label": "375x150" },
-                { "value": "20", "label": "375x225" },
-                { "value": "21", "label": "375x300" },
-                { "value": "22", "label": "375x375" },
-                { "value": "23", "label": "375x450" },
-                { "value": "24", "label": "375x600" },
-                { "value": "25", "label": "375x750" },
-                { "value": "26", "label": "375x900" },
-                { "value": "27", "label": "375x1200" },
-                { "value": "28", "label": "450x150" },
-                { "value": "29", "label": "450x225" },
-                { "value": "30", "label": "450x300" },
-                { "value": "31", "label": "450x375" },
-                { "value": "32", "label": "450x450" },
-                { "value": "33", "label": "450x600" },
-                { "value": "34", "label": "450x750" },
-                { "value": "35", "label": "450x900" },
-                { "value": "36", "label": "450x1200" },
-                { "value": "37", "label": "600x150" },
-                { "value": "38", "label": "600x225" },
-                { "value": "39", "label": "600x300" },
-                { "value": "40", "label": "600x375" },
-                { "value": "41", "label": "600x450" },
-                { "value": "42", "label": "600x600" },
-                { "value": "43", "label": "600x750" },
-                { "value": "44", "label": "600x900" },
-                { "value": "45", "label": "600x1200" },
-                { "value": "46", "label": "750x150" },
-                { "value": "47", "label": "750x225" },
-                { "value": "48", "label": "750x300" },
-                { "value": "49", "label": "750x375" },
-                { "value": "50", "label": "750x450" },
-                { "value": "51", "label": "750x600" },
-                { "value": "52", "label": "750x750" },
-                { "value": "53", "label": "750x900" },
-                { "value": "54", "label": "750x1200" },
-                { "value": "55", "label": "900x150" },
-                { "value": "56", "label": "900x225" },
-                { "value": "57", "label": "900x300" },
-                { "value": "58", "label": "900x375" },
-                { "value": "59", "label": "900x450" },
-                { "value": "60", "label": "900x600" },
-                { "value": "61", "label": "900x750" },
-                { "value": "62", "label": "900x900" },
-                { "value": "63", "label": "900x1200" },
-                { "value": "64", "label": "1200x150" },
-                { "value": "65", "label": "1200x225" },
-                { "value": "66", "label": "1200x300" },
-                { "value": "67", "label": "1200x375" },
-                { "value": "68", "label": "1200x450" },
-                { "value": "69", "label": "1200x600" },
-                { "value": "70", "label": "1200x750" },
-                { "value": "71", "label": "1200x900" },
-                { "value": "72", "label": "1200x1200" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "culvert_material",
-            "description": "Material",
-            "options": [
-                { "value": "1", "label": "Brick" },
-                { "value": "2", "label": "Corrugated Galvanised Steel" },
-                { "value": "3", "label": "Earthenware" },
-                { "value": "4", "label": "Fibre Reinforced Concrete" },
-                { "value": "5", "label": "PVC" },
-                { "value": "6", "label": "Reinforced Concrete" },
-                { "value": "7", "label": "Steel" },
-                { "value": "8", "label": "Timber" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "cell_count",
-            "description": "Number of cells",
-            "options": [
-                { "value": "1",  "label": "1" },
-                { "value": "2",  "label": "2" },
-                { "value": "3",  "label": "3" },
-                { "value": "4",  "label": "4" },
-                { "value": "5",  "label": "5" },
-                { "value": "6",  "label": "6" },
-                { "value": "7",  "label": "7" },
-                { "value": "8",  "label": "8" },
-                { "value": "9",  "label": "9" },
-                { "value": "10", "label": "10" },
-                { "value": "11", "label": "11" },
-                { "value": "12", "label": "12" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "culvert_condition",
-            "description": "Culvert condition",
-            "options": [
-                { "value": "-1", "label": "" },
-                { "value": "0",  "label": "0 - New" },
-                { "value": "1",  "label": "1 - Good Condition" },
-                { "value": "2",  "label": "2 - Good Condition" },
-                { "value": "3",  "label": "3 - Good Condition" },
-                { "value": "4",  "label": "4 - Good Condition" },
-                { "value": "5",  "label": "5 - Obvious deterioration" },
-                { "value": "6",  "label": "6 - Obvious deterioration" },
-                { "value": "7",  "label": "7 - Obvious deterioration" },
-                { "value": "8",  "label": "8 - Severe deterioration" },
-                { "value": "9",  "label": "9 - Severe deterioration" },
-                { "value": "10", "label": "10 - Unserviceable" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "endwall_count",
-            "description": "Number of endwalls",
-            "options": [
-                { "value": "0", "label": "0" },
-                { "value": "1", "label": "1" },
-                { "value": "2", "label": "2" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "endwall_condition",
-            "description": "Endwall condition",
-            "options": [
-                { "value": "-1", "label": "" },
-                { "value": "0",  "label": "0 - New" },
-                { "value": "1",  "label": "1 - Good Condition" },
-                { "value": "2",  "label": "2 - Good Condition" },
-                { "value": "3",  "label": "3 - Good Condition" },
-                { "value": "4",  "label": "4 - Good Condition" },
-                { "value": "5",  "label": "5 - Obvious deterioration" },
-                { "value": "6",  "label": "6 - Obvious deterioration" },
-                { "value": "7",  "label": "7 - Obvious deterioration" },
-                { "value": "8",  "label": "8 - Severe deterioration" },
-                { "value": "9",  "label": "9 - Severe deterioration" },
-                { "value": "10", "label": "10 - Unserviceable" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "culvert_posts_needed",
-            "description": "Endwall posts needed",
-            "options": [
-                { "value": "1", "label": "No" },
-                { "value": "2", "label": "Yes" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "unblock_culvert",
-            "description": "Unblock culvert",
-            "options": [
-                { "value": "1", "label": "No" },
-                { "value": "2", "label": "Yes" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "bridge_register",
-            "description": "Bridge register",
-            "options": [
-                { "value": "1", "label": "No" },
-                { "value": "2", "label": "Yes" }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "further_inspection_required",
-            "description": "Further inspection required",
-            "options": [
-                { "value": "1", "label": "No" },
-                { "value": "2", "label": "Yes" }
-            ]
-        },
-        {
-            "type": "textarea",
-            "id": "comments",
-            "description": "Comments"
-        }
+
+        }},
+        { "type": "OpenStreetMap", "options": {} }
     ]
+
 }

@@ -3,10 +3,7 @@ define([
     "js/layers/Bing",
     "js/layers/VicmapClassic",
     "js/layers/VicmapLabelClassic",
-    "js/layers/VectorRoads",
-    "js/layers/VectorAddresses",
-    "js/layers/VectorProperties",
-    "js/layers/VectorCasements",
+    "js/layers/VectorFiltered",
     "js/layers/currentLocation",
     "js/layers/Data",
     "js/pages/Details"
@@ -15,10 +12,7 @@ define([
     Bing,
     VicmapClassic,
     VicmapLabelClassic,
-    VectorRoads,
-    VectorAddresses,
-    VectorProperties,
-    VectorCasements,
+    VectorFiltered,
     currentLocation,
     Data,
     Details
@@ -40,17 +34,8 @@ define([
                 that.list.unshift(dataLayer);
                 that.data = dataLayer;
 
-            } else if (layerConfig.type === 'VectorCasements') {
-                that.list.unshift(VectorCasements.doNew(layerConfig.options.lga).layer);
-
-            } else if (layerConfig.type === 'VectorProperties') {
-                that.list.unshift(VectorProperties.doNew(layerConfig.options.lga).layer);
-
-            } else if (layerConfig.type === 'VectorRoads') {
-                that.list.unshift(VectorRoads.doNew(layerConfig.options.lga).layer);
-
-            } else if (layerConfig.type === 'VectorAddresses') {
-                that.list.unshift(VectorAddresses.doNew(layerConfig.options.lga).layer);
+            } else if (layerConfig.type === 'VectorFiltered') {
+                that.list.unshift(VectorFiltered.doNew(layerConfig.options).layer);
 
             } else if (layerConfig.type === 'VicmapLabelClassic') {
                 that.list.unshift(VicmapLabelClassic.doNew().layer);
