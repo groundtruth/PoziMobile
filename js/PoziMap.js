@@ -44,7 +44,7 @@ define([
         this.setSize();
 
         this.updateData = function() {
-            layers.data.getFeaturesAround(this.getCenterInWGS84());
+            layers.refreshDataAround(this.getCenterInWGS84());
         };
 
         OpenLayers.Map.call(this, {

@@ -1,6 +1,6 @@
 define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, OpenLayers, proj, Details) {
 
-    return function(layerConfig, syncher) {
+    return function(rawLayerConfig, syncher) {
         var that = this;
 
         var optionsDefaults = {
@@ -19,9 +19,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
             ]
         };
 
-        var options = _.defaults(layerConfig.options, optionsDefaults);
-
-        var detailsPage = Details.doNew(syncher, options);
+        var options = _.defaults(rawLayerConfig.options, optionsDefaults);
 
         var style = OpenLayers.Style.doNew({
             externalGraphic: options.iconFile,
@@ -44,18 +42,6 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
 
         that.layer = OpenLayers.Layer.Vector.doNew(options.name, { styleMap: styleMap });
 
-        that.layer.controls = function() {
-            return [
-                OpenLayers.Control.SelectFeature.doNew(that.layer, {
-                    autoActivate: true,
-                    onSelect: function(feature) {
-                        this.unselect(feature);
-                        detailsPage.update(feature).changeTo();
-                    }
-                })
-            ];
-        };
-
         that.layer.getFeaturesAround = function(pointInWGS84) {
 
             var reader = OpenLayers.Format.GeoJSON.doNew({
@@ -75,6 +61,20 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 }
             );
 
+        };
+
+        var detailsPage = Details.doNew(syncher, options);
+
+        that.layer.controls = function() {
+            return [
+                OpenLayers.Control.SelectFeature.doNew(that.layer, {
+                    autoActivate: true,
+                    onSelect: function(feature) {
+                        this.unselect(feature);
+                        detailsPage.update(feature).changeTo();
+                    }
+                })
+            ];
         };
 
         that.layer.newAt = function(centerInWGS84) {
