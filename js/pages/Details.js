@@ -16,6 +16,10 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         var updatedGeoFeature = function() {
             var idFieldIfEmpty = combinedHash()[layerOptions.idField] === '' ? layerOptions.idField : undefined;
             _(incomingFeature.properties).extend(_(combinedHash()).omit(idFieldIfEmpty));
+
+            _(layerOptions.onSaves).each(function(onSave) {
+                incomingFeature = require(onSave)(incomingFeature); // can require sync cos these were preloaded with the config
+            });
             return incomingFeature;
         };
 
@@ -26,12 +30,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         this.triggerPrePopulators = function() {
             _(layerOptions.prePopulators).each(function(prePopulator) {
                 require(prePopulator)($page, incomingFeature); // can require sync cos these were preloaded with the config
-            });
-        };
-
-        this.triggerOnSaves = function() {
-            _(layerOptions.onSaves).each(function(onSave) {
-                require(onSave)($page); // can require sync cos these were preloaded with the config
             });
         };
 
@@ -68,7 +66,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.initForm(feature);
             that.initButtons({
                 save: function() {
-                    that.triggerOnSaves();
                     syncher.persist({
                         restEndpoint: layerOptions.restEndpoint,
                         action: "create",
@@ -86,7 +83,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
-                        that.triggerOnSaves();
                         syncher.persist({
                             restEndpoint: layerOptions.restEndpoint,
                             action: "delete",
@@ -98,7 +94,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
                     return false;
                 },
                 save: function() {
-                    that.triggerOnSaves();
                     syncher.persist({
                         restEndpoint: layerOptions.restEndpoint,
                         action: "update",
