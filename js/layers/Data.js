@@ -55,20 +55,39 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
 
         var detailsPage = Details.doNew(syncher, options);
 
+        var jsonGeometryPartAt = function(pointInWGS84) {
+            return {
+                "geometry": {
+                    "type": "Point",
+                    "crs": { "type": "name", "properties": { "name": "EPSG:4326" } },
+                    "coordinates": [parseFloat(pointInWGS84.x), parseFloat(pointInWGS84.y)]
+                }
+            };
+        };
+
         that.layer.controls = function() {
             return [
                 OpenLayers.Control.SelectFeature.doNew(that.layer, {
                     autoActivate: true,
-                    onSelect: function(feature) {
-                        this.unselect(feature);
+                    onSelect: function(olFeature) {
+                        this.unselect(olFeature);
+
+                        var pointInWGS84 = olFeature.geometry.transform(proj.webMercator, proj.WGS84);
+                        var feature = _({
+                            "type": "Feature",
+                            "properties": olFeature.data
+                        }).extend(jsonGeometryPartAt(pointInWGS84));
+
                         detailsPage.update(feature).changeTo();
                     }
                 })
             ];
         };
 
-        that.layer.newAt = function(centerInWGS84) {
-            detailsPage.new(centerInWGS84).changeTo();
+        that.layer.newAt = function(position) {
+            var pointInWGS84 = { x: position.lon, y: position.lat };
+            var newFeature = _({ "type": "Feature", "properties": {} }).extend(jsonGeometryPartAt(pointInWGS84));
+            detailsPage.new(newFeature).changeTo();
         };
     };
 

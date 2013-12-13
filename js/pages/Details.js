@@ -5,7 +5,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         var that = this;
         var syncher = givenSyncher;
         var $page = $("#pageDetails");
-        var jsonGeometryPart;
+        var incomingFeature;
 
         var combinedHash = function() {
             var nameValueHashes = $page.find("#detailsForm").serializeArray();
@@ -13,25 +13,10 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             return _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
         };
 
-        var asGeoFeature = function() {
-            var ignoredFormProperties = [];
-            if (combinedHash()[layerOptions.idField] === '') {
-                ignoredFormProperties.push(layerOptions.idField);
-            }
-            return _({
-                "type": "Feature",
-                "properties": _(combinedHash()).omit(ignoredFormProperties)
-            }).extend(jsonGeometryPart);
-        };
-
-        var jsonGeometryPartAt = function(pointInWGS84) {
-            return {
-                "geometry": {
-                    "type": "Point",
-                    "crs": { "type": "name", "properties": { "name": "EPSG:4326" } },
-                    "coordinates": [parseFloat(pointInWGS84.x), parseFloat(pointInWGS84.y)]
-                }
-            };
+        var updatedGeoFeature = function() {
+            var idFieldIfEmpty = combinedHash()[layerOptions.idField] === '' ? layerOptions.idField : undefined;
+            _(incomingFeature.properties).extend(_(combinedHash()).omit(idFieldIfEmpty));
+            return incomingFeature;
         };
 
         this.enhanceForm = function() {
@@ -40,7 +25,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
         this.triggerPrePopulators = function() {
             _(layerOptions.prePopulators).each(function(prePopulator) {
-                require(prePopulator)($page); // can require sync cos these were preloaded with the config
+                require(prePopulator)($page, incomingFeature); // can require sync cos these were preloaded with the config
             });
         };
 
@@ -51,21 +36,17 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         this.initForm = function(feature) {
+            incomingFeature = feature;
+
             var formFields = _(layerOptions.detailsFields).map(function(fieldConf) {
                 return formBuilder.buildField(fieldConf);
             }).join("\n");
             $page.find(".content").first().html(formFields);
 
-            jsonGeometryPart = {};
-            if (feature) {
-                if (_(feature).has('geometry')) {
-                    var pointInWGS84 = feature.geometry.transform(proj.webMercator, proj.WGS84);
-                    jsonGeometryPart = jsonGeometryPartAt(pointInWGS84);
-                }
-                formBuilder.repopulateForm($page, feature.data);
-            };
+            formBuilder.repopulateForm($page, incomingFeature.properties);
 
             that.enhanceForm(); // important: this must be done after form population
+            that.triggerPrePopulators();
         };
 
         this.initButtons = function(buttonsToActions) {
@@ -83,18 +64,15 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
 
-        this.new = function(position) {
-            that.initForm();
-            jsonGeometryPart = jsonGeometryPartAt({ x: position.lon, y: position.lat });
-
-            that.triggerPrePopulators();
+        this.new = function(feature) {
+            that.initForm(feature);
             that.initButtons({
                 save: function() {
                     that.triggerOnSaves();
                     syncher.persist({
                         restEndpoint: layerOptions.restEndpoint,
                         action: "create",
-                        data: asGeoFeature()
+                        data: updatedGeoFeature()
                     });
                     history.back();
                     return false;
@@ -105,7 +83,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
         this.update = function(feature) {
             that.initForm(feature);
-            that.triggerPrePopulators();
             that.initButtons({
                 delete: function() {
                     if (confirm("Are you sure you want to delete this record?")) {
@@ -113,7 +90,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
                         syncher.persist({
                             restEndpoint: layerOptions.restEndpoint,
                             action: "delete",
-                            data: asGeoFeature(),
+                            data: updatedGeoFeature(),
                             id: combinedHash()[layerOptions.idField]
                         });
                         history.back();
@@ -125,7 +102,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
                     syncher.persist({
                         restEndpoint: layerOptions.restEndpoint,
                         action: "update",
-                        data: asGeoFeature(),
+                        data: updatedGeoFeature(),
                         id: combinedHash()[layerOptions.idField]
                     });
                     history.back();
