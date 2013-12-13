@@ -5,7 +5,7 @@ define([
     "js/layers/VicmapLabelClassic",
     "js/layers/VectorFiltered",
     "js/layers/currentLocation",
-    "js/layers/Data",
+    "js/layers/PointData",
     "js/pages/Details"
 ], function(
     _,
@@ -14,7 +14,7 @@ define([
     VicmapLabelClassic,
     VectorFiltered,
     currentLocation,
-    Data,
+    PointData,
     Details
 ) {
 
@@ -31,8 +31,8 @@ define([
                 that.list.push(currentLocation);
                 that.currentLocation = currentLocation;
 
-            } else if (layerConfig.type === 'Data') {
-                var dataLayer = Data.doNew(layerConfig, syncher).layer;
+            } else if (layerConfig.type === 'PointData') {
+                var dataLayer = PointData.doNew(layerConfig, syncher).layer;
                 that.list.push(dataLayer);
                 topDataLayer = dataLayer;
 

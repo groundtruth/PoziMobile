@@ -6,7 +6,7 @@
 
     "layers": [
         { "type": "currentLocation", "options": {} },
-        { "type": "Data", "options": {
+        { "type": "PointData", "options": {
 
             "name": "Minor Culverts",
             "restEndpoint": "http://demo.pozi.com/api/v1/loddongis/demo_minor_culvert",
