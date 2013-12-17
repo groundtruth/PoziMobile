@@ -16,19 +16,12 @@ define([
         var subject, detailsPage;
         var fakeGeolocate = jasmine.createSpyObj("geolocate", ["startFollowing", "stopFollowing", "isFollowing"]);
         var config = {
-            "dataLayerName": "Minor Culverts",
-            "databaseName": "loddongis",
-            "basemap": "OpenStreetMap",
-            "bingApiKey": "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf",
-            "restEndpoint": "/api/v1/loddongis/demo_minor_culvert",
             "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
             "centerLon": 16245331,
             "centerLat": -4601721,
-            "idField": "id",
+            "layers": []
             "defaultZoomLevel": 18,
-            "maxZoom": 19,
-            "iconFile": "img/mobile-loc-1.png",
-            "featuresLimit": 20
+            "maxZoom": 19
         };
         var layers = Layers.doNew(config);
 

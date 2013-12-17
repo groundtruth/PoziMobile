@@ -1,10 +1,12 @@
 define([
     "jquery",
+    "underscore",
     "openlayers",
     "js/proj",
     "js/PoziGeolocate"
 ], function(
     $,
+    _,
     OpenLayers,
     proj,
     PoziGeolocate

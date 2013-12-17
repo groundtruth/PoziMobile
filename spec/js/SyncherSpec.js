@@ -1,15 +1,15 @@
 define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Syncher, appId) {
 
     describe("Syncher", function() {
-        var pages, subject, data, configData, id;
+        var pages, subject, data, restEndpoint, id;
 
         beforeEach(function() {
             localStorage.clear();
             id = appId.doNew(window.location.href);
-            configData = { restEndpoint: "http://example.com/rest" };
+            restEndpoint = "http://example.com/rest";
             pages = jasmine.createSpyObj("pages", ["setSyncButton", "updateData"]);
             data = { properties: { id: 22 } };
-            subject = Syncher.doNew(pages, configData);
+            subject = Syncher.doNew(pages);
         });
 
         describe("#persist", function() {
@@ -20,7 +20,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
                 beforeEach(function() {
                     spyOn($, "ajax");
 
-                    subject.persist("create", data);
+                    subject.persist({ action: "create", restEndpoint: restEndpoint, data: data });
                     expect(pages.setSyncButton.callCount).toEqual(1);
 
                     $.ajax.argsForCall[0][0].success(jasmine.createSpy("ajaxEvent"));
@@ -35,7 +35,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
                     expect($.ajax.callCount).toEqual(1);
                     var req = $.ajax.mostRecentCall.args[0];
                     expect(req.type).toEqual("POST");
-                    expect(req.url).toEqual(configData.restEndpoint);
+                    expect(req.url).toEqual(restEndpoint);
                     expect(req.data).toEqual(JSON.stringify(data));
                 });
 
@@ -49,7 +49,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
 
                 beforeEach(function() {
                     spyOn($, "ajax");
-                    subject.persist("delete", data);
+                    subject.persist({ action: "delete", restEndpoint: restEndpoint, data: data });
                     $.ajax.argsForCall[0][0].error(jasmine.createSpy("ajaxEvent"));
                 });
 
@@ -63,12 +63,12 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
 
                 it("should retry previously failed changes (as well as new one) on next #persist call", function() {
                     expect($.ajax.callCount).toEqual(1);
-                    subject.persist("update", data);
+                    subject.persist({ action: "update", restEndpoint: restEndpoint, data: data });
                     expect($.ajax.callCount).toEqual(3);
                 });
 
                 it("should handle old change succeeding, new failing", function() {
-                    subject.persist("update", data);
+                    subject.persist({ action: "update", restEndpoint: restEndpoint, data: data });
                     expect(pages.setSyncButton.mostRecentCall.args).toEqual(["pm-spinner", 2]);
 
                     $.ajax.argsForCall[$.ajax.argsForCall.length-2][0].success(jasmine.createSpy("ajaxEvent"));
@@ -84,9 +84,9 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
 
                 xit("should try the new change immediately (not just add and wait for ac)", function() {
                     spyOn($, "ajax");
-                    subject.persist("delete", data);
+                    subject.persist({ action: "delete", restEndpoint: restEndpoint, data: data });
                     expect($.ajax.callCount).toEqual(1); // first request made but not returned
-                    subject.persist("update", data);
+                    subject.persist({ action: "update", restEndpoint: restEndpoint, data: data });
                     expect($.ajax.callCount).toEqual(2); // second request
                 });
 
@@ -102,8 +102,8 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
                     spyOn(window, "alert");
                     spyOn($, "ajax");
 
-                    subject.persist("delete", data);
-                    subject.persist("update", data);
+                    subject.persist({ action: "delete", restEndpoint: restEndpoint, data: data });
+                    subject.persist({ action: "update", restEndpoint: restEndpoint, data: data });
                     $.ajax.argsForCall[0][0].error(jasmine.createSpy("ajaxEvent"));
 
                     expect($.ajax.callCount).toEqual(2);
@@ -143,21 +143,21 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
             beforeEach(function() {
                 spyOn(localStorage, "setItem");
                 spyOn($, "ajax");
-                subject.persist("create", dataWithoutID);
+                subject.persist({ action: "create", restEndpoint: restEndpoint, data: dataWithoutID });
                 $.ajax.mostRecentCall.args[0].success(jasmine.createSpy("ajaxEvent"));
-                subject.persist("delete", dataWithID);
+                subject.persist({ action: "delete", restEndpoint: restEndpoint, data: dataWithID });
                 $.ajax.mostRecentCall.args[0].error(jasmine.createSpy("ajaxEvent"));
             });
 
             it("should initially backup in waiting queue", function() {
                 expect(localStorage.setItem.argsForCall[0]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [{ action: "create", data: dataWithoutID }], active: []})
+                    JSON.stringify({ waiting: [{ action: "create", restEndpoint: restEndpoint, data: dataWithoutID }], active: []})
                 ]);
             });
 
             it("should backup again when moved into active queue", function() {
                 expect(localStorage.setItem.argsForCall[1]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [], active: [{ action: "create", data: dataWithoutID }]})
+                    JSON.stringify({ waiting: [], active: [{ action: "create", restEndpoint: restEndpoint, data: dataWithoutID }]})
                 ]);
             });
 
@@ -171,7 +171,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
                 // localStorage.setItem.argsForCall[3]; // queue delete
                 // localStorage.setItem.argsForCall[4]; // waiting->active for delete
                 expect(localStorage.setItem.argsForCall[5]).toEqual([jasmine.any(String),
-                    JSON.stringify({ waiting: [{ action: "delete", data: dataWithID }], active: []})
+                    JSON.stringify({ waiting: [{ action: "delete", restEndpoint: restEndpoint, data: dataWithID }], active: []})
                 ]);
             });
 
@@ -194,7 +194,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
                   active: [{ action: "update", data: "new data" }]
                 }));
                 spyOn(localStorage, "setItem");
-                subject = Syncher.doNew(pages, configData);
+                subject = Syncher.doNew(pages);
             });
 
             it("should load any backup when starting", function() {
@@ -223,7 +223,7 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
             it("should alert on instantiation when not available", function() {
                 spyOn(window, "alert");
                 var replacementLocalStorage = null
-                Syncher.doNew(pages, configData, replacementLocalStorage);
+                Syncher.doNew(pages, replacementLocalStorage);
                 expect(window.alert).toHaveBeenCalled();
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/not providing web storage/);
             });
@@ -232,8 +232,8 @@ define(["spec/SpecHelper", "js/Syncher", "js/appId"], function(SpecHelper, Synch
                 spyOn(window, "alert");
                 spyOn(window.localStorage, "setItem").andThrow(new Error("Quota exceeded!"));
                 spyOn($, "ajax");
-                var subject = Syncher.doNew(pages, configData);
-                subject.persist("create", "form data");
+                var subject = Syncher.doNew(pages);
+                subject.persist({ action: "create", restEndpoint: restEndpoint, data: "form data" });
                 expect(window.alert).toHaveBeenCalled();
                 expect(window.alert.mostRecentCall.args[0]).toMatch(/quota.*exceeded/);
             });
