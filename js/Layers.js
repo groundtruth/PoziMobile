@@ -6,6 +6,7 @@ define([
     "js/layers/VectorFiltered",
     "js/layers/currentLocation",
     "js/layers/PointData",
+    "js/layers/RecordOnPointData",
     "js/pages/Details"
 ], function(
     _,
@@ -15,6 +16,7 @@ define([
     VectorFiltered,
     currentLocation,
     PointData,
+    RecordOnPointData,
     Details
 ) {
 
@@ -33,6 +35,11 @@ define([
 
             } else if (layerConfig.type === 'PointData') {
                 var dataLayer = PointData.doNew(layerConfig, syncher).layer;
+                that.list.push(dataLayer);
+                topDataLayer = dataLayer;
+
+            } else if (layerConfig.type === 'RecordOnPointData') {
+                var dataLayer = RecordOnPointData.doNew(layerConfig, syncher).layer;
                 that.list.push(dataLayer);
                 topDataLayer = dataLayer;
 
