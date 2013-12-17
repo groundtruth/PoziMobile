@@ -26,6 +26,7 @@ define([
 
         that.list = [];
 
+        var dataLayers = [];
         var topDataLayer;
 
         _(config.layers.reverse()).each(function(layerConfig) {
@@ -36,12 +37,14 @@ define([
             } else if (layerConfig.type === 'PointData') {
                 var dataLayer = PointData.doNew(layerConfig, syncher).layer;
                 that.list.push(dataLayer);
-                topDataLayer = dataLayer;
+                dataLayers.push(dataLayer);
+                if (dataLayer.handlesNewFeatures()) { topDataLayer = dataLayer; }
 
             } else if (layerConfig.type === 'RecordOnPointData') {
                 var dataLayer = RecordOnPointData.doNew(layerConfig, syncher).layer;
                 that.list.push(dataLayer);
-                topDataLayer = dataLayer;
+                dataLayers.push(dataLayer);
+                if (dataLayer.handlesNewFeatures()) { topDataLayer = dataLayer; }
 
             } else if (layerConfig.type === 'VectorFiltered') {
                 that.list.push(VectorFiltered.doNew(layerConfig.options).layer);
@@ -68,12 +71,18 @@ define([
             }
         });
 
+        that.newFeaturesHandled = function() {
+            return !!topDataLayer;
+        };
+
         that.newAt = function(centerInWGS84) {
             topDataLayer.newAt(centerInWGS84);
         };
 
         that.refreshDataAround = function(centerInWGS84) {
-            topDataLayer.getFeaturesAround(centerInWGS84);
+            _(dataLayers).each(function(layer) {
+                layer.getFeaturesAround(centerInWGS84);
+            });
         };
 
     };

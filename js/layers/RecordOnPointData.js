@@ -6,7 +6,8 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
         var optionsDefaults = {
             "idField": "id",
             "iconFile": "img/mobile-loc-1.png",
-            "featuresLimit": 20
+            "featuresLimit": 20,
+            "handlesNewFeatures": false
         };
 
         var options = _.defaults(rawLayerConfig.options, optionsDefaults);
@@ -86,6 +87,10 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                     }
                 })
             ];
+        };
+
+        that.layer.handlesNewFeatures = function() {
+            return !!options.handlesNewFeatures;
         };
 
         that.layer.newAt = function(position) {

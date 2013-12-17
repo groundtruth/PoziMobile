@@ -34,7 +34,12 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
         $("#zoomOut").click(function() { map.zoomOut(); });
         $("#followLocation").click(function() { that.toggleFollowLocation(this); });
         $("#zoomIn").click(function() { map.zoomIn(); });
-        $("#newButton").click(function() { layers.newAt(map.getCenterInWGS84()); });
+
+        if (layers.newFeaturesHandled()) {
+            $("#newButton").click(function() { layers.newAt(map.getCenterInWGS84()); });
+        } else {
+            $("#newButton").parent().hide();
+        }
 
     };
 
