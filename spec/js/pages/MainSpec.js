@@ -4,7 +4,7 @@ define(["spec/SpecHelper", "js/pages/Main", "js/PoziMap"], function(SpecHelper, 
         var details, syncher, map, subject;
 
         beforeEach(function() {
-            details = jasmine.createSpyObj("details", ["new", "changeTo"]);
+            config = { layers: [] };
             syncher = jasmine.createSpyObj("syncher", ["processQueue"]);
             map = jasmine.createSpyObj("map", [
                 "updateData",
@@ -17,7 +17,7 @@ define(["spec/SpecHelper", "js/pages/Main", "js/PoziMap"], function(SpecHelper, 
             ]);
             spyOn(PoziMap, "doNew").andReturn(map);
             setFixtures('<div id="pageMain"></div>');
-            subject = Main.doNew({ details: details, syncher: syncher });
+            subject = Main.doNew({ config: config, syncher: syncher });
         });
 
         it("should create the map", function() {

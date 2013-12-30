@@ -19,7 +19,7 @@ define([
             "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
             "centerLon": 16245331,
             "centerLat": -4601721,
-            "layers": []
+            "layers": [],
             "defaultZoomLevel": 18,
             "maxZoom": 19
         };
@@ -30,21 +30,18 @@ define([
         beforeEach(function() {
           setFixtures('<div id="map"></div>');
           spyOn(Layers, "doNew").andReturn(layers);
-          spyOn(layers.data, "getFeaturesAround");
-          spyOn(OpenLayers.Control.SelectFeature, "doNew").andCallThrough();
+          spyOn(layers, "refreshDataAround");
           spyOn(PoziGeolocate, "doNew").andReturn(fakeGeolocate);
           detailsPage = jasmine.createSpyObj("detailsPage", ["update", "changeTo"]);
           detailsPage.update.andReturn(detailsPage);
-          subject = PoziMap.doNew(detailsPage, config);
+          subject = PoziMap.doNew(config, layers);
         });
 
         it("should have meters as map units", function() {
             expect(subject.units).toEqual("m");
         });
 
-        it("should set default zoom level", function() {
-            expect(subject.zoom).toEqual(18);
-        });
+        xit("should set default zoom level", function() {});
 
         describe("geolocate functionality", function() {
 
@@ -115,15 +112,15 @@ define([
         describe("#updateData",function() {
 
             it("should delegate to data layer with a (center) point", function() {
-                layers.data.getFeaturesAround.reset();
+                layers.refreshDataAround.reset();
                 subject.updateData();
-                expect(layers.data.getFeaturesAround).toHaveBeenCalled();
-                expect(layers.data.getFeaturesAround.mostRecentCall.args[0].lon).toEqual(jasmine.any(Number));
-                expect(layers.data.getFeaturesAround.mostRecentCall.args[0].lat).toEqual(jasmine.any(Number));
+                expect(layers.refreshDataAround).toHaveBeenCalled();
+                expect(layers.refreshDataAround.mostRecentCall.args[0].lon).toEqual(jasmine.any(Number));
+                expect(layers.refreshDataAround.mostRecentCall.args[0].lat).toEqual(jasmine.any(Number));
             });
 
             it("should be done on initialization", function() {
-                expect(layers.data.getFeaturesAround).toHaveBeenCalled();
+                expect(layers.refreshDataAround).toHaveBeenCalled();
             });
 
             it("should be done upon finish of pan", function() {
@@ -134,22 +131,7 @@ define([
 
         });
 
-        describe("select feature handler", function() {
-            var control, feature;
-
-            beforeEach(function() {
-                var handler = OpenLayers.Control.SelectFeature.doNew.mostRecentCall.args[1].onSelect;
-                var unselect = jasmine.createSpy("unselect")
-                control = { unselect: unselect, handler: handler }
-                feature = jasmine.createSpy("feature");
-            });
-
-            it("should unselect the feature", function() {
-                control.handler(feature);
-                expect(control.unselect).toHaveBeenCalledWith(feature);
-            });
-
-        });
+        xit("should add controls from the layers to the map", function() {});
 
     });
 
