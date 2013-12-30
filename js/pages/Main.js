@@ -41,6 +41,13 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             $("#newButton").parent().hide();
         }
 
+        if (opts.config.hasOwnProperty('infoHTML')) {
+            var infoHTML = require('text!'+opts.config.infoHTML);
+            $page.prepend('<div id="info" data-role="popup"><p>'+infoHTML+'</p></div>').trigger("create");
+            $page.find('footer').prepend('<button id="infoButton" data-transition="flip" data-icon="info" data-iconpos="notext" class="ui-btn-left" data-rel="popup">Info</button>').trigger("create");
+            $("#infoButton").click(function() { $('div#info').popup('open'); });
+        }
+
     };
 
 });

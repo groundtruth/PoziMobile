@@ -15,7 +15,8 @@ define(["underscore", "jsonpath", "js/appId"], function(_, jsonPath, appId) {
                 var extraScripts = _.union(
                     _(jsonPath(config, '$..prePopulators')).chain().toArray().flatten().value(),
                     _(jsonPath(config, '$..onSaves')).chain().toArray().flatten().value(),
-                    _(jsonPath(config, '$..styleRules')).chain().toArray().flatten().value()
+                    _(jsonPath(config, '$..styleRules')).chain().toArray().flatten().value(),
+                    _(jsonPath(config, '$..infoHTML')).chain().toArray().flatten().map(function(url) { return 'text!'+url; }).value()
                 );
                 require(extraScripts, function() {
                     callback(config);
