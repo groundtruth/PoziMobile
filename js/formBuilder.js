@@ -56,7 +56,7 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                 case "checkbox" :
                     template = '\
                         <div data-role="fieldcontain">\
-                            <label for="{{ id }}" class="checkbox">{{ description }}:</label>\
+                            <label for="{{ id }}" class="checkbox">{{ description }}</label>\
                             <input type="checkbox" name="{{ id }}" id="{{ id }}" value="{{ value }}" />\
                         </div>\
                     ';
