@@ -4,6 +4,7 @@ define([
     "js/layers/VicmapClassic",
     "js/layers/VicmapLabelClassic",
     "js/layers/VectorFiltered",
+    "js/layers/WMS",
     "js/layers/currentLocation",
     "js/layers/PointData",
     "js/layers/RecordOnPointData",
@@ -14,6 +15,7 @@ define([
     VicmapClassic,
     VicmapLabelClassic,
     VectorFiltered,
+    WMS,
     currentLocation,
     PointData,
     RecordOnPointData,
@@ -48,6 +50,9 @@ define([
 
             } else if (layerConfig.type === 'VectorFiltered') {
                 that.list.push(VectorFiltered.doNew(layerConfig.options).layer);
+
+            } else if (layerConfig.type === 'WMS') {
+                that.list.push(WMS.doNew(layerConfig.options).layer);
 
             } else if (layerConfig.type === 'VicmapLabelClassic') {
                 that.list.push(VicmapLabelClassic.doNew().layer);
