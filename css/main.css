@@ -38,6 +38,10 @@ body {
     background-color: red;
 }
 
+body:after { /* http://www.thecssninja.com/css/even-better-image-preloading-with-css2 */
+    content: url(../img/ajax-loader.gif);
+    display: none;
+}
 .ui-icon-pm-spinner {
     background-image: url(../img/ajax-loader.gif);
     background-size: 18px 18px;
