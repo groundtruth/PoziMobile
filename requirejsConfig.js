@@ -9,8 +9,8 @@ define([], function() {
             "underscore": "vendor/underscore-1.4.3/underscore",
             "jquery": "vendor/jquery-1.8.3/jquery-1.8.3.min",
             "jquery.mobile": "vendor/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
-            "openlayers": "vendor/openlayers-2.12/OpenLayers.mobile",
-            "openlayers.rule": "vendor/openlayers-2.12/OpenLayers.Rule",
+            "openlayers": "vendor/openlayers-2.13.1/OpenLayers.mobile",
+            "openlayers.rule": "vendor/openlayers-2.13.1/OpenLayers.Rule",
             "mustache": "vendor/mustache-0.7.2/mustache",
             "jsonpath": "vendor/jsonpath/jsonpath-0.8.0"
         },
