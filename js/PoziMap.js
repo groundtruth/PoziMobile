@@ -1,7 +1,7 @@
 define([
     "jquery",
     "underscore",
-    "openlayers.control.navigation",
+    "openlayers",
     "js/proj",
     "js/PoziGeolocate"
 ], function(
@@ -62,7 +62,16 @@ define([
                 config.maxExtentBounds[2],
                 config.maxExtentBounds[3]
             ),
-            controls: [],
+            controls: [
+                OpenLayers.Control.Attribution.doNew(),
+                // OpenLayers.Control.Navigation.doNew({ zoomWheelEnabled: true }), // not included in mobile version
+                OpenLayers.Control.TouchNavigation.doNew({
+                    dragPanOptions: {
+                        interval: 100,
+                        enableKinetic: true
+                    }
+                })
+            ],
             center: OpenLayers.LonLat.doNew(config.centerLon, config.centerLat)
         });
 
@@ -71,17 +80,6 @@ define([
         this.addControls(_(layers.list).chain().map(function(layer) {
             return typeof(layer.controls) === 'function' ? layer.controls() : undefined;
         }).flatten().compact().value());
-
-        this.addControls([
-            OpenLayers.Control.Attribution.doNew(),
-            OpenLayers.Control.Navigation.doNew({ zoomWheelEnabled: true }) // not included in mobile version
-            // OpenLayers.Control.TouchNavigation.doNew({
-            //     dragPanOptions: {
-            //         interval: 100,
-            //         enableKinetic: true
-            //     }
-            // })
-        ]);
 
         this.events.register('moveend', this, function() { this.updateData(); });
 
