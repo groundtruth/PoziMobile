@@ -11,6 +11,10 @@ define([], function() {
             "jquery.mobile": "vendor/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
             "openlayers": "vendor/openlayers-2.13.1/OpenLayers.mobile",
             "openlayers.rule": "vendor/openlayers-2.13.1/OpenLayers.Rule",
+            "openlayers.handler.box": "vendor/openlayers-2.13.1/OpenLayers.Handler.Box",
+            "openlayers.control.zoombox": "vendor/openlayers-2.13.1/OpenLayers.Control.ZoomBox",
+            "openlayers.handler.mousewheel": "vendor/openlayers-2.13.1/OpenLayers.Handler.MouseWheel",
+            "openlayers.control.navigation": "vendor/openlayers-2.13.1/OpenLayers.Control.Navigation",
             "mustache": "vendor/mustache-0.7.2/mustache",
             "jsonpath": "vendor/jsonpath/jsonpath-0.8.0"
         },
@@ -18,7 +22,11 @@ define([], function() {
             "jasmine-jquery": { deps: ["jquery"], exports: "jasmine" },
             "underscore": { exports: "_" },
             "openlayers": { exports: "OpenLayers" },
-            "openlayers.rule": { exports: "OpenLayers" },
+            "openlayers.rule": { deps: ["openlayers"], exports: "OpenLayers" },
+            "openlayers.handler.box": { deps: ["openlayers"], exports: "OpenLayers" },
+            "openlayers.control.zoombox": { deps: ["openlayers", "openlayers.handler.box"], exports: "OpenLayers" },
+            "openlayers.handler.mousewheel": { deps: ["openlayers"], exports: "OpenLayers" },
+            "openlayers.control.navigation": { deps: ["openlayers", "openlayers.control.zoombox", "openlayers.handler.mousewheel"], exports: "OpenLayers" },
             "jsonpath": { exports: "jsonPath" }
         },
         callback: function($) {
