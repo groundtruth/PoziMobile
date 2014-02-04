@@ -63,23 +63,55 @@ define([
                 config.maxExtentBounds[3]
             ),
             controls: [
-                OpenLayers.Control.Attribution.doNew(),
+                OpenLayers.Control.Attribution.doNew()
                 // OpenLayers.Control.Navigation.doNew({ zoomWheelEnabled: true }), // not included in mobile version
-                OpenLayers.Control.TouchNavigation.doNew({
-                    dragPanOptions: {
-                        interval: 100,
-                        enableKinetic: true
-                    }
-                })
             ],
             center: OpenLayers.LonLat.doNew(config.centerLon, config.centerLat)
         });
 
         this.addLayers(layers.list);
 
+        var touchNav = OpenLayers.Control.TouchNavigation.doNew({
+            dragPanOptions: {
+                interval: 100,
+                enableKinetic: true
+            },
+            defaultClick: function(evt) {
+                // For panning to work on desktop and mobile, the touch navigation controller must be added last.
+                // With the touch navigation controller last, feature selection by touch won't get to the SelectFeature controller without help.
+                // This assumes all features have geometries with an x and y (like a point).
+                if (evt.type === 'touchend' ) { // It's a mobile touch, so manually try feature selection.
+                    var map = that;
+
+                    var featuresEtc = _(map.getControlsByClass('OpenLayers.Control.SelectFeature')).chain().map(function(control) {
+                        return _(control.layer.features).map(function(feature) {
+                            var featureXY = map.getViewPortPxFromLonLat(new OpenLayers.LonLat([feature.geometry.x, feature.geometry.y]));
+                            return {
+                                control: control,
+                                feature: feature,
+                                pxDistance: Math.sqrt(Math.pow((evt.xy.x-featureXY.x), 2) + Math.pow((evt.xy.y-featureXY.y), 2))
+                            }
+                        });
+                    }).flatten().value();
+
+                    var closestFeatureEtc = _(featuresEtc).sortBy(function(featureEtc) {
+                        var farAway = 9999999999;
+                        return isNaN(featureEtc.pxDistance) ? farAway : featureEtc.pxDistance;
+                    })[0];
+
+                    var closeEnoughPxDistance = 30;
+                    if (closestFeatureEtc && (closestFeatureEtc.pxDistance <= closeEnoughPxDistance)) {
+                        closestFeatureEtc.control.select(closestFeatureEtc.feature);
+                    }
+
+                }
+            }
+        });
+
         this.addControls(_(layers.list).chain().map(function(layer) {
             return typeof(layer.controls) === 'function' ? layer.controls() : undefined;
         }).flatten().compact().value());
+        this.addControls([touchNav]); // For panning to work desktop and mobile, the touch navigation controller must be added last.
 
         this.events.register('moveend', this, function() { this.updateData(); });
 
