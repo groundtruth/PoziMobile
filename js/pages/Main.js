@@ -26,6 +26,11 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
         var layers = Layers.doNew(opts.config, opts.syncher);
         var map = PoziMap.doNew(opts.config, layers);
 
+        this.showMapAt = function(bounds) {
+            $.mobile.changePage($page, { transition: "flip" });
+            map.zoomToExtent(bounds);
+        };
+
         this.setSyncButton("check", "&nbsp;");
 
         $page.on("pagebeforeshow", function() { that.updateData(); });

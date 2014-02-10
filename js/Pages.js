@@ -22,6 +22,7 @@ define([
 
             that.setSyncButton = function(icon, label) { main.setSyncButton(icon, label); };
             that.updateData = function() { main.updateData(); };
+            that.showMapAt = function(bounds) { main.showMapAt(bounds); };
             that.openSearch = function() { search.changeTo(); };
 
             syncher.updateInterface();

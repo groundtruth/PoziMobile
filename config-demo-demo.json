@@ -5,8 +5,8 @@
     "centerLat": -4601721,
     "search": {
         "placeholderText": "Enter an address...",
-        "restEndpoint": "http://basemap.pozi.com:4363/basemap/gt_master_search_rest",
-        "rest": "/label/contains/${query}/lga/in/${lga}/limit/${limit}${callback_str}"
+        "restEndpoint": "http://basemap.pozi.com:4363/basemap/gt_property_address/ezi_add/contains/{{q}}/lga_code/in/311/limit/12",
+        "labelField": "ezi_add"
     },
 
     "layers": [
