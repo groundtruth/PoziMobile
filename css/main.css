@@ -76,3 +76,7 @@ img.olImageLoadError {
   filter: alpha(opacity=0); /* IE */
 }
 
+#search-input-wrapper {
+  padding-bottom: 28px;
+}
+

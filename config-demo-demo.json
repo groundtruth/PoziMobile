@@ -3,6 +3,11 @@
     "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
     "centerLon": 16245331,
     "centerLat": -4601721,
+    "search": {
+        "placeholderText": "Enter an address...",
+        "restEndpoint": "http://basemap.pozi.com:4363/basemap/gt_master_search_rest",
+        "rest": "/label/contains/${query}/lga/in/${lga}/limit/${limit}${callback_str}"
+    },
 
     "layers": [
         { "type": "currentLocation", "options": {} },

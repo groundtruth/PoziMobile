@@ -18,7 +18,6 @@
     </head>
     <body>
 
-
         <section id="pageMain" data-role="page">
             <header data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1></h1>
@@ -62,6 +61,38 @@
             </form>
         </section>
 
+        <section id="pageSearch"
+                 data-role="page"
+                 data-add-back-btn="true"
+                 data-back-btn-text="Back"
+                 style="visibility: hidden">
+            <form name="search" id="searchForm">
+                <header data-role="header" data-position="fixed" data-tap-toggle="false">
+                    <h1></h1>
+                </header>
+                <div class="content search" data-role="content">
+                    <div id="search-input-wrapper">
+                      <input type="search" name="search" id="search-input" placeholder="What do you want?" value="" />
+                    </div>
+                    <div>
+                      <ul data-role="listview">
+                          <li><a href="#">Apple</a></li>
+                          <li><a href="#">Banana</a></li>
+                          <li><a href="#">Cherry</a></li>
+                          <li><a href="#">Cranberry</a></li>
+                          <li><a href="#">Grape</a></li>
+                          <li><a href="#">Orange</a></li>
+                          <li><a href="#">Apple</a></li>
+                          <li><a href="#">Banana</a></li>
+                          <li><a href="#">Cherry</a></li>
+                          <li><a href="#">Cranberry</a></li>
+                          <li><a href="#">Grape</a></li>
+                          <li><a href="#">Orange</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </form>
+        </section>
 
     </body>
 </html>

@@ -48,6 +48,13 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             $("#infoButton").click(function() { $('div#info').popup('open'); });
         }
 
+        if (opts.config.hasOwnProperty('search')) {
+            $page.find('footer').append('<button id="searchButton" data-transition="flip" data-icon="search" data-iconpos="notext" class="ui-btn-right" data-rel="popup">Search</button>').trigger("create");
+            $("#searchButton").click(function() {
+                opts.pages.openSearch();
+            });
+        }
+
     };
 
 });
