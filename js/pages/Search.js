@@ -15,6 +15,7 @@ define([
         var that = this;
         var minQueryLength = 3;
         var $page = $("#pageSearch");
+        var request;
 
         $page.on("pageinit",function(e) {
 
@@ -34,12 +35,13 @@ define([
                         var q = encodeURIComponent($input.val().replace(/[\~\!\*\(\)\']/g, ''));
                         var url = Mustache.render(config.search.restEndpoint, { q: q });
 
-                        var request = OpenLayers.Request.GET({
+                        if (request && request.readyState != 4) { request.abort(); }
+
+                        request = OpenLayers.Request.GET({
                             url: url,
                             success: function(response) {
                                 var reader = OpenLayers.Format.GeoJSON.doNew();
                                 var features = reader.read(response.responseText);
-
                                 $list.html('');
                                 _(features).each(function(feature) {
                                     var labelField = 'ezi_add';
@@ -50,7 +52,6 @@ define([
                                     });
                                 });
                                 $list.listview('refresh');
-
                             }
                         });
 
@@ -61,9 +62,12 @@ define([
 
         this.changeTo = function() {
             $.mobile.changePage($page, { transition: "flip" });
-            $page.find('input#search-input').focus();
             return that;
         };
+
+        $page.on("pageshow",function(e) {
+            $page.find('input#search-input').focus();
+        });
 
         $page.css("visibility", "visible");
 
