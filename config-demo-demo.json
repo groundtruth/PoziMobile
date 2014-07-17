@@ -11,25 +11,6 @@
 
     "layers": [
         { "type": "currentLocation", "options": {} },
-        {   "type": "WMS", "options": {
-            "name": "Tiled Roads",
-            "url": [
-                "http://basemap1.pozi.com/geoserver/wms",
-                "http://basemap2.pozi.com/geoserver/wms",
-                "http://basemap3.pozi.com/geoserver/wms",
-                "http://basemap4.pozi.com/geoserver/wms"
-            ],
-            "params": {
-                "layers": "DSE_TRANSPORT:dse_vmtrans_tr_road",
-                "format": "image/png8",
-                "transparent": true,
-                "tiled": true
-            },
-            "options": {
-                "transitionEffect": "resize",
-                "isBaseLayer": false
-            }
-        }},
         { "type": "PointData", "options": {
 
             "name": "Minor Culverts",
