@@ -1,8 +1,8 @@
 {
     "demoTestKey": "demoTestValue",
     "maxExtentBounds": [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
-    "centerLon": 16245331,
-    "centerLat": -4601721,
+    "centerLon": 16288603,
+    "centerLat": -4349659,
     "search": {
         "placeholderText": "Enter an address...",
         "restEndpoint": "http://basemap.pozi.com:4363/basemap/gt_property_address/ezi_add/contains/{{q}}/lga_code/in/311/limit/15",
