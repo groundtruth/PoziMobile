@@ -1,6 +1,7 @@
 define([
     "underscore",
     "js/layers/Bing",
+    "js/layers/VicmapAPI",
     "js/layers/VicmapClassic",
     "js/layers/VicmapLabelClassic",
     "js/layers/VectorFiltered",
@@ -12,6 +13,7 @@ define([
 ], function(
     _,
     Bing,
+    VicmapAPI,
     VicmapClassic,
     VicmapLabelClassic,
     VectorFiltered,
@@ -53,6 +55,9 @@ define([
 
             } else if (layerConfig.type === 'WMS') {
                 that.list.push(WMS.doNew(layerConfig.options).layer);
+
+            } else if (layerConfig.type === 'VicmapAPI') {
+                that.list.push(VicmapAPI.doNew().layer);
 
             } else if (layerConfig.type === 'VicmapLabelClassic') {
                 that.list.push(VicmapLabelClassic.doNew().layer);

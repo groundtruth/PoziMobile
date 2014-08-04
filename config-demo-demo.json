@@ -234,7 +234,7 @@
             ]
 
         }},
-        { "type": "OpenStreetMap", "options": {} }
+        { "type": "VicmapAPI", "options": {} }
     ]
 
 }
