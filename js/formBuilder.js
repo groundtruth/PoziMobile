@@ -71,6 +71,15 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     ';
                     break;
 
+                case "textareareadonly" :
+                    template = '\
+                        <div data-role="fieldcontain">\
+                            <label for="{{ id }}">{{ description }}:</label>\
+                            <textarea name="{{ id }}" id="{{ id }}" disabled></textarea>\
+                        </div>\
+                    ';
+                    break;
+
                 case "number":
                     if (_(fieldDef).has('min')) { fieldDef['min'] = to_s(fieldDef['min']); }
                     if (_(fieldDef).has('max')) { fieldDef['max'] = to_s(fieldDef['max']); }

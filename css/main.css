@@ -80,3 +80,12 @@ img.olImageLoadError {
   padding-bottom: 28px;
 }
 
+.ui-popup-screen.in {
+    opacity: 0.9;
+    filter: Alpha(Opacity=90);
+}
+
+.ui-disabled {
+    filter: Alpha(Opacity=70);
+    opacity: .7;
+}

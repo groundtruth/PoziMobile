@@ -8,7 +8,13 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         var incomingFeature;
 
         var combinedHash = function() {
-            var nameValueHashes = $page.find("#detailsForm").serializeArray();
+            // Need to enable all fields for serialisation
+            // http://stackoverflow.com/questions/15958671/disabled-fields-not-picked-up-by-serializearray
+            var detailForm = $page.find("#detailsForm");
+            var disabled = detailForm.find(':input:disabled').removeAttr('disabled');
+            var nameValueHashes = detailForm.serializeArray();
+            disabled.attr('disabled','disabled');
+
             var singlePairHashes = _(nameValueHashes).map(function(h) { var result = {}; result[h.name] = h.value; return result; });
             return _(singlePairHashes).reduce(function(memo, hash) { return _(memo).extend(hash); }, {});
         };

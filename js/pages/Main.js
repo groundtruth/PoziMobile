@@ -46,6 +46,13 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             $("#newButton").parent().hide();
         }
 
+        var loginRequired = opts.config.hasOwnProperty('loginHTML');
+        if (loginRequired)
+        {
+            $page.prepend('<div id="login" data-role="popup" data-dismissible="false" data-overlay-theme="b" data-transition="pop"><iframe src=\''+opts.config.loginHTML+'\' width=\'300\' height=\'200\' scrolling=\'no\'></div>').trigger("create");
+            $('#login').popup('open');
+        }
+
         if (opts.config.hasOwnProperty('infoHTML')) {
             var infoHTML = require('text!'+opts.config.infoHTML);
             $page.prepend('<div id="info" data-role="popup"><p>'+infoHTML+'</p></div>').trigger("create");
