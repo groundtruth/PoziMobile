@@ -54,7 +54,7 @@ define([
             theme: null,
             projection: proj.webMercator,
             units: "m",
-            numZoomLevels: 22,
+            numZoomLevels: 23,
             maxResolution: 156543.0339,
             maxExtent: OpenLayers.Bounds.doNew(   /* use restrictedExtent instead to actually stop the user from moving out of it */
                 config.maxExtentBounds[0],
