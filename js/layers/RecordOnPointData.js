@@ -40,8 +40,17 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 'externalProjection': proj.WGS84
             });
 
+            // Default query calculates distance to all features
+            var restful_geof_endpoint = options.displayEndpoint+'/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
+
+            // If a radius is provided, we can use the "maround" keyword
+            if (options.radiusLimit)
+            {
+                restful_geof_endpoint = options.displayEndpoint+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
+            }
+
             $.getJSON(
-                options.displayEndpoint + '/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit,
+                restful_geof_endpoint,
                 function(data, textStatus) {
                     // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                     var features = reader.read(data);
