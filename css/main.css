@@ -89,3 +89,8 @@ img.olImageLoadError {
     filter: Alpha(Opacity=70);
     opacity: .7;
 }
+
+.ui-icon-gps {
+    background-image: url(../img/target.png);
+    background-size: 18px 18px;
+}
