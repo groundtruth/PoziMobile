@@ -49,6 +49,9 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 restful_geof_endpoint = options.displayEndpoint+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
             }
 
+            // Forcing reload of features (busting cache as they may have been modified)
+            $.ajaxSetup({ cache: false });
+
             $.getJSON(
                 restful_geof_endpoint,
                 function(data, textStatus) {
