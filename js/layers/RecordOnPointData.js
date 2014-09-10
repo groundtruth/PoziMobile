@@ -49,11 +49,8 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 restful_geof_endpoint = options.displayEndpoint+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
             }
 
-            // Forcing reload of features (busting cache as they may have been modified)
-            $.ajaxSetup({ cache: false });
-
             $.getJSON(
-                restful_geof_endpoint,
+                restful_geof_endpoint+'?_='+new Date().getTime(),
                 function(data, textStatus) {
                     // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                     var features = reader.read(data);
