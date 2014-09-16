@@ -114,7 +114,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         this.changeTo = function() {
-            $.mobile.changePage($page, { transition: "flip" });
+            $.mobile.changePage($page, { transition: "none" });
             return this;
         };
 

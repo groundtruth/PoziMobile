@@ -27,7 +27,7 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
         var map = PoziMap.doNew(opts.config, layers);
 
         this.showMapAt = function(bounds) {
-            $.mobile.changePage($page, { transition: "flip" });
+            $.mobile.changePage($page, { transition: "none" });
             map.zoomToExtent(bounds);
         };
 
@@ -49,19 +49,19 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
         var loginRequired = opts.config.hasOwnProperty('loginHTML');
         if (loginRequired)
         {
-            $page.prepend('<div id="login" data-role="popup" data-dismissible="false" data-overlay-theme="b" data-transition="pop"><iframe src=\''+opts.config.loginHTML+'\' width=\'300\' height=\'200\' scrolling=\'no\'></div>').trigger("create");
+            $page.prepend('<div id="login" data-role="popup" data-dismissible="false" data-overlay-theme="b" data-transition="none"><iframe src=\''+opts.config.loginHTML+'\' width=\'300\' height=\'200\' scrolling=\'no\'></div>').trigger("create");
             $('#login').popup('open');
         }
 
         if (opts.config.hasOwnProperty('infoHTML')) {
             var infoHTML = require('text!'+opts.config.infoHTML);
             $page.prepend('<div id="info" data-role="popup"><p>'+infoHTML+'</p></div>').trigger("create");
-            $page.find('footer').prepend('<button id="infoButton" data-transition="flip" data-icon="info" data-iconpos="notext" class="ui-btn-left" data-rel="popup">Info</button>').trigger("create");
+            $page.find('footer').prepend('<button id="infoButton" data-transition="none" data-icon="info" data-iconpos="notext" class="ui-btn-left" data-rel="popup">Info</button>').trigger("create");
             $("#infoButton").click(function() { $('div#info').popup('open'); });
         }
 
         if (opts.config.hasOwnProperty('search')) {
-            $page.find('footer').append('<button id="searchButton" data-transition="flip" data-icon="search" data-iconpos="notext" class="ui-btn-right" data-rel="popup">Search</button>').trigger("create");
+            $page.find('footer').append('<button id="searchButton" data-transition="none" data-icon="search" data-iconpos="notext" class="ui-btn-right" data-rel="popup">Search</button>').trigger("create");
             $("#searchButton").click(function() {
                 opts.pages.openSearch();
             });

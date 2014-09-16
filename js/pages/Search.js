@@ -61,7 +61,7 @@ define([
         });
 
         this.changeTo = function() {
-            $.mobile.changePage($page, { transition: "flip" });
+            $.mobile.changePage($page, { transition: "none" });
             return that;
         };
 
