@@ -53,6 +53,12 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             $('#login').popup('open');
         }
 
+        if (opts.config.hasOwnProperty('detailsPageTitle'))
+        {
+            // Setting a title in the header of the details page
+            $("#pageDetails h1").html(opts.config.detailsPageTitle);
+        }
+
         if (opts.config.hasOwnProperty('infoHTML')) {
             var infoHTML = require('text!'+opts.config.infoHTML);
             $page.prepend('<div id="info" data-role="popup"><p>'+infoHTML+'</p></div>').trigger("create");
