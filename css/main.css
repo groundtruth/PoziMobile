@@ -29,10 +29,11 @@ body {
 
 .ui-header, .ui-footer {
     text-align: center;
+    height: 50px;
 }
 
 #pageDetails header div div div:last-child { /* save button container */
-    width: 10em;
+    width: 5em;
 }
 #deleteButton {
     background-color: red;
@@ -94,3 +95,44 @@ img.olImageLoadError {
     background-image: url(../img/target.png);
     background-size: 18px 18px;
 }
+
+/* Taller buttons in the header */
+.ui-header .ui-btn-inner, .ui-mini .ui-btn-inner {
+    font-size: 12.5px;
+    padding: 1em 18px;
+}
+
+/* Title in details page: vertically centered */
+.ui-header .ui-title {
+    margin: 1em 30%;
+}
+
+/* Larger info button */
+.ui-btn-icon-notext {
+    width: 32px;
+    height: 32px;
+}
+
+/* Info icon properly placed inside its button */
+.ui-btn-icon-notext .ui-btn-inner .ui-icon {
+    margin: 6px 7px;
+}
+
+/* New icon properly placed inside its button */
+.ui-header .ui-btn-icon-notext .ui-btn-inner {
+    padding: 0px !important;
+}
+
+/* Better placement of row of buttons in the footer */
+.ui-controlgroup {
+    margin: .25em 0;
+}
+
+/* Chunkier buttons in the group in the footer */
+.ui-footer .ui-controlgroup .ui-btn-icon-notext .ui-btn-inner {
+    height: 26px;
+}
+.ui-controlgroup-horizontal .ui-btn-icon-notext .ui-btn-inner {
+    width: 26px;
+}
+
