@@ -29,7 +29,7 @@ body {
 
 .ui-header, .ui-footer {
     text-align: center;
-    height: 50px;
+    height: 42px;
 }
 
 #pageDetails header div div div:last-child { /* save button container */
@@ -102,9 +102,14 @@ img.olImageLoadError {
     padding: 1em 18px;
 }
 
+/* Less space lost at the top of the screen */
+.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right {
+    top: 1px;
+}
+
 /* Title in details page: vertically centered */
 .ui-header .ui-title {
-    margin: 1em 30%;
+    margin: 0.8em 30%;
 }
 
 /* Larger info button */
@@ -117,15 +122,21 @@ img.olImageLoadError {
 .ui-btn-icon-notext .ui-btn-inner .ui-icon {
     margin: 6px 7px;
 }
+.ui-footer > .ui-btn-icon-notext {
+    top: 3px;
+}
 
 /* New icon properly placed inside its button */
 .ui-header .ui-btn-icon-notext .ui-btn-inner {
     padding: 0px !important;
 }
+.ui-header > .ui-btn-icon-notext {
+    top: 3px;
+}
 
 /* Better placement of row of buttons in the footer */
 .ui-controlgroup {
-    margin: .25em 0;
+    margin: 0px !important;
 }
 
 /* Chunkier buttons in the group in the footer */
@@ -135,4 +146,3 @@ img.olImageLoadError {
 .ui-controlgroup-horizontal .ui-btn-icon-notext .ui-btn-inner {
     width: 26px;
 }
-
