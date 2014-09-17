@@ -1,7 +1,7 @@
 define([], function() {
 
     requirejs.config({
-        //urlArgs: "bust=" +  (new Date()).getTime(),
+        urlArgs: "bust=" +  (new Date()).getTime(),
         paths: {
             "text": "vendor/requirejs-text-2.0.10/text",
             "jasmine-jquery": "vendor/jasmine-jquery/jasmine-jquery",
