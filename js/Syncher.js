@@ -23,9 +23,12 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
                 try {
                     localStorage.setItem(localStorageKey, JSON.stringify(that.queues));
                 } catch(e) {
+                    // Calculating number of characters already stored
+                    // Source: http://stackoverflow.com/questions/3027142/calculating-usage-of-localstorage-space
+                    var l = JSON.stringify(localStorage).length;
                     alert(
-                        "The web storage quota has been exceeded. Some unsynchronised changes"+
-                        "may be lost if you close or reload the page!"
+                        "The web storage quota has been exceeded ("+l+" characters). Some unsynchronised changes"+
+                        "may be lost if you close or reload the page."
                     );
                 }
             }
@@ -101,7 +104,8 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
         this.processQueue = function(manual) {
             var item;
             if (manual && nothingToSync()) {
-                alert("There are no unsynchronised changes.");
+                var l = JSON.stringify(localStorage).length;
+                alert("There are no unsynchronised changes (storage: "+l+" characters).");
             } else {
                 while (item = _(that.queues.waiting).first()) {
                     that.queues.active.push(item);
@@ -115,7 +119,7 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
         if (!localStorageIsAvailable()) {
             alert(
               "You browser is not providing web storage (localStorage). "+
-              "If you close or reload the page, any unsynchronised changes will be lost!"
+              "If you close or reload the page, any unsynchronised changes will be lost."
             );
         }
 
