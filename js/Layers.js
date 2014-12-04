@@ -1,6 +1,7 @@
 define([
     "underscore",
     "js/layers/Bing",
+    "js/layers/MapQuest",
     "js/layers/VicmapAPI",
     "js/layers/VicmapClassic",
     "js/layers/VicmapLabelClassic",
@@ -13,6 +14,7 @@ define([
 ], function(
     _,
     Bing,
+    MapQuest,
     VicmapAPI,
     VicmapClassic,
     VicmapLabelClassic,
@@ -67,6 +69,12 @@ define([
 
             } else if (layerConfig.type === 'OpenStreetMap') {
                 that.list.push(OpenLayers.Layer.OSM.doNew("OpenStreetMap", null, { transitionEffect: 'resize' }));
+
+            } else if (layerConfig.type === 'MapQuest') {
+                that.list.push(MapQuest.doNew("OSM").layer);
+
+            } else if (layerConfig.type === 'MapQuestAerial') {
+                that.list.push(MapQuest.doNew("Aerial").layer);
 
             } else if (layerConfig.type === 'BingRoad') {
                 if (!_(layerConfig.options).has('bingApiKey')) { throw Error('Bing API key requried!'); }
