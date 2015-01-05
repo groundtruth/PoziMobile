@@ -72,12 +72,16 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             that.initForm(feature);
             that.initButtons({
                 save: function() {
+                    // Disabling button to prevent double clicks
+                    $(this).button('disable'); 
                     syncher.persist({
                         restEndpoint: layerOptions.restEndpoint,
                         action: "create",
                         data: updatedGeoFeature()
                     });
                     history.back();
+                    // Re-enabling button for subsequent captures
+                    $(this).button('enable'); 
                     return false;
                 }
             });
