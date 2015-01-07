@@ -48,6 +48,12 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
 
         var doSync = function(item) {
             that.updateInterface();
+            console.log('Synching ...');
+            if (item.data && item.data.properties)
+            {
+                item.data.properties.debug = 'online:'+navigator.onLine+',localStorage:'+JSON.stringify(localStorage).length+',active:'+that.queues.active.length+',waiting:'+that.queues.waiting.length;
+            }
+            console.log(JSON.stringify(item.data));
             var geoJSON = JSON.stringify(item.data);
             var verb = {
                 "create": "POST",
