@@ -75,7 +75,7 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}">{{ description }}:</label>\
-                            <textarea name="{{ id }}" id="{{ id }}" disabled></textarea>\
+                            <textarea name="{{ id }}" id="{{ id }}" disabled placeholder="{{ placeholder }}"></textarea>\
                         </div>\
                     ';
                     break;
