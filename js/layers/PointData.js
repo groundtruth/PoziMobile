@@ -45,7 +45,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
             var authDetails, filter ='';
             if (options.endpointFilterProperty)
             {
-                var filterValues='DUMMY';
+                var filterValues='0';
                 if (window && window.frames && window.frames[0])
                 {
                     // Authentication details owned by the login iframe
