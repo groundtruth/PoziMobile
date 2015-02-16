@@ -48,9 +48,9 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 // Authentication details owned by the login iframe
                 authDetails = window.frames[0].authDetails;
                 // There should be a reference to the filtering property and its value
-                if (authDetails && authDetails.properties)
+                if (authDetails && authDetails[0] && authDetails[0].properties)
                 {
-                    filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/is/'+authDetails.properties[options.endpointFilterProperty]):'';
+                    filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/is/'+authDetails[0].properties[options.endpointFilterProperty]):'';
                 }
             }
 
