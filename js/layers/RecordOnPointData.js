@@ -7,7 +7,8 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
             "idField": "id",
             "iconFile": "img/mobile-loc-1.png",
             "featuresLimit": 20,
-            "handlesNewFeatures": false
+            "handlesNewFeatures": false,
+            "handlesDeleteFeatures": true
         };
 
         var options = _.defaults(rawLayerConfig.options, optionsDefaults);

@@ -54,10 +54,15 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         this.initButtons = function(buttonsToActions) {
+            var saveButtonLabel = layerOptions.saveFeatureButtonLabel || "Save";
             var buttons = {
-                save: '<input type="button" id="saveButton" data-theme="a" class="submit" value="Save" />',
+                save: '<input type="button" id="saveButton" data-theme="a" class="submit" value="'+saveButtonLabel+'" />',
                 delete: '<button id="deleteButton" data-theme="a" class="">Delete</button>'
             }
+
+            // Removing delete button if layer configured to not support deletion
+            if (!layerOptions.handlesDeleteFeatures) {delete buttons['delete'];}
+
             var controlGroup = '<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">'+
                                    _(buttonsToActions).keys().map(function(name) { return buttons[name]; }).join("\n") +
                                '</div>';

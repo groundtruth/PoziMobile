@@ -33,7 +33,7 @@ body {
 }
 
 #pageDetails header div div div:last-child { /* save button container */
-    width: 5em;
+    width: 6em;
 }
 #deleteButton {
     background-color: red;
