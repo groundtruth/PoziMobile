@@ -43,15 +43,21 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
 
             // Dynamic filter based on a property of the authentication
             var authDetails, filter ='';
-            if (window && window.frames && window.frames[0])
+            if (options.endpointFilterProperty)
             {
-                // Authentication details owned by the login iframe
-                authDetails = window.frames[0].authDetails;
-                // There should be a reference to the filtering property and its value
-                if (authDetails && authDetails[0] && authDetails[0].properties)
+                var filterValues='DUMMY';
+                if (window && window.frames && window.frames[0])
                 {
-                    filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/is/'+authDetails[0].properties[options.endpointFilterProperty]):'';
+                    // Authentication details owned by the login iframe
+                    authDetails = window.frames[0].authDetails;
+                    // There should be a reference to the filtering property and its value
+                    if (authDetails && authDetails[0] && authDetails[0].properties)
+                    {
+                        filterValues = authDetails[0].properties[options.endpointFilterProperty]);
+                    }
                 }
+                // Filter, whether we have access to the filter value or not
+                filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/in/'+filterValues:'';
             }
 
             $.getJSON(
