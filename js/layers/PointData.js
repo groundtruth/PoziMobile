@@ -53,11 +53,11 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                     // There should be a reference to the filtering property and its value
                     if (authDetails && authDetails[0] && authDetails[0].properties)
                     {
-                        filterValues = authDetails[0].properties[options.endpointFilterProperty]);
+                        filterValues = authDetails[0].properties[options.endpointFilterProperty];
                     }
                 }
                 // Filter, whether we have access to the filter value or not
-                filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/in/'+filterValues:'';
+                filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/in/'+filterValues):'';
             }
 
             $.getJSON(
