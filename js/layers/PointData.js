@@ -41,8 +41,21 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 'externalProjection': proj.WGS84
             });
 
+            // Dynamic filter based on a property of the authentication
+            var authDetails, filter ='';
+            if (window && window.frames && window.frames[0])
+            {
+                // Authentication details owned by the login iframe
+                authDetails = window.frames[0].authDetails;
+                // There should be a reference to the filtering property and its value
+                if (authDetails && authDetails.properties)
+                {
+                    filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/is/'+authDetails.properties[options.endpointFilterProperty]):'';
+                }
+            }
+
             $.getJSON(
-                options.restEndpoint + '/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit,
+                options.restEndpoint + filter + '/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit,
                 function(data, textStatus) {
                     // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                     var features = reader.read(data);
