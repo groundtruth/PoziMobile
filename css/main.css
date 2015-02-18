@@ -146,3 +146,14 @@ img.olImageLoadError {
 .ui-controlgroup-horizontal .ui-btn-icon-notext .ui-btn-inner {
     width: 26px;
 }
+
+/* Styling the title components */
+.title {
+    text-align: center;
+    font-size:20px;
+    font-weight:bold;
+}
+/* Hiding the toggle button above tables */
+.ui-table-columntoggle-btn {
+    display:none;
+}

@@ -40,6 +40,16 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
 
             switch (fieldDef.type) {
 
+                case "title" :
+                    template = '\
+                        <div>\
+                            <hr>\
+                            <h2 class="title">{{ description }}</h2>\
+                            <hr>\
+                        </div>\
+                    ';
+                    break;
+
                 case "select" :
                     template = '\
                         <div data-role="fieldcontain">\
@@ -57,7 +67,32 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}" class="checkbox">{{ description }}</label>\
-                            <input type="checkbox" name="{{ id }}" id="{{ id }}" value="{{ value }}" />\
+                            <input type="checkbox" name="{{ id }}" id="{{ id }}" value="{{ value }}" {{ #checked }}checked{{ /checked }}/>\
+                        </div>\
+                    ';
+                    break;
+
+                case "table" :
+                    template = '\
+                        <div role="main" class="ui-content">\
+                            <table data-role="table" id="{{ id }}" data-mode="columntoggle">\
+                                <thead>\
+                                    <tr>\
+                                        {{ #thead }}\
+                                            <th data-priority="critical">{{ th }}</th>\
+                                        {{ /thead }}\
+                                    </tr>\
+                                </thead>\
+                                <tbody>\
+                                    {{ #tbody }}\
+                                        <tr>\
+                                            {{ #tr }}\
+                                                <td>{{ td }}</td>\
+                                            {{ /tr }}\
+                                        </tr>\
+                                    {{ /tbody }}\
+                                </tbody>\
+                            </table>\
                         </div>\
                     ';
                     break;
