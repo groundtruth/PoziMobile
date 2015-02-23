@@ -143,6 +143,15 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     ';
                     break;
 
+                case "collapsible":
+                    template = '\
+                        <div data-role="collapsible">\
+                          <h3>{{ description }}</h3>\
+                          <div id="{{ id }}"><p>Loading ...</p></div>\
+                        </div>\
+                    ';
+                    break;
+
                 case "hidden" :
                     template = '<input type="hidden" name="{{ id }}" id="{{ id }}" value="{{ value }}" />';
                     break;
