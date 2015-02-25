@@ -66,7 +66,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
             // If a radius is provided, we can use the "maround" keyword
             if (options.radiusLimit)
             {
-                restful_geof_endpoint = options.displayEndpoint+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
+                restful_geof_endpoint = options.displayEndpoint+filter+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
             }
 
             $.getJSON(
