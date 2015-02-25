@@ -41,8 +41,27 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 'externalProjection': proj.WGS84
             });
 
+            // Dynamic filter based on a property of the authentication
+            var authDetails, filter ='';
+            if (options.endpointFilterProperty)
+            {
+                var filterValues='0';
+                if (window && window.frames && window.frames[0])
+                {
+                    // Authentication details owned by the login iframe
+                    authDetails = window.frames[0].authDetails;
+                    // There should be a reference to the filtering property and its value
+                    if (authDetails && authDetails[0] && authDetails[0].properties)
+                    {
+                        filterValues = authDetails[0].properties[options.endpointFilterProperty];
+                    }
+                }
+                // Filter, whether we have access to the filter value or not
+                filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/in/'+filterValues):'';
+            }
+
             // Default query calculates distance to all features
-            var restful_geof_endpoint = options.displayEndpoint+'/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
+            var restful_geof_endpoint = options.displayEndpoint+filter+'/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
 
             // If a radius is provided, we can use the "maround" keyword
             if (options.radiusLimit)
