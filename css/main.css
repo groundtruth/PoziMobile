@@ -89,6 +89,7 @@ img.olImageLoadError {
 .ui-disabled {
     filter: Alpha(Opacity=70);
     opacity: .7;
+    background-color: grey;
 }
 
 .ui-icon-gps {
@@ -156,4 +157,14 @@ img.olImageLoadError {
 /* Hiding the toggle button above tables */
 .ui-table-columntoggle-btn {
     display:none;
+}
+
+textarea.ui-input-text {
+    background-color: white;
+    height: 40px;
+}
+
+textarea.ui-input-text.ui-disabled {
+    background-color: #E6E6E6;
+    height: 40px;
 }

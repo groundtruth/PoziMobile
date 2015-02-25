@@ -55,10 +55,15 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
         this.initButtons = function(buttonsToActions) {
             var saveButtonLabel = layerOptions.saveFeatureButtonLabel || "Save";
+            var saveButtonTheme = layerOptions.saveFeatureButtonTheme || "a";
+
             var buttons = {
-                save: '<input type="button" id="saveButton" data-theme="a" class="submit" value="'+saveButtonLabel+'" />',
+                save: '<input type="button" id="saveButton" data-theme="'+saveButtonTheme+'" class="submit" value="'+saveButtonLabel+'" />',
                 delete: '<button id="deleteButton" data-theme="a" class="">Delete</button>'
             }
+
+            // Back button label
+            $('section#pageDetails').attr("data-back-btn-text",layerOptions.backButtonLabel || 'Back');
 
             // Removing delete button if layer configured to not support deletion
             if (!layerOptions.handlesDeleteFeatures) {delete buttons['delete'];}
@@ -71,7 +76,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             $page.find("input.submit").first().off("click").click(buttonsToActions["save"]);
             $page.find("#deleteButton").off("click").click(buttonsToActions["delete"]);
         };
-
 
         this.new = function(feature) {
             that.initForm(feature);
