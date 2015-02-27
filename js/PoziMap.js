@@ -85,11 +85,23 @@ define([
 
                     var featuresEtc = _(map.getControlsByClass('OpenLayers.Control.SelectFeature')).chain().map(function(control) {
                         return _(control.layer.features).map(function(feature) {
-                            var featureXY = map.getViewPortPxFromLonLat(new OpenLayers.LonLat([feature.geometry.x, feature.geometry.y]));
-                            return {
-                                control: control,
-                                feature: feature,
-                                pxDistance: Math.sqrt(Math.pow((evt.xy.x-featureXY.x), 2) + Math.pow((evt.xy.y-featureXY.y), 2))
+                            if (feature && feature.geometry)
+                            {
+                                var featureXY = map.getViewPortPxFromLonLat(new OpenLayers.LonLat([feature.geometry.x, feature.geometry.y]));
+                                return {
+                                    control: control,
+                                    feature: feature,
+                                    pxDistance: Math.sqrt(Math.pow((evt.xy.x-featureXY.x), 2) + Math.pow((evt.xy.y-featureXY.y), 2))
+                                }
+                            }
+                            else
+                            {
+                                //console.log('Issue with feature: '+feature.toString());
+                                // Case when the feature is undefined, it happens on HTC
+                                return {
+                                    feature: feature,
+                                    pxDistance: 'a galaxy far, far away'
+                                }
                             }
                         });
                     }).flatten().value();
