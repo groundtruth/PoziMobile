@@ -69,17 +69,27 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 restful_geof_endpoint = options.displayEndpoint+filter+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
             }
 
-            $.getJSON(
-                restful_geof_endpoint+'?_='+new Date().getTime(),
-                function(data, textStatus) {
-                    // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
-                    var features = reader.read(data);
-                    if (features.length > 0) {
-                        that.layer.destroyFeatures(); // could check for duplicates instead of just clearing all
-                        that.layer.addFeatures(features);
+            // Checking on minScale/maxScale parameters to display the vector layer
+            if ((that.layer.map.getScale() >= (rawLayerConfig.options.minScale||1)) && (that.layer.map.getScale() <= (rawLayerConfig.options.maxScale||10000000)) )
+            {
+                // Show the layer (load the features)
+                $.getJSON(
+                    restful_geof_endpoint+'?_='+new Date().getTime(),
+                    function(data, textStatus) {
+                        // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
+                        var features = reader.read(data);
+                        if (features.length > 0) {
+                            that.layer.destroyFeatures(); // could check for duplicates instead of just clearing all
+                            that.layer.addFeatures(features);
+                        }
                     }
-                }
-            );
+                );
+            }
+            else
+            {
+                // Masks the layer (destroys the features)
+                that.layer.destroyFeatures();
+            }
 
         };
 
