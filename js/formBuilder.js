@@ -51,10 +51,15 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     break;
 
                 case "select" :
+                    if (_(fieldDef).has('multiple')) { 
+                        fieldDef['multiple'] = "multiple=multiple"; 
+                        fieldDef['data-native-menu']="data-native-menu=false";
+                    }
+
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}" class="select">{{ description }}:</label>\
-                            <select name="{{ id }}" id="{{ id }}">\
+                            <select name="{{ id }}" id="{{ id }}" {{ multiple }} {{ data-native-menu }}>\
                                 {{ #options }}\
                                 <option value="{{ value }}">{{ label }}</option>\
                                 {{ /options }}\
@@ -127,6 +132,15 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                                  {{#max}}max="{{ max }}"{{/max}}\
                                  {{#step}}step="{{ step }}"{{/step}}\
                             >\
+                        </div>\
+                    ';
+                    break;
+
+                case "date":
+                    template = '\
+                        <div data-role="fieldcontain">\
+                            <label for="{{ id }}">{{ description }}:</label>\
+                            <input type="date" name="{{ id }}" id="{{ id }}">\
                         </div>\
                     ';
                     break;
