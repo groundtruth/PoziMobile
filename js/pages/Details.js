@@ -30,7 +30,15 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         };
 
         this.enhanceForm = function() {
-            $page.find(".content").first().trigger("create");
+            //$page.find(".content").first().trigger("create");
+            // Enhancement should be done on a component by component basis, as data-native-menu="false" prevents the use of trigger('create')
+            // Source: http://stackoverflow.com/questions/14365415/jquery-mobile-uncaught-typeerror-cannot-read-property-jquery-of-undefined
+
+            // Selective enhancements
+            $page.find(".content").first().find('input').trigger('create');
+            $page.find(".content").first().find('select').trigger('create');
+            $page.find(".content").first().find('table').trigger('create');
+            $page.find(".content").first().find('textarea').trigger('create');
         };
 
         this.triggerPrePopulators = function() {

@@ -51,15 +51,23 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     break;
 
                 case "select" :
-                    if (_(fieldDef).has('multiple')) { 
-                        fieldDef['multiple'] = "multiple=multiple"; 
-                        fieldDef['data-native-menu']="data-native-menu=false";
-                    }
-
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}" class="select">{{ description }}:</label>\
-                            <select name="{{ id }}" id="{{ id }}" {{ multiple }} {{ data-native-menu }}>\
+                            <select name="{{ id }}" id="{{ id }}">\
+                                {{ #options }}\
+                                <option value="{{ value }}">{{ label }}</option>\
+                                {{ /options }}\
+                            </select>\
+                        </div>\
+                    ';
+                    break;
+
+                case "selectmultiple" :
+                    template = '\
+                        <div data-role="fieldcontain">\
+                            <label for="{{ id }}" class="select">{{ description }}:</label>\
+                            <select name="{{ id }}" id="{{ id }}" multiple="multiple" data-native-menu="false">\
                                 {{ #options }}\
                                 <option value="{{ value }}">{{ label }}</option>\
                                 {{ /options }}\
