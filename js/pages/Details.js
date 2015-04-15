@@ -29,18 +29,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             return incomingFeature;
         };
 
-        this.enhanceForm = function() {
-            //$page.find(".content").first().trigger("create");
-            // Enhancement should be done on a component by component basis, as data-native-menu="false" prevents the use of trigger('create')
-            // Source: http://stackoverflow.com/questions/14365415/jquery-mobile-uncaught-typeerror-cannot-read-property-jquery-of-undefined
-
-            // Selective enhancements
-            $page.find(".content").first().find('input').trigger('create');
-            $page.find(".content").first().find('select').trigger('create');
-            $page.find(".content").first().find('table').trigger('create');
-            $page.find(".content").first().find('textarea').trigger('create');
-        };
-
         this.triggerPrePopulators = function() {
             _(layerOptions.prePopulators).each(function(prePopulator) {
                 require(prePopulator)($page, incomingFeature); // can require sync cos these were preloaded with the config
@@ -57,7 +45,6 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
             formBuilder.repopulateForm($page, incomingFeature.properties);
 
-            that.enhanceForm(); // important: this must be done after form population
             that.triggerPrePopulators();
         };
 
@@ -136,12 +123,12 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
         this.changeTo = function() {
             $.mobile.changePage($page, { transition: "none" });
+            $page.find("#detailsForm").trigger('create');
             return this;
         };
 
 
         $page.css("visibility", "visible");
-
     };
 
 });
