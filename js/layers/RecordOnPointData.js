@@ -45,7 +45,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
             var authDetails, filter ='';
             if (options.endpointFilterProperty)
             {
-                var filterValues='0';
+                var filterValues;
                 if (window && window.frames && window.frames[0])
                 {
                     // Authentication details owned by the login iframe
@@ -55,42 +55,48 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                     {
                         filterValues = authDetails[0].properties[options.endpointFilterProperty];
                     }
+                    // Filter, whether we have access to the filter value or not
+                    filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/in/'+filterValues):'';
                 }
-                // Filter, whether we have access to the filter value or not
-                filter = options.endpointFilterProperty?('/'+options.endpointFilterProperty+'/in/'+filterValues):'';
+                // If no authentication info, we just don't apply a filter (development)
             }
 
-            // Default query calculates distance to all features
-            var restful_geof_endpoint = options.displayEndpoint+filter+'/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
-
-            // If a radius is provided, we can use the "maround" keyword
-            if (options.radiusLimit)
+            // In some cases, we may not want to display a point layer (e.g. pipes)
+            // Configuration for this case will be to blank out the displayEndpoint property
+            // Note: display functions should be carried by a WMS layer
+            if (options.displayEndpoint)
             {
-                restful_geof_endpoint = options.displayEndpoint+filter+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
-            }
+                // Default query calculates distance to all features
+                var restful_geof_endpoint = options.displayEndpoint+filter+'/closest/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
 
-            // Checking on minScale/maxScale parameters to display the vector layer
-            if ((that.layer.map.getScale() >= (rawLayerConfig.options.minScale||1)) && (that.layer.map.getScale() <= (rawLayerConfig.options.maxScale||10000000)) )
-            {
-                // Show the layer (load the features)
-                $.getJSON(
-                    restful_geof_endpoint+'?_='+new Date().getTime(),
-                    function(data, textStatus) {
-                        // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
-                        var features = reader.read(data);
-                        if (features.length > 0) {
-                            that.layer.destroyFeatures(); // could check for duplicates instead of just clearing all
-                            that.layer.addFeatures(features);
+                // If a radius is provided, we can use the "maround" keyword
+                if (options.radiusLimit)
+                {
+                    restful_geof_endpoint = options.displayEndpoint+filter+'/'+options.radiusLimit+'/maround/'+pointInWGS84.lon+'/'+pointInWGS84.lat+'/limit/'+options.featuresLimit;
+                }
+
+                // Checking on minScale/maxScale parameters to display the vector layer
+                if ((that.layer.map.getScale() >= (rawLayerConfig.options.minScale||1)) && (that.layer.map.getScale() <= (rawLayerConfig.options.maxScale||10000000)) )
+                {
+                    // Show the layer (load the features)
+                    $.getJSON(
+                        restful_geof_endpoint+'?_='+new Date().getTime(),
+                        function(data, textStatus) {
+                            // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
+                            var features = reader.read(data);
+                            if (features.length > 0) {
+                                that.layer.destroyFeatures(); // could check for duplicates instead of just clearing all
+                                that.layer.addFeatures(features);
+                            }
                         }
-                    }
-                );
+                    );
+                }
+                else
+                {
+                    // Masks the layer (destroys the features)
+                    that.layer.destroyFeatures();
+                }
             }
-            else
-            {
-                // Masks the layer (destroys the features)
-                that.layer.destroyFeatures();
-            }
-
         };
 
         var detailsPage = Details.doNew(syncher, options);
