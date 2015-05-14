@@ -44,8 +44,10 @@ define([
                                 var features = reader.read(response.responseText);
                                 $list.html('');
                                 _(features).each(function(feature) {
-                                    var labelField = 'ezi_add';
-                                    $list.append('<li><a href="#">'+feature.attributes[config.search.labelField]+'</a></li>')
+                                    var label = $.map(config.search.labelField,function(v){
+                                        return feature.attributes[v];
+                                    }).join(" - ");
+                                    $list.append('<li><a href="#">'+label+'</a></li>')
                                     $list.children().last().click(function() {
                                         var bounds = feature.geometry.getBounds().transform("EPSG:4326", "EPSG:900913");
                                         pages.showMapAt(bounds);
