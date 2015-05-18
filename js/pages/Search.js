@@ -21,8 +21,9 @@ define([
 
             if (config.hasOwnProperty('search')) {
                 var $input = $page.find('input#search-input');
+                var $inputLabel = $page.find('label#search-label');
                 var $list = $page.find('.search ul');
-                $input.attr('placeholder', config.search.placeholderText);
+                $inputLabel.html(config.search.placeholderText);
                 $input.keyup(function() {
 
                     if ($input.val().length < minQueryLength) {
