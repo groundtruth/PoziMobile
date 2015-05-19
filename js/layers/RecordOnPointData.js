@@ -45,7 +45,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
             var authDetails, filter ='';
             if (options.endpointFilterProperty)
             {
-                var filterValues;
+                var filterValues=0;
                 if (window && window.frames && window.frames[0])
                 {
                     // Authentication details owned by the login iframe
@@ -84,8 +84,10 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                         function(data, textStatus) {
                             // note: the textStatus parameter is undefined (see "As of jQuery 1.5" in http://api.jquery.com/jQuery.getJSON/)
                             var features = reader.read(data);
+                            // Removing the features in any case
+                            that.layer.destroyFeatures();
+                            // Then re-adding them
                             if (features.length > 0) {
-                                that.layer.destroyFeatures(); // could check for duplicates instead of just clearing all
                                 that.layer.addFeatures(features);
                             }
                         }
