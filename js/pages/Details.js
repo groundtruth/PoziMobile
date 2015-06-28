@@ -38,9 +38,34 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         this.initForm = function(feature) {
             incomingFeature = feature;
 
-            var formFields = _(layerOptions.detailsFields).map(function(fieldConf) {
-                return formBuilder.buildField(fieldConf);
-            }).join("\n");
+            var formFields;
+
+            // Manages field rendering with or without tabs
+            if (layerOptions.detailsFields[0].hasOwnProperty("tab"))
+            {
+                // List of tabs
+                var tabList = $.unique($.map(layerOptions.detailsFields,function(fieldConf) {
+                    return fieldConf.tab;
+                })).reverse();
+
+                formFields = _(tabList).map(function(tab,i){
+                    return $('<a>').attr('href','#').attr('data-theme','a').attr('class',i==0?'ui-btn-active':'').css({'margin':0}).html(tab);
+                });
+
+                formFields = $('<div>').attr('data-role','navbar').append(
+                    $('<ul>').append(formFields)
+                );
+    
+                // TODO: build fields inside each tab and manage the tab interaction
+            }
+            else
+            {
+                // Simple concatenation of fields
+                formFields = _(layerOptions.detailsFields).map(function(fieldConf) {
+                    return formBuilder.buildField(fieldConf);
+                }).join("\n");
+            }
+
             $page.find(".content").first().html(formFields);
 
             formBuilder.repopulateForm($page, incomingFeature.properties);
