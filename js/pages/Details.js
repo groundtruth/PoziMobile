@@ -48,15 +48,27 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
                     return fieldConf.tab;
                 })).reverse();
 
-                formFields = _(tabList).map(function(tab,i){
-                    return $('<a>').attr('href','#').attr('data-theme','a').attr('class',i==0?'ui-btn-active':'').css({'margin':0}).html(tab);
+                // Tab headers
+                var tabHeaders = _(tabList).map(function(tab,i){
+                    return $('<a>').attr('id','a_'+i).attr('href','#').attr('data-theme','a').attr('class',i==0?'ui-btn-active':'').addClass('tab-header').css({'margin':0}).html(tab);
                 });
-
-                formFields = $('<div>').attr('data-role','navbar').append(
-                    $('<ul>').append(formFields)
+                tabHeaders = $('<div>').attr('data-role','navbar').append(
+                    $('<ul>').append(tabHeaders)
                 );
-    
-                // TODO: build fields inside each tab and manage the tab interaction
+
+                // Fields inside each tab
+                var tabFields = _(tabList).map(function(tab,i){
+                    var fieldsInThisTab = $.grep(layerOptions.detailsFields,function(l){
+                        return l.tab == tab;
+                    });
+
+                    var tabFormFields = _(fieldsInThisTab).map(function(fieldConf) {
+                        return formBuilder.buildField(fieldConf);
+                    }).join("\n");
+
+                    return $('<div>').attr('id','t_'+i).css({'display':i==0?'block':'none'}).addClass('tab-content').html(tabFormFields);
+                });
+                formFields = $('<div>').append(tabHeaders).append(tabFields);
             }
             else
             {
@@ -69,6 +81,16 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             $page.find(".content").first().html(formFields);
 
             formBuilder.repopulateForm($page, incomingFeature.properties);
+
+            // Managing the click behaviour on tab headers
+            if (layerOptions.detailsFields[0].hasOwnProperty("tab"))
+            {
+                $('.tab-header').bind('click',function(){
+                    var idToShow=$(this).attr('id').split("_")[1];
+                    $('.tab-content').css({'display':'none'});
+                    $('#t_'+idToShow).css({'display':'block'});
+                });
+            }            
 
             that.triggerPrePopulators();
         };
