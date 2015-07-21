@@ -80,7 +80,7 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}" class="checkbox">{{ description }}</label>\
-                            <input type="checkbox" name="{{ id }}" id="{{ id }}" value="{{ value }}" {{ #checked }}checked{{ /checked }}/>\
+                            <input type="checkbox" name="{{ id }}" id="{{ id }}" value="{{ value }}" {{ #checked }}checked{{ /checked }} {{ #disabled }}disabled{{ /disabled }}/>\
                         </div>\
                     ';
                     break;
@@ -114,7 +114,7 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     template = '\
                         <div data-role="fieldcontain">\
                             <label for="{{ id }}">{{ description }}:</label>\
-                            <textarea name="{{ id }}" id="{{ id }}"></textarea>\
+                            <textarea name="{{ id }}" id="{{ id }}" {{ #disabled }}disabled{{ /disabled }} placeholder="{{ placeholder }}"></textarea>\
                         </div>\
                     ';
                     break;

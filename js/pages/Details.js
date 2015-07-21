@@ -7,6 +7,16 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
         var $page = $("#pageDetails");
         var incomingFeature;
 
+        // Source: http://codereview.stackexchange.com/questions/60128/removing-duplicates-from-an-array-quickly
+        Array.prototype.unique = function() {
+            var unique = [];
+            for (var i = 0; i < this.length; i++) {
+                var current = this[i];
+                if (unique.indexOf(current) < 0) unique.push(current);
+            }
+            return unique;
+        }
+
         var combinedHash = function() {
             // Need to enable all fields for serialisation
             // http://stackoverflow.com/questions/15958671/disabled-fields-not-picked-up-by-serializearray
@@ -44,9 +54,9 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
             if (layerOptions.detailsFields[0].hasOwnProperty("tab"))
             {
                 // List of tabs
-                var tabList = $.unique($.map(layerOptions.detailsFields,function(fieldConf) {
+                var tabList = $.map(layerOptions.detailsFields,function(fieldConf) {
                     return fieldConf.tab;
-                })).reverse();
+                }).unique();
 
                 // Tab headers
                 var tabHeaders = _(tabList).map(function(tab,i){

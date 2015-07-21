@@ -61,6 +61,27 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                 // If no authentication info, we just don't apply a filter (development)
             }
 
+            if (options.wmsFilter)
+            {
+                var filterValues=0;
+                if (window && window.frames && window.frames[0])
+                {
+                    // Authentication details owned by the login iframe
+                    authDetails = window.frames[0].authDetails;
+                    // There should be a reference to the filtering property and its value
+                    if (authDetails && authDetails[0] && authDetails[0].properties)
+                    {
+                        filterLayer = options.wmsFilter.layer;
+                        filterAttr = authDetails[0].properties[options.wmsFilter.attribute];
+                        // Get layer by title and merge the params
+                        var parametricWMSLayer = this.map.getLayersByName(filterLayer)[0];
+                        parametricWMSLayer.mergeNewParams({"CQL_FILTER":options.wmsFilter.attribute+" = '"+filterAttr+"'"});
+                        //parametricWMSLayer.redraw({force:true});
+                    }
+                }
+                // If no authentication info, we just don't apply a filter (development)
+            }
+
             // In some cases, we may not want to display a point layer (e.g. pipes)
             // Configuration for this case will be to blank out the displayEndpoint property
             // Note: display functions should be carried by a WMS layer
