@@ -75,7 +75,7 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                         filterAttr = authDetails[0].properties[options.wmsFilter.attribute];
                         // Get layer by title and merge the params
                         var parametricWMSLayer = this.map.getLayersByName(filterLayer)[0];
-                        parametricWMSLayer.mergeNewParams({"CQL_FILTER":options.wmsFilter.attribute+" = '"+filterAttr+"'"});
+                        parametricWMSLayer.mergeNewParams({"CQL_FILTER":parametricWMSLayer.params["CQL_FILTER"].replace("%1%",filterAttr)});
                         //parametricWMSLayer.redraw({force:true});
                     }
                 }
