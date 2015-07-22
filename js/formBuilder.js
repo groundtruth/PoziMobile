@@ -79,8 +79,11 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                 case "checkbox" :
                     template = '\
                         <div data-role="fieldcontain">\
+                            {{ #legend }}<fieldset data-role="controlgroup">\
+                            <legend>{{ legend }}</legend>{{ /legend }}\
                             <label for="{{ id }}" class="checkbox">{{ description }}</label>\
                             <input type="checkbox" name="{{ id }}" id="{{ id }}" value="{{ value }}" {{ #checked }}checked{{ /checked }} {{ #disabled }}disabled{{ /disabled }}/>\
+                            {{ #legend }}</fieldset>{{ /legend }}\
                         </div>\
                     ';
                     break;

@@ -168,3 +168,7 @@ textarea.ui-input-text.ui-disabled {
     background-color: #E6E6E6;
     height: 40px;
 }
+
+select {
+    font-size:16px;
+}

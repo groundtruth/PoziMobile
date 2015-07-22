@@ -60,7 +60,7 @@ define(["jquery", "underscore", "js/formBuilder", "js/proj"], function($, _, for
 
                 // Tab headers
                 var tabHeaders = _(tabList).map(function(tab,i){
-                    return $('<a>').attr('id','a_'+i).attr('href','#').attr('data-theme','a').attr('class',i==0?'ui-btn-active':'').addClass('tab-header').css({'margin':0}).html(tab);
+                    return $('<a>').attr('id','a_'+i).attr('href','#').attr('data-theme','a').attr('class',i==0?'ui-btn-active':'').addClass('tab-header').css({'margin':0}).html('<p style="font-size:16px;">'+tab+'</p>');
                 });
                 tabHeaders = $('<div>').attr('data-role','navbar').append(
                     $('<ul>').append(tabHeaders)
