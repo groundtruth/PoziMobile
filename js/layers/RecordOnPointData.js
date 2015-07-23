@@ -71,8 +71,8 @@ define(["jquery", "openlayers", "js/proj", "js/pages/Details"], function($, Open
                     // There should be a reference to the filtering property and its value
                     if (authDetails && authDetails[0] && authDetails[0].properties)
                     {
-                        filterLayer = options.wmsFilter.layer;
-                        filterAttr = authDetails[0].properties[options.wmsFilter.attribute];
+                        var filterLayer = options.wmsFilter.layer;
+                        var filterAttr = authDetails[0].properties[options.wmsFilter.attribute];
                         // Get layer by title and merge the params
                         var parametricWMSLayer = this.map.getLayersByName(filterLayer)[0];
                         parametricWMSLayer.mergeNewParams({"CQL_FILTER":parametricWMSLayer.params["CQL_FILTER"].replace(/%1%/g,filterAttr)});
