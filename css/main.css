@@ -172,3 +172,11 @@ textarea.ui-input-text.ui-disabled {
 select {
     font-size:16px;
 }
+
+.ui-disabled > .ui-checkbox-on .ui-icon {
+    background-color: #ECECEC;
+}
+
+.ui-checkbox.ui-disabled .ui-btn-text {
+    color: rgb(128,128,128);
+}
