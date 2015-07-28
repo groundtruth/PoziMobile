@@ -172,3 +172,8 @@ textarea.ui-input-text.ui-disabled {
 select {
     font-size:16px;
 }
+
+/* CSS Hack to have a more friendly icon in multi select */
+#equipmentlist-listbox span.ui-icon-delete, #equipmentlist-dialog span.ui-icon-delete, #operatorlist-dialog span.ui-icon-delete {
+    background-position: -252px 50%;
+}
