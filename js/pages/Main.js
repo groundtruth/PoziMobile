@@ -21,6 +21,23 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             }
         };
 
+        this.toggleSwitchLayer = function(button) {
+            var layerToSwitch = map.getLayersByName($(button).text());
+            if (layerToSwitch && layerToSwitch[0])
+            {
+                if (layerToSwitch[0].getVisibility())
+                {
+                    button.classList.add("ui-btn-on-a");
+                    layerToSwitch[0].setVisibility(false);
+                }
+                else
+                {
+                    button.classList.remove("ui-btn-on-a");
+                    layerToSwitch[0].setVisibility(true);
+                }
+            }
+        };
+
         var $page = $("#pageMain");
 
         var layers = Layers.doNew(opts.config, opts.syncher);
@@ -62,15 +79,20 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
         if (opts.config.hasOwnProperty('infoHTML')) {
             var infoHTML = require('text!'+opts.config.infoHTML);
             $page.prepend('<div id="info" data-role="popup"><p>'+infoHTML+'</p></div>').trigger("create");
-            $page.find('footer').prepend('<button id="infoButton" data-transition="none" data-icon="info" data-iconpos="notext" class="ui-btn-left" data-rel="popup">Info</button>').trigger("create");
+            $page.find('footer').children().first().children().append('<button id="infoButton" data-transition="none" data-icon="info" data-iconpos="notext" data-rel="popup">Info</button>').trigger("create");
             $("#infoButton").click(function() { $('div#info').popup('open'); });
         }
 
         if (opts.config.hasOwnProperty('search')) {
-            $page.find('footer').append('<button id="searchButton" data-transition="none" data-icon="search" data-iconpos="notext" class="ui-btn-right" data-rel="popup">Search</button>').trigger("create");
+            $page.find('footer').children().last().children().append('<button id="searchButton" data-transition="none" data-icon="search" data-iconpos="notext" data-rel="popup">Search</button>').trigger("create");
             $("#searchButton").click(function() {
                 opts.pages.openSearch();
             });
+        }
+
+        if (opts.config.hasOwnProperty('switchButtonLayer')) {
+            $page.find('footer').children().first().children().append('<button id="switchButton" data-transition="none" data-icon="star" data-iconpos="notext">'+opts.config.switchButtonLayer+'</button>').trigger("create");
+            $("#switchButton").click(function() {that.toggleSwitchLayer(this);});
         }
 
     };

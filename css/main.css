@@ -177,3 +177,8 @@ select {
 #equipmentlist-listbox span.ui-icon-delete, #equipmentlist-dialog span.ui-icon-delete, #operatorlist-dialog span.ui-icon-delete {
     background-position: -252px 50%;
 }
+
+/* Footer buttons to be properly top aligned */
+.ui-footer .ui-btn-left, .ui-footer .ui-btn-right {
+    top:0px;
+}
