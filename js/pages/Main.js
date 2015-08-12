@@ -45,7 +45,7 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
 
         this.showMapAt = function(bounds) {
             $.mobile.changePage($page, { transition: "none" });
-            map.zoomToExtent(bounds);
+            map.zoomToExtentMax(bounds);
         };
 
         this.setSyncButton("check", "&nbsp;");

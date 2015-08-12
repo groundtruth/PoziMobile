@@ -25,6 +25,11 @@ define([
             this.setCenter([pointInWebMercator.x, pointInWebMercator.y]);
         };
 
+        this.zoomToExtentMax = function(extent) {
+            var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.maxZoom);
+            this.setCenter([(extent.left+extent.right)/2, (extent.bottom+extent.top)/2], zoomWithinLimit);
+        };
+
         this.setCenterAndZoomToExtent = function(pointInWebMercator, extent) {
             var zoomWithinLimit = Math.min(this.getZoomForExtent(extent), config.maxZoom);
             this.setCenter([pointInWebMercator.x, pointInWebMercator.y], zoomWithinLimit);
