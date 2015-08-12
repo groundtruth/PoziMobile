@@ -182,3 +182,7 @@ select {
 .ui-footer .ui-btn-left, .ui-footer .ui-btn-right {
     top:0px;
 }
+
+.ui-icon-mobile-map {
+    background-image: url("../img/map.png");
+}

@@ -27,12 +27,12 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             {
                 if (layerToSwitch[0].getVisibility())
                 {
-                    button.classList.add("ui-btn-on-a");
+                    button.parentElement.classList.remove("ui-btn-on-a");
                     layerToSwitch[0].setVisibility(false);
                 }
                 else
                 {
-                    button.classList.remove("ui-btn-on-a");
+                    button.parentElement.classList.add("ui-btn-on-a");
                     layerToSwitch[0].setVisibility(true);
                 }
             }
@@ -91,7 +91,7 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
         }
 
         if (opts.config.hasOwnProperty('switchButtonLayer')) {
-            $page.find('footer').children().first().children().append('<button id="switchButton" data-transition="none" data-icon="star" data-iconpos="notext">'+opts.config.switchButtonLayer+'</button>').trigger("create");
+            $page.find('footer').children().first().children().append('<button id="switchButton" data-transition="none" data-icon="mobile-map" data-iconpos="notext">'+opts.config.switchButtonLayer+'</button>').trigger("create");
             $("#switchButton").click(function() {that.toggleSwitchLayer(this);});
         }
 
