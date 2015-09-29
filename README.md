@@ -136,3 +136,7 @@ Their free app only shows status info when connected to one of their devices. Th
 device has its own display that shows detailed status information.
 
 
+### Local Dev
+
+Access 
+http://localhost/PoziMobile/?client=bendigo&appName=defect#&ui-state=dialog

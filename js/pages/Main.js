@@ -70,11 +70,18 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
             $('#login').popup('open');
         }
 
+        if (opts.config.hasOwnProperty('mainPageTitle'))
+        {
+            // Setting a title in the header of the main page
+            $("#pageMain h1").html(opts.config.mainPageTitle);
+        }
+
         if (opts.config.hasOwnProperty('detailsPageTitle'))
         {
             // Setting a title in the header of the details page
             $("#pageDetails h1").html(opts.config.detailsPageTitle);
         }
+
 
         if (opts.config.hasOwnProperty('infoHTML')) {
             var infoHTML = require('text!'+opts.config.infoHTML);
