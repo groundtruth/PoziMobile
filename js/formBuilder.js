@@ -122,6 +122,15 @@ define(["underscore", "jquery", "mustache"], function(_, $, Mustache) {
                     ';
                     break;
 
+                case "textareanotes" :
+                    template = '\
+                        <div data-role="fieldcontain">\
+                            <label for="{{ id }}">{{ description }}:</label>\
+                            <textarea class="fb-text-area-notes" name="{{ id }}" id="{{ id }}" {{ #disabled }}disabled{{ /disabled }} placeholder="{{ placeholder }}"></textarea>\
+                        </div>\
+                    ';
+                    break;
+
                 case "textareareadonly" :
                     template = '\
                         <div data-role="fieldcontain">\
