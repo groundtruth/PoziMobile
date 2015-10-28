@@ -44,6 +44,7 @@ define([
             // -1 adjustment so rounding errors don't create a scrollable area
             $("#map").height($(window).innerHeight() - 1);
             $("#map").width($(window).width());
+
         };
 
         $(window).on("resize", function() { that.setSize(); });
@@ -53,6 +54,35 @@ define([
         this.updateData = function() {
             layers.refreshDataAround(this.getCenterInWGS84());
         };
+
+
+        // This is a workaround to fix an issue that appears to be with OpenLayers.
+        // It is highly likely this issue will be fixed in some later version of OpenLayers.
+        // Once fixed in OpenLayers this function should be removed.
+        // http://thinkgeo.com/forums/MapSuite/tabid/143/aft/11896/Default.aspx
+        // https://github.com/openlayers/openlayers/issues/669
+        this.OnMapCreating = function (map) {
+            OpenLayers.Tile.prototype.destroy = function () {
+                if (this.layer.map.tileManager != null) {
+                    OpenLayers.Util.removeItem(this.layer.map.tileManager.tileQueue[this.layer.map.id], this);
+                }
+
+                this.layer = null;
+                this.bounds = null;
+                this.size = null;
+                this.position = null;
+
+                if (this.eventListeners) {
+                    this.events.un(this.eventListeners);
+                }
+                this.events.destroy();
+                this.eventListeners = null;
+                this.events = null;
+            };
+        }
+
+        that.OnMapCreating(OpenLayers.Map);
+
 
         OpenLayers.Map.call(this, {
             div: "map",
