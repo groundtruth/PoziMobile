@@ -76,6 +76,7 @@ define(["jquery", "underscore", "js/appId"], function($, _, appId) {
                     that.queues.active = _(that.queues.active).without(item);
                     backupQueues();
                     that.updateInterface();
+                    console.log("Administrators see restful_geof troubleshooting notes here: https://trello.com/c/0AULog15/8-restful-geof");
                 }
             });
         };
