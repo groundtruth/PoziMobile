@@ -52,7 +52,7 @@ define(["jquery", "js/PoziMap", "js/proj", "js/Layers"], function($, PoziMap, pr
 
         $page.on("pagebeforeshow", function() { that.updateData(); });
 
-        $("#syncButton").live("click", function() { opts.syncher.processQueue(true); });
+        $("#syncButton").on("click", function() { opts.syncher.processQueue(true); });
         $("#zoomOut").click(function() { map.zoomOut(); });
         $("#followLocation").click(function() { that.toggleFollowLocation(this); });
         $("#zoomIn").click(function() { map.zoomIn(); });

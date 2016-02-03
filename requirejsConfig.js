@@ -7,7 +7,7 @@ define([], function() {
             "jasmine-jquery": "vendor/jasmine-jquery/jasmine-jquery",
             "Squire": "vendor/squire-24dfa9/Squire",
             "underscore": "vendor/underscore-1.4.3/underscore",
-            "jquery": "vendor/jquery-1.8.3/jquery-1.8.3.min",
+            "jquery": "vendor/jquery-1.12.0.min",
             "jquery.mobile": "vendor/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min",
             "openlayers": "vendor/openlayers-2.13.1/OpenLayers.mobile",
             "openlayers.rule": "vendor/openlayers-2.13.1/OpenLayers.Rule",

@@ -139,4 +139,4 @@ device has its own display that shows detailed status information.
 ### Local Dev
 
 Access 
-http://localhost/PoziMobile/?client=bendigo&appName=linemarking
+http://localhost/PoziMobile/?client=warrnambool&appName=linemarking
