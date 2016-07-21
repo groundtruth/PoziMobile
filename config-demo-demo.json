@@ -478,7 +478,7 @@
       }]
     }
   }, {
-    "type": "VicmapClassic",
+    "type": "OpenStreetMap",
     "options": {}
   }]
 }
