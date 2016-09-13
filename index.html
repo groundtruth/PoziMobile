@@ -15,8 +15,19 @@
         <link rel="stylesheet" href="css/main.css"></link>
 
         <script type="text/javascript" src="vendor/requirejs-2.1.2/require.js" data-main="index"></script>
-        
+
         <script>
+
+          if (window.parent.location.href.indexOf(".m.pozi.com") == -1) {
+            var redirectURL = window.parent.location.href.replace(".pozi.com", ".m.pozi.com")
+            var redirectURLNoHash = redirectURL.replace(window.parent.location.hash, '')
+            console.log("Redirecting to: " + redirectURLNoHash)
+            // This alert to be uncommented near to when we setup the bendigo domain on AWS
+            //alert('The web address of this app is moving. \n\nPlease update your bookmark: \n\n' + redirectURLNoHash)
+            window.location.replace(redirectURLNoHash)
+          }
+
+
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -99,4 +110,3 @@
 
     </body>
 </html>
-
