@@ -18,12 +18,14 @@
 
         <script>
 
-          if (window.parent.location.href.indexOf(".m.pozi.com") == -1) {
+          if (window.parent.location.href.indexOf(".m.pozi.com") == -1
+          && window.parent.location.href.indexOf("localhost") == -1
+          && window.parent.location.href.indexOf("127.0.0.1") == -1) {
             var redirectURL = window.parent.location.href.replace(".pozi.com", ".m.pozi.com")
             var redirectURLNoHash = redirectURL.replace(window.parent.location.hash, '')
             console.log("Redirecting to: " + redirectURLNoHash)
             // This alert to be uncommented near to when we setup the bendigo domain on AWS
-            //alert('The web address of this app is moving. \n\nPlease update your bookmark: \n\n' + redirectURLNoHash)
+            alert('The web address of this app is moving. \n\nPlease update your bookmark: \n\n' + redirectURLNoHash)
             window.location.replace(redirectURLNoHash)
           }
 
